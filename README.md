@@ -1,6 +1,6 @@
 # Rayan's Dark Forest
 
-A lovingly illustrated, interactive forest home screen built around the exact approved design. **Phase 1: homepage only.**
+A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search chapter added.**
 
 ## Homepage
 
@@ -10,10 +10,10 @@ A lovingly illustrated, interactive forest home screen built around the exact ap
 - Each ornament opens its own dedicated placeholder page, ready for a future game or love note.
 - Full-bleed desktop art, a horizontally pannable scene on portrait phones, and reduced-motion accessibility.
 
-## Sections planned for future phases
+## Forest sections
 
 1. Scavenger Hunt
-2. Word Search Puzzle
+2. Word Search Puzzle — fully playable
 3. Matching Memory Game
 4. Secret Love Notes
 5. Mystery Treasure Trail
@@ -24,8 +24,8 @@ No packages, build tools, external fonts, or remote image services are required.
 
 ## Word Search · Phase 2
 
-- Six themed collections: **Dark Souls I & II**, **Lies of P**, **Bloodborne**, **Star Wars**, **Terraria / Hollow Knight / Silksong**, and **My Spoiled Little Princess**.
-- Five selectable levels per collection, with **35 curated terms per level** (30 levels, 1,050 hidden words total).
+- Seven illustrated collections: **Dark Souls I & II**, **Lies of P**, **Bloodborne**, **Star Wars**, **Terraria**, **Hollow Knight / Silksong**, and **My Spoiled Little Princess**.
+- Five selectable levels per collection, with **35 curated terms per level** (35 levels, 1,225 hidden words total).
 - Find words in eight directions by dragging, or choose their first and last letters using touch, mouse, or keyboard.
 - Progress, completed levels, and used hints are stored automatically in this browser using `localStorage`; they do not sync across devices or private-browsing sessions.
 - Each level has three optional hints. Completed levels display a celebration and can be replayed.
@@ -34,4 +34,4 @@ No packages, build tools, external fonts, or remote image services are required.
 
 ## Exact illustrated Word Search (new)
 
-The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The added image `assets/wordsearch-worlds.png` is required for the exact appearance; until that PNG exists in the repository, the previous fully playable collection screen is shown rather than a broken image.
+The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The approved illustration is now published in this repository at `assets/wordsearch-worlds.webp`. The game uses it directly, with invisible interactive buttons aligned to each illustrated level badge. The original PNG is retained in the downloadable build, while the website uses a web-optimized copy. If the image cannot load, the standard playable menu remains available.
