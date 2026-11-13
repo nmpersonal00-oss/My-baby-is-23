@@ -4,9 +4,11 @@ html,body{margin:0;min-height:100%;background:var(--night)}
 body{font-family:Georgia,"Times New Roman",serif;color:var(--gold-bright)}
 a{color:inherit}
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-.forest-viewport{display:grid;place-items:center;width:100%;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#163046 0%,#050e16 76%)}
-.forest-scene{position:relative;isolation:isolate;width:min(100vw,177.577svh);aspect-ratio:1671/941;flex:none;overflow:hidden;box-shadow:0 0 100px #060c16}
-.forest-art{display:grid;grid-template-rows:188fr 188fr 189fr 188fr 188fr;width:100%;height:100%;user-select:none;pointer-events:none}.forest-art img{display:block;width:100%;height:100%;object-fit:fill;min-width:0;min-height:0}
+/* The exact approved picture fills the screen, with all five hotspots aligned. */
+.forest-viewport{display:grid;place-items:center;width:100%;height:100svh;height:100dvh;overflow:hidden;background:#050e16}
+.forest-scene{position:relative;isolation:isolate;width:max(100vw,177.577svh);width:max(100vw,177.577dvh);aspect-ratio:1671/941;flex:none;overflow:hidden}
+/* One full image avoids vertical seams between sliced image files. */
+.forest-art{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;user-select:none;pointer-events:none}
 .magic-dust{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .firefly{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;opacity:0;background:#fff0b8;box-shadow:0 0 4px 2px #ffd784,0 0 15px 4px #f4a94a70;animation:float-glimmer var(--time) ease-in-out var(--delay) infinite alternate}
 @keyframes float-glimmer{0%{opacity:.0;transform:translate3d(0,8px,0) scale(.6)}38%{opacity:.65}75%{opacity:.16}100%{opacity:.8;transform:translate3d(var(--drift),-17px,0) scale(1.12)}}
@@ -20,9 +22,10 @@ a{color:inherit}
 .lantern-matching{left:48.9%;top:39.2%;width:15.5%;height:30.3%}
 .lantern-notes{left:68.2%;top:30.4%;width:13.6%;height:32.7%}
 .lantern-treasure{left:79.9%;top:45.8%;width:16.5%;height:38.5%}
+/* Portrait phones can pan across a full-height scene to reach the lanterns. */
 @media (max-width:720px) and (orientation:portrait){
-  .forest-viewport{display:block;min-height:100svh;overflow:auto hidden;scrollbar-width:thin;scrollbar-color:#bb8747 #06101a;overscroll-behavior-x:contain}
-  .forest-scene{width:max(100vw,990px);height:auto;min-height:0;margin:0;box-shadow:none}
+  .forest-viewport{display:block;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#bb8747 #06101a;overscroll-behavior-x:contain}
+  .forest-scene{width:max(100vw,177.577svh);width:max(100vw,177.577dvh);height:auto;margin:0}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}.firefly{display:none}}
 /* Empty room pages retain a quiet piece of the same original forest artwork. */
