@@ -27,6 +27,7 @@
   let progress = load();
   let game = null;
   let boardSizeObserver = null;
+  let boardFitHandler = null;
   let soundEnabled = false;
   let audio = null;
   let victory = null;
@@ -92,9 +93,10 @@
     const entries = chapter.words.map(label => ({label,code:abc(label)}));
     const hash = ([...cacheKey].reduce((number,char) => ((number*31+char.charCodeAt(0))>>>0),0) ^ Math.imul(layout, 0x9e3779b1)) >>> 0;
     let board = null;
-    // Retry deterministically when the tighter boards cannot fit all 35 words.
-    for (let dimension = 24+levelIndex; dimension <= 34 && !board; dimension++) {
-      for (let attempt = 0; attempt < 9 && !board; attempt++) {
+    // Every chapter uses the exact same 25 × 25 grid. The number of rows
+    // and columns never increases for longer answers or different levels.
+    const dimension = 25;
+    for (let attempt = 0; attempt < 24 && !board; attempt++) {
         const random = rand((hash ^ (dimension * 1373107) ^ (attempt * 279470273)) >>> 0 || 1);
         const cells = Array(dimension * dimension).fill('');
         const placed = [];
@@ -130,8 +132,8 @@
           board = {size:dimension,letters:cells,placed,lookup:new Map(placed.map(entry=>[entry.code,entry]))};
         }
       }
-    }
     if (!board) throw Error('Could not generate this forest chapter.');
+
     boards.set(boardKey,board);
     return board;
   }
@@ -140,6 +142,7 @@
   }
   function renderLibrary() {
     if (boardSizeObserver) { boardSizeObserver.disconnect(); boardSizeObserver = null; }
+    if (boardFitHandler) { window.removeEventListener('resize',boardFitHandler); boardFitHandler = null; }
     game = null;
     const count = stats();
     app.innerHTML = `${titleHero()}
@@ -158,6 +161,7 @@
   }
   function renderChapter(realmIndex, levelIndex) {
     if (boardSizeObserver) { boardSizeObserver.disconnect(); boardSizeObserver = null; }
+    if (boardFitHandler) { window.removeEventListener('resize',boardFitHandler); boardFitHandler = null; }
     document.body.classList.remove('atlas-home');
     const realm = REALMS[realmIndex];
     const chapter = realm.chapters[levelIndex];
@@ -167,17 +171,21 @@
     const hintCount = Math.min(3,Number(progress.hints[keyFor(realm,levelIndex)])||0);
     app.innerHTML = `<section class="chapter-head"><div class="chapter-crumb"><a href="#library" class="back-library">${chevron} All 7 worlds</a><small>BOOK ${realmIndex+1} / CHAPTER ${levelIndex+1}</small></div><nav class="level-switch" aria-label="Choose level"><span>LEVEL</span>${realm.chapters.map((c,i)=>`<button class="level-button ${i===levelIndex?'active':''} ${getFound(realm,i).size===35?'completed':''}" data-level="${i}" title="${esc(c.name)}" aria-label="Level ${i+1}: ${esc(c.name)}" ${i===levelIndex?'aria-current="step"':''}>${i+1}</button>`).join('')}</nav></section>
       <section class="chapter-title-block"><p class="eyebrow">${esc(realm.title)}</p><h1>${esc(chapter.name)}</h1><p>${esc(chapter.subtitle)}</p><div class="chapter-meta"><span class="meta-chip">Level <b>${levelIndex+1}</b> / 5</span><span class="meta-chip"><b>35</b> words</span><span class="meta-chip">Straight · Backward · Diagonal</span></div></section>
-      <section class="play-layout" aria-label="Interactive word search game" style="--realm-glow:${esc(realm.color)}"><div class="board-frame"><div class="board-scroller" id="board-scroller"><div class="letter-grid" id="letter-grid" role="group" aria-label="${board.size} by ${board.size} word search grid. Tap the first and last letter of each word. You can also drag." style="--cell:clamp(27px,2.2vw,34px);grid-template-columns:repeat(${board.size},var(--cell))">${board.letters.map((letter,index)=>`<button type="button" class="letter" data-i="${index}" aria-label="Row ${Math.floor(index/board.size)+1}, column ${index%board.size+1}: ${letter}">${letter}</button>`).join('')}</div></div><div class="board-scroll-controls" aria-label="Scroll the letter grid"><button type="button" class="pan-button" data-pan="-1" aria-label="Scroll left">${chevron}</button><button type="button" class="pan-button" data-pan="1" aria-label="Scroll right" style="transform:rotate(180deg)">${chevron}</button></div><p class="game-feedback" id="game-feedback" role="status" aria-live="polite"></p></div>
+      <section class="play-layout" aria-label="Interactive word search game" style="--realm-glow:${esc(realm.color)}"><div class="board-frame"><div class="board-scroller" id="board-scroller"><div class="letter-grid" id="letter-grid" role="group" aria-label="${board.size} by ${board.size} word search grid. Tap the first and last letter of each word. You can also drag." style="--cell:24px;grid-template-columns:repeat(${board.size},var(--cell))">${board.letters.map((letter,index)=>`<button type="button" class="letter" data-i="${index}" aria-label="Row ${Math.floor(index/board.size)+1}, column ${index%board.size+1}: ${letter}">${letter}</button>`).join('')}</div></div><div class="board-scroll-controls" aria-label="Scroll the letter grid"><button type="button" class="pan-button" data-pan="-1" aria-label="Scroll left">${chevron}</button><button type="button" class="pan-button" data-pan="1" aria-label="Scroll right" style="transform:rotate(180deg)">${chevron}</button></div><p class="game-feedback" id="game-feedback" role="status" aria-live="polite"></p></div>
       <aside class="word-frame"><div class="word-title"><h2>Words to discover</h2><span class="word-count" id="word-count">${found.size} / 35</span></div><div class="word-progress"><div class="progress-track"><div class="progress-fill" id="word-progress" style="--percent:${found.size/35*100}%"></div></div></div><div class="words-list" id="words-list">${[...chapter.words].sort((a,b)=>a.localeCompare(b)).map(label => `<div class="word-chip ${found.has(abc(label))?'done':''}" data-code="${abc(label)}"><span class="word-dot" aria-hidden="true"></span><span>${esc(label)}</span></div>`).join('')}</div><div class="tool-row"><button type="button" class="gold-button" id="hint-button" ${hintCount>=3||found.size>=35?'disabled':''}>${sparkle} <span id="hint-label">Hint (${3-hintCount} left)</span></button><button type="button" class="ghost-button shuffle-button" id="shuffle-button" title="Mix up this level without losing any found words">Shuffle</button><button type="button" class="ghost-button" id="restart-button">Restart</button></div></aside></section>`;
     const grid = document.getElementById('letter-grid');
-    // Use the available width for comfortably large letters without distorting
-    // the grid. On narrow screens, the existing horizontal scrolling remains.
+    // Fit every identical 25 × 25 board within the available area.
+    // Width and screen height both constrain the letter size, preventing
+    // horizontal board scrolling or oversized grids on short screens.
     const gridViewport = document.getElementById('board-scroller');
     const fitLetterCells = () => {
       if (!grid.isConnected) return;
-      const usable = Math.max(0,gridViewport.clientWidth-18);
-      const natural = Math.floor((usable-(board.size-1)*2)/board.size);
-      const cellSize = Math.max(27,Math.min(34,natural));
+      const gap = 2;
+      const width = Math.max(0,gridViewport.clientWidth-8);
+      const height = Math.max(300,window.innerHeight-240);
+      const fitWidth = Math.floor((width-(board.size-1)*gap)/board.size);
+      const fitHeight = Math.floor((height-(board.size-1)*gap)/board.size);
+      const cellSize = Math.max(9,Math.min(28,fitWidth,fitHeight));
       grid.style.setProperty('--cell',cellSize+'px');
     };
     fitLetterCells();
@@ -185,6 +193,8 @@
       boardSizeObserver = new ResizeObserver(fitLetterCells);
       boardSizeObserver.observe(gridViewport);
     }
+    boardFitHandler = fitLetterCells;
+    window.addEventListener('resize',boardFitHandler,{passive:true});
     const trail = document.createElement('div');
     trail.className='trail-readout';
     trail.setAttribute('role','status');
