@@ -151,17 +151,41 @@
     }));
   }
   function renderChapter(realmIndex, levelIndex) {
+    document.body.classList.remove('atlas-home');
     const realm = REALMS[realmIndex];
     const chapter = realm.chapters[levelIndex];
     const board = makeBoard(realmIndex,levelIndex);
     const found = getFound(realm,levelIndex);
-    game = {realmIndex,levelIndex,board,found,pending:null,gesture:null,preview:[],hinted:[]};
+    game = {realmIndex,levelIndex,board,found,pending:null,gesture:null,preview:[],hinted:[],panMode:false};
     const hintCount = Math.min(3,Number(progress.hints[keyFor(realm,levelIndex)])||0);
     app.innerHTML = `<section class="chapter-head"><div class="chapter-crumb"><a href="#library" class="back-library">${chevron} All 7 worlds</a><small>BOOK ${realmIndex+1} / CHAPTER ${levelIndex+1}</small></div><nav class="level-switch" aria-label="Choose level"><span>LEVEL</span>${realm.chapters.map((c,i)=>`<button class="level-button ${i===levelIndex?'active':''} ${getFound(realm,i).size===35?'completed':''}" data-level="${i}" title="${esc(c.name)}" aria-label="Level ${i+1}: ${esc(c.name)}" ${i===levelIndex?'aria-current="step"':''}>${i+1}</button>`).join('')}</nav></section>
       <section class="chapter-title-block"><p class="eyebrow">${esc(realm.title)}</p><h1>${esc(chapter.name)}</h1><p>${esc(chapter.subtitle)}</p><div class="chapter-meta"><span class="meta-chip">Level <b>${levelIndex+1}</b> / 5</span><span class="meta-chip"><b>35</b> words</span><span class="meta-chip">Straight · Backward · Diagonal</span></div></section>
       <section class="play-layout" aria-label="Interactive word search game" style="--realm-glow:${esc(realm.color)}"><div class="board-frame"><div class="board-ornament">${sparkle} The hidden letters ${sparkle}</div><div class="board-scroller" id="board-scroller"><div class="letter-grid" id="letter-grid" role="group" aria-label="${board.size} by ${board.size} word search grid. Tap the first and last letter of each word. You can also drag." style="--cell:clamp(23px,1.93vw,29px);grid-template-columns:repeat(${board.size},var(--cell))">${board.letters.map((letter,index)=>`<button type="button" class="letter" data-i="${index}" aria-label="Row ${Math.floor(index/board.size)+1}, column ${index%board.size+1}: ${letter}">${letter}</button>`).join('')}</div></div><div class="board-scroll-controls"><button type="button" class="pan-button" data-pan="-1" aria-label="Move grid to the left">${chevron}</button><span>Move across the letter map</span><button type="button" class="pan-button" data-pan="1" aria-label="Move grid to the right" style="transform:rotate(180deg)">${chevron}</button></div><p class="board-instructions"><b>Drag</b> across letters, or <b>tap the first and last letter</b>. Find all 35 to complete this chapter.</p><p class="game-feedback" id="game-feedback" role="status" aria-live="polite"></p></div>
       <aside class="word-frame"><div class="word-title"><h2>Words to discover</h2><span class="word-count" id="word-count">${found.size} / 35</span></div><div class="word-progress"><div class="progress-track"><div class="progress-fill" id="word-progress" style="--percent:${found.size/35*100}%"></div></div></div><div class="words-list" id="words-list">${[...chapter.words].sort((a,b)=>a.localeCompare(b)).map(label => `<div class="word-chip ${found.has(abc(label))?'done':''}" data-code="${abc(label)}"><span class="word-dot" aria-hidden="true"></span><span>${esc(label)}</span></div>`).join('')}</div><div class="tool-row"><button type="button" class="gold-button" id="hint-button" ${hintCount>=3||found.size>=35?'disabled':''}>${sparkle} <span id="hint-label">Hint (${3-hintCount} left)</span></button><button type="button" class="ghost-button" id="restart-button">Restart level</button></div><p class="mini-help">Every correctly found word lights up gold. Your discoveries are saved automatically.</p></aside></section>`;
     const grid = document.getElementById('letter-grid');
+    const trail = document.createElement('div');
+    trail.className='trail-readout';
+    trail.setAttribute('role','status');
+    trail.setAttribute('aria-label','Letters currently selected');
+    trail.innerHTML='<span>THE LETTER TRAIL</span><strong id="trail-letters">Trace a word to see every letter glow here</strong>';
+    document.getElementById('board-scroller').insertAdjacentElement('afterend',trail);
+    const panControls=document.querySelector('.board-scroll-controls');
+    const panToggle=document.createElement('button');
+    panToggle.type='button'; panToggle.className='pan-toggle';
+    panToggle.textContent='Move the grid';
+    panToggle.setAttribute('aria-pressed','false');
+    panToggle.title='Switch between selecting letters and scrolling the letter grid';
+    panControls?.append(panToggle);
+    panToggle.addEventListener('click',()=>{
+      if(!game)return;
+      game.panMode=!game.panMode;
+      panToggle.setAttribute('aria-pressed',String(game.panMode));
+      panToggle.textContent=game.panMode?'Select letters':'Move the grid';
+      grid.style.touchAction=game.panMode?'pan-x pan-y':'none';
+      grid.style.cursor=game.panMode?'grab':'crosshair';
+      game.pending=null; game.gesture=null; paintPreview(null,null);
+      notice(game.panMode?'Swipe to move the letter grid. Tap Select letters when ready.':'Drag over letters to trace your answer.');
+    });
     const buttonNodes = [...grid.querySelectorAll('.letter')];
     game.buttonNodes = buttonNodes;
     updateFoundVisuals();
@@ -184,22 +208,28 @@
       return element && grid.contains(element) ? Number(element.dataset.i) : null;
     };
     grid.addEventListener('pointerdown',event => {
-      if (event.button !== 0 || !event.target.closest('.letter')) return;
+      if (game?.panMode || (event.button !== 0 && event.pointerType !== 'touch') || !event.target.closest('.letter')) return;
       const first = Number(event.target.closest('.letter').dataset.i);
       game.gesture = {start:first,last:first,moved:false};
       try {grid.setPointerCapture(event.pointerId);} catch{}
       paintPreview(game.pending !== null ? game.pending : first,first);
     });
     grid.addEventListener('pointermove',event => {
-      if (!game?.gesture) return;
+      if (!game || game.panMode) return;
       const index = cellAt(event);
-      if (index === null) return;
+      if(index === null)return;
+      if (!game.gesture) {
+        if(game.pending !== null && event.pointerType === 'mouse') paintPreview(game.pending,index);
+        return;
+      }
       if (index !== game.gesture.start) game.gesture.moved = true;
+      if(index === game.gesture.last) return;
       game.gesture.last = index;
+      // The entire letter-by-letter path updates as the pointer travels.
       paintPreview(game.gesture.start,index);
     });
     grid.addEventListener('pointerup',event => {
-      if (!game?.gesture) return;
+      if (!game?.gesture || game.panMode) return;
       const gesture = game.gesture;
       const end = cellAt(event) ?? gesture.last;
       game.gesture = null;
@@ -222,7 +252,7 @@
     grid.addEventListener('pointercancel',()=> {if(game)game.gesture=null; paintPreview(game?.pending ?? null,game?.pending ?? null);});
     // Keyboard (Enter or Space) taps without pointer events.
     grid.addEventListener('click', event => {
-      if (event.detail !== 0 || !game) return;
+      if (event.detail !== 0 || !game || game.panMode) return;
       const cell = event.target.closest('.letter');
       if (!cell) return;
       const index = Number(cell.dataset.i);
@@ -245,11 +275,23 @@
   function paintPreview(from,to) {
     if (!game) return;
     const path = pathBetween(from,to);
-    for (const index of game.preview) {
-      game.buttonNodes[index]?.classList.remove('preview','pending');
+    const previous = new Set(game.preview);
+    const next = new Set(path);
+    for (const index of previous) {
+      if (!next.has(index)) game.buttonNodes[index]?.classList.remove('preview','pending');
     }
     game.preview = path;
-    path.forEach((index,i) => game.buttonNodes[index]?.classList.add(i===0?'pending':'preview'));
+    path.forEach((index,i) => {
+      const cell=game.buttonNodes[index];
+      cell?.classList.toggle('pending',i===0);
+      cell?.classList.toggle('preview',i!==0);
+    });
+    const readout=document.getElementById('trail-letters');
+    if(readout){
+      const letters=path.map(i=>game.board.letters[i]).join('');
+      readout.textContent=letters?letters.split('').join(' '):'Trace a word to see every letter glow here';
+      readout.classList.toggle('active',!!letters);
+    }
   }
   function updateFoundVisuals() {
     if (!game) return;
@@ -260,6 +302,27 @@
     document.querySelectorAll('.word-chip').forEach(entry => entry.classList.toggle('done',found.has(entry.dataset.code)));
     document.getElementById('word-count').textContent = `${found.size} / 35`;
     document.getElementById('word-progress').style.setProperty('--percent',`${found.size/35*100}%`);
+  }
+  function shower(element,amount=18) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const bounds=element?.getBoundingClientRect();
+    if(!bounds)return;
+    const burst=document.createElement('div');
+    burst.className='word-sparkle-burst';
+    burst.style.left=(bounds.left+bounds.width/2)+'px';
+    burst.style.top=(bounds.top+bounds.height/2)+'px';
+    for(let n=0;n<amount;n++){
+      const fleck=document.createElement('i');
+      const angle=n*2.399963,spread=54+(n%6)*16;
+      fleck.style.setProperty('--sx',Math.cos(angle)*spread+'px');
+      fleck.style.setProperty('--sy',Math.sin(angle)*spread+'px');
+      fleck.style.setProperty('--turn',((n%2)?180:-160)+'deg');
+      fleck.style.setProperty('--delay',((n%5)*25)+'ms');
+      fleck.className=n%4===0?'pink':'gold';
+      burst.append(fleck);
+    }
+    document.body.append(burst);
+    setTimeout(()=>burst.remove(),1250);
   }
   function submit(start,end) {
     if (!game) return;
@@ -274,8 +337,12 @@
     const realm = REALMS[game.realmIndex];
     progress.found[keyFor(realm,game.levelIndex)] = [...game.found];
     save(); updateFoundVisuals(); chime();
+    shower(game.buttonNodes[end],22);
+    const target=document.querySelector('.word-chip[data-code="'+match.code+'"]');
+    target?.classList.add('just-found');
+    setTimeout(()=>target?.classList.remove('just-found'),1100);
     if (game.found.size === 35) {
-      notice(`All 35 discovered! ${realm.chapters[game.levelIndex].name} is complete.`);
+      notice('Yay, my baby, you finished the level! All 35 magical words found!');
       chime([659,784,1047,1318]);
       showVictory();
     } else {
@@ -308,13 +375,13 @@
     const level=game.levelIndex;
     victory=document.createElement('div');
     victory.className='victory-shade';
-    victory.innerHTML=`<div class="victory-card" role="dialog" aria-modal="true" aria-labelledby="victory-heading"><div class="victory-heart">${heart}</div><p class="eyebrow">An enchanted chapter completed</p><h2 id="victory-heading">You found them all!</h2><p>All 35 words of <em>${esc(realm.chapters[level].name)}</em> now shine in the forest. Your progress has been saved, my sweet boy.</p><div class="victory-actions"><button type="button" class="ghost-button" data-victory="books">Choose a book</button><button type="button" class="gold-button" data-victory="next">${level<4?'Next chapter':'See all levels'} ${sparkle}</button></div></div>`;
-    for(let i=0;i<35;i++) {
-      const star=document.createElement('i'); star.className='confetti-star';
+    victory.innerHTML=`<div class="victory-card" role="dialog" aria-modal="true" aria-labelledby="victory-heading"><div class="victory-heart">${heart}</div><p class="eyebrow">An enchanted chapter completed</p><h2 id="victory-heading">Yay, my baby, you finished the level!</h2><p>All 35 words of <em>${esc(realm.chapters[level].name)}</em> now shine in the forest. Your progress has been saved, my sweet boy.</p><div class="victory-actions"><button type="button" class="ghost-button" data-victory="books">Choose a book</button><button type="button" class="gold-button" data-victory="next">${level<4?'Next chapter':'See all levels'} ${sparkle}</button></div></div>`;
+    for(let i=0;i<110;i++) {
+      const star=document.createElement('i'); star.className='confetti-star '+(i%3===0?'pink':'gold');
       const angle=i*2.399, radius=90+(i*17)%260;
       star.style.setProperty('--tx',`${Math.cos(angle)*radius}px`);
       star.style.setProperty('--ty',`${Math.sin(angle)*radius}px`);
-      star.style.animationDelay=`${(i%7)*.04}s`;
+      star.style.animationDelay=`${(i%13)*.033}s`;
       victory.append(star);
     }
     document.body.append(victory);
