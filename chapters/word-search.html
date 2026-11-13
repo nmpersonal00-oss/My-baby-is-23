@@ -1,1 +1,38 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050e16"><title>Word Search · Rayan's Dark Forest</title><link rel="icon" href="../assets/heart.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css"></head><body><main class="chapter"><section class="chapter-card"><svg class="chapter-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="48" height="48" rx="6"/><path d="M24 8v48M40 8v48M8 24h48M8 40h48"/><path d="m13 18 5-5m0 5-5-5M30 14h4m-4 5h4M44 14h9"/></svg><h1>Word Search Puzzle</h1><p>A hundred little secrets will be hiding in these letters soon.</p><a class="chapter-back" href="../index.html">← Back to Rayan's Forest</a></section></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07131d">
+  <meta name="description" content="The Enchanted Word Search — six collections, thirty chapters, and 1,050 hidden words in Rayan's Dark Forest.">
+  <title>The Enchanted Word Search · Rayan's Dark Forest</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/heart.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="preload" href="../assets/wordsearch-night.webp" as="image">
+  <link rel="stylesheet" href="../word-search.css">
+  <script defer src="../word-search-data.js"></script>
+  <script defer src="../word-search.js"></script>
+</head>
+<body>
+  <div class="fantasy-bg" aria-hidden="true"></div>
+  <div class="fairy-dust" id="fairy-dust" aria-hidden="true"></div>
+  <div class="world-shell">
+    <header class="site-top">
+      <a href="../index.html" class="back-home" aria-label="Back to Rayan's Dark Forest homepage">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m14 5-7 7 7 7M8 12h12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Back to the Forest</span>
+      </a>
+      <a class="top-brand" href="../index.html" aria-label="Rayan's Dark Forest homepage">Rayan’s <span>Dark Forest</span><svg viewBox="0 0 32 27" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 25C11 20 2 14 2 8c0-7 10-9 14-1 4-8 14-6 14 1 0 6-9 12-14 17Z"/></svg></a>
+      <button id="sound-switch" class="sound-switch" type="button" aria-label="Turn magical sound effects on" aria-pressed="false" title="Magical sounds (off)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9v6h4l6 4V5L8 9H4Z" stroke-linejoin="round"/><path d="M18 9l4 6m0-6-4 6" stroke-linecap="round"/></svg>
+        <span id="sound-label">Sound off</span>
+      </button>
+    </header>
+    <main id="app" class="page-content" aria-live="off"><div class="loading-wisp">Unfolding the enchanted book…</div></main>
+    <footer class="forest-foot"><span>Made with love, for my sweet boy</span><svg viewBox="0 0 36 20" fill="none" stroke="currentColor" aria-hidden="true"><path d="M18 18C13 13 3 9 3 5c0-6 11-5 15 2 4-7 15-8 15-2 0 4-10 8-15 13Z"/></svg><span>Forever and always</span></footer>
+  </div>
+  <div class="announcer" aria-live="polite" aria-atomic="true" id="announcer"></div>
+</body>
+</html>
