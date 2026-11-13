@@ -31,3 +31,7 @@ No packages, build tools, external fonts, or remote image services are required.
 - Each level has three optional hints. Completed levels display a celebration and can be replayed.
 - Enchanted AI art, warm-glow fireflies, optional original chime effects, responsive letter boards, and reduced-motion support.
 - The game lives at `chapters/word-search.html` and preserves the original homepage unchanged.
+
+## Exact illustrated Word Search (new)
+
+The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The added image `assets/wordsearch-worlds.png` is required for the exact appearance; until that PNG exists in the repository, the previous fully playable collection screen is shown rather than a broken image.
