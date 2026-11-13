@@ -3,7 +3,7 @@
  'use strict';
  const app=document.getElementById('app'),realms=window.WS_REALMS;
  if(!app||!Array.isArray(realms)||realms.length!==7)return;
- const asset='../assets/wordsearch-worlds.png';
+ const asset='../assets/wordsearch-worlds.webp';
  const storeKey='rayans-dark-forest.wordsearch.v1';
  const coord=(x,y,w,h)=>'left:'+(x/1672*100)+'%;top:'+(y/941*100)+'%;width:'+(w/1672*100)+'%;height:'+(h/941*100)+'%';
  const safe=x=>String(x).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
