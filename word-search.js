@@ -34,6 +34,8 @@
   const getFound = (realm, level) => {
     const valid = new Set(realm.chapters[level].words.map(abc));
     const stored = progress.found[keyFor(realm, level)];
+    // Never erase a fully completed level just because its vocabulary improved.
+    if(Array.isArray(stored) && new Set(stored).size>=35)return new Set(valid);
     return new Set(Array.isArray(stored) ? stored.filter(item => valid.has(item)) : []);
   };
   const save = () => { try {localStorage.setItem(STORE, JSON.stringify(progress));} catch {notice('Progress is saved while this tab stays open. Browser storage is unavailable.');} };
@@ -203,6 +205,16 @@
     document.querySelectorAll('[data-pan]').forEach(button => button.addEventListener('click',() => {
       document.getElementById('board-scroller').scrollBy({left:Number(button.dataset.pan)*260,behavior:'smooth'});
     }));
+    // Trackpad and mouse-wheel scrolling stay native-feeling instead of
+    // fighting with the page's vertical scroll or re-rendering letter cells.
+    const letterScroller=document.getElementById('board-scroller');
+    letterScroller.addEventListener('wheel',event=>{
+      if(event.ctrlKey||letterScroller.scrollWidth<=letterScroller.clientWidth+2)return;
+      if(Math.abs(event.deltaY)<=Math.abs(event.deltaX))return;
+      const old=letterScroller.scrollLeft;
+      const next=Math.max(0,Math.min(letterScroller.scrollWidth-letterScroller.clientWidth,old+event.deltaY));
+      if(Math.abs(next-old)>0.5){event.preventDefault();letterScroller.scrollLeft=next;}
+    },{passive:false});
     const cellAt = event => {
       const element = document.elementFromPoint(event.clientX,event.clientY)?.closest?.('.letter');
       return element && grid.contains(element) ? Number(element.dataset.i) : null;
