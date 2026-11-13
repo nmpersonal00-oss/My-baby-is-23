@@ -13,3 +13,7 @@
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.wisp{display:none}}
 
 .back-library svg,.back-chapter svg{width:15px;height:15px;flex:none}
+
+/* Never let the large 24–28-column board widen a phone's page. Its own viewport scrolls. */
+.play-layout,.board-frame,.word-frame,.board-scroller{min-width:0;max-width:100%}
+@media(max-width:1080px){.play-layout{grid-template-columns:minmax(0,1fr)}}
