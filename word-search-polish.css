@@ -112,3 +112,54 @@ body:not(.atlas-home) .pan-toggle{display:none!important}
   body:not(.atlas-home) .words-list{max-height:410px}
   body:not(.atlas-home) .trail-readout{min-height:38px}
 }
+
+
+/* Wider, calmer letter board — only applies while playing, never to the approved artwork. */
+body:not(.atlas-home) .board-frame{
+  min-width:0;
+  padding:11px 8px 15px;
+  background:linear-gradient(145deg,#102935f3,#081727fc);
+}
+body:not(.atlas-home) .board-frame::before{inset:5px}
+body:not(.atlas-home) .board-scroller{
+  padding:5px 2px 9px;
+  max-width:100%;
+}
+body:not(.atlas-home) .letter-grid{gap:2px}
+body:not(.atlas-home) .letter{
+  font-size:clamp(14px,1.17vw,18px);
+  font-weight:700;
+  color:#fff1d5;
+  text-shadow:0 1px 3px #000b;
+  border-color:#e5c89038;
+  background:#f7e1ae12;
+}
+body:not(.atlas-home) .game-feedback{
+  width:fit-content;max-width:100%;
+  margin:11px auto 2px;
+  padding:11px 20px;
+  min-height:50px;
+  border:1px solid #ebc58a8c;
+  border-radius:16px;
+  background:linear-gradient(120deg,#152e3be8,#34251edb,#152e3be8);
+  color:#fff1cb;
+  font:600 clamp(20px,1.9vw,26px)/1.24 'Cormorant Garamond',Georgia,serif;
+  text-align:center;
+  text-shadow:0 1px 3px #000,0 0 11px #e7ab5d6e;
+  box-shadow:0 0 20px #eab66a24,inset 0 0 15px #e6ae4930;
+}
+@media(min-width:1180px){
+  body:not(.atlas-home) .play-layout{
+    grid-template-columns:minmax(0,1fr) minmax(315px,355px);
+    gap:17px;
+  }
+}
+@media(max-width:760px){
+  body:not(.atlas-home) .board-frame{padding:10px 6px 13px}
+  body:not(.atlas-home) .board-scroller{padding:4px 1px 8px}
+  body:not(.atlas-home) .letter{font-size:15px}
+  body:not(.atlas-home) .game-feedback{
+    width:100%;min-height:48px;margin-top:9px;
+    padding:10px 9px;font-size:clamp(19px,5vw,23px);
+  }
+}
