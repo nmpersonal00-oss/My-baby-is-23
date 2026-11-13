@@ -1,0 +1,37 @@
+:root{color-scheme:dark;--night:#050e16;--gold:#f5c675;--gold-bright:#fff1ca;--soft-gold:#f3d6a3}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--night)}
+body{font-family:Georgia,"Times New Roman",serif;color:var(--gold-bright)}
+a{color:inherit}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.forest-viewport{display:grid;place-items:center;width:100%;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#163046 0%,#050e16 76%)}
+.forest-scene{position:relative;isolation:isolate;width:min(100vw,177.577svh);aspect-ratio:1671/941;flex:none;overflow:hidden;box-shadow:0 0 100px #060c16}
+.forest-art{display:grid;grid-template-rows:188fr 188fr 189fr 188fr 188fr;width:100%;height:100%;user-select:none;pointer-events:none}.forest-art img{display:block;width:100%;height:100%;object-fit:fill;min-width:0;min-height:0}
+.magic-dust{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.firefly{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;opacity:0;background:#fff0b8;box-shadow:0 0 4px 2px #ffd784,0 0 15px 4px #f4a94a70;animation:float-glimmer var(--time) ease-in-out var(--delay) infinite alternate}
+@keyframes float-glimmer{0%{opacity:.0;transform:translate3d(0,8px,0) scale(.6)}38%{opacity:.65}75%{opacity:.16}100%{opacity:.8;transform:translate3d(var(--drift),-17px,0) scale(1.12)}}
+.lantern-links{position:absolute;inset:0;pointer-events:none}
+.lantern{position:absolute;display:block;z-index:2;pointer-events:auto;border-radius:48%;outline:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.lantern::before{content:"";position:absolute;inset:5%;border:1.6px solid transparent;border-radius:42%;opacity:0;transition:opacity .25s,border-color .25s,box-shadow .25s,transform .25s;transform:scale(.94)}
+.lantern:is(:hover,:focus-visible)::before{opacity:1;border-color:#fff0b0bb;box-shadow:0 0 14px 5px #f7a63d80,0 0 34px 13px #ffbc4945,inset 0 0 28px #ffe9b83b;transform:scale(1)}
+.lantern:active::before{box-shadow:0 0 30px 12px #fff0bcb0,inset 0 0 18px #ffe2a0a0}
+.lantern-hunt{left:53.1%;top:9.1%;width:15.2%;height:30.9%}
+.lantern-words{left:79.8%;top:9.2%;width:15.8%;height:30.9%}
+.lantern-matching{left:48.9%;top:39.2%;width:15.5%;height:30.3%}
+.lantern-notes{left:68.2%;top:30.4%;width:13.6%;height:32.7%}
+.lantern-treasure{left:79.9%;top:45.8%;width:16.5%;height:38.5%}
+@media (max-width:720px) and (orientation:portrait){
+  .forest-viewport{display:block;min-height:100svh;overflow:auto hidden;scrollbar-width:thin;scrollbar-color:#bb8747 #06101a;overscroll-behavior-x:contain}
+  .forest-scene{width:max(100vw,990px);height:auto;min-height:0;margin:0;box-shadow:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}.firefly{display:none}}
+/* Empty room pages retain a quiet piece of the same original forest artwork. */
+.chapter{min-height:100svh;display:grid;place-items:center;position:relative;padding:clamp(20px,4vw,48px);overflow:hidden;background:#030b12}
+.chapter::before{content:"";position:fixed;inset:-5%;z-index:0;background:url('assets/rayans-dark-forest.avif') center/cover no-repeat;filter:blur(14px) brightness(.33) saturate(.86);transform:scale(1.08)}
+.chapter::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 44%,#0e253900 15%,#02070cee 100%)}
+.chapter-card{position:relative;z-index:1;width:min(600px,100%);padding:clamp(34px,6vw,65px) clamp(26px,5vw,56px);border:1px solid #ffcd7994;border-radius:27px;text-align:center;background:linear-gradient(150deg,#102031e8,#071119f0);box-shadow:0 0 70px #efac4a22,inset 0 0 30px #e7aa4411}
+.chapter-mark{width:65px;height:65px;display:block;margin:0 auto 24px;color:#e7c07c;filter:drop-shadow(0 0 13px #f5bd75);}
+.chapter-card h1{font-weight:normal;font-size:clamp(39px,6vw,62px);line-height:1.02;letter-spacing:-.025em;margin:0 0 20px;color:#f8dba9;text-shadow:0 0 22px #d99b45a0}
+.chapter-card p{font-size:clamp(16px,2.5vw,20px);line-height:1.65;font-style:italic;color:#f2ddb9;margin:0 auto 32px;max-width:400px}
+.chapter-back{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:49px;padding:12px 25px;border:1px solid #ffd38fa8;border-radius:999px;color:#ffe1a9;background:#633e172a;text-decoration:none;font-size:16px;box-shadow:0 0 25px #da8b3426;transition:box-shadow .2s,transform .2s}
+.chapter-back:hover,.chapter-back:focus-visible{transform:translateY(-2px);outline:1px solid #fff1b3;box-shadow:0 0 30px #e49b5788}
