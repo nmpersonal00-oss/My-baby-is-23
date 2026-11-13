@@ -4,11 +4,11 @@ A lovingly illustrated, interactive forest home screen built around the exact ap
 
 ## Homepage
 
-- Displays the original artwork pixel-for-pixel as five losslessly cut PNG strips (`assets/forest-01.png` through `forest-05.png`), without redrawing or changing any wording. The original full PNG is retained in the downloadable project.
+- Displays the approved artwork as one continuous full-screen image (`assets/rayans-dark-forest.avif`), avoiding seams and dark side margins. The full original PNG remains in the downloadable archive.
 - Five transparent, accessible click targets correspond to the original ornaments in the tree.
 - Warm, animated fireflies and gentle focus/hover glows decorate the illustration without obscuring it.
 - Each ornament opens its own dedicated placeholder page, ready for a future game or love note.
-- Reduced-motion accessibility and a pannable illustration on narrow phones.
+- Full-bleed desktop art, a horizontally pannable scene on portrait phones, and reduced-motion accessibility.
 
 ## Sections planned for future phases
 
