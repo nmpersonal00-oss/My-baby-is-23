@@ -21,8 +21,8 @@
   const load = () => {
     try {
       const data = JSON.parse(localStorage.getItem(STORE) || '{}');
-      return data && typeof data === 'object' ? {found: data.found && typeof data.found === 'object' ? data.found : {}, hints: data.hints && typeof data.hints === 'object' ? data.hints : {}} : {found:{},hints:{}};
-    } catch { return {found:{},hints:{}}; }
+      return data && typeof data === 'object' ? {found: data.found && typeof data.found === 'object' ? data.found : {}, hints: data.hints && typeof data.hints === 'object' ? data.hints : {}, shuffles: data.shuffles && typeof data.shuffles === 'object' ? data.shuffles : {}} : {found:{},hints:{},shuffles:{}};
+    } catch { return {found:{},hints:{},shuffles:{}}; }
   };
   let progress = load();
   let game = null;
@@ -85,9 +85,11 @@
   function makeBoard(realmIndex, levelIndex) {
     const realm = REALMS[realmIndex], chapter = realm.chapters[levelIndex];
     const cacheKey = keyFor(realm,levelIndex);
-    if (boards.has(cacheKey)) return boards.get(cacheKey);
+    const layout = (Number(progress.shuffles[cacheKey]) || 0) >>> 0;
+    const boardKey = cacheKey + ':' + layout;
+    if (boards.has(boardKey)) return boards.get(boardKey);
     const entries = chapter.words.map(label => ({label,code:abc(label)}));
-    const hash = [...cacheKey].reduce((number,char) => ((number*31+char.charCodeAt(0))>>>0),0);
+    const hash = ([...cacheKey].reduce((number,char) => ((number*31+char.charCodeAt(0))>>>0),0) ^ Math.imul(layout, 0x9e3779b1)) >>> 0;
     let board = null;
     // Retry deterministically when the tighter boards cannot fit all 35 words.
     for (let dimension = 24+levelIndex; dimension <= 34 && !board; dimension++) {
@@ -129,7 +131,7 @@
       }
     }
     if (!board) throw Error('Could not generate this forest chapter.');
-    boards.set(cacheKey,board);
+    boards.set(boardKey,board);
     return board;
   }
   function titleHero() {
@@ -162,32 +164,15 @@
     const hintCount = Math.min(3,Number(progress.hints[keyFor(realm,levelIndex)])||0);
     app.innerHTML = `<section class="chapter-head"><div class="chapter-crumb"><a href="#library" class="back-library">${chevron} All 7 worlds</a><small>BOOK ${realmIndex+1} / CHAPTER ${levelIndex+1}</small></div><nav class="level-switch" aria-label="Choose level"><span>LEVEL</span>${realm.chapters.map((c,i)=>`<button class="level-button ${i===levelIndex?'active':''} ${getFound(realm,i).size===35?'completed':''}" data-level="${i}" title="${esc(c.name)}" aria-label="Level ${i+1}: ${esc(c.name)}" ${i===levelIndex?'aria-current="step"':''}>${i+1}</button>`).join('')}</nav></section>
       <section class="chapter-title-block"><p class="eyebrow">${esc(realm.title)}</p><h1>${esc(chapter.name)}</h1><p>${esc(chapter.subtitle)}</p><div class="chapter-meta"><span class="meta-chip">Level <b>${levelIndex+1}</b> / 5</span><span class="meta-chip"><b>35</b> words</span><span class="meta-chip">Straight · Backward · Diagonal</span></div></section>
-      <section class="play-layout" aria-label="Interactive word search game" style="--realm-glow:${esc(realm.color)}"><div class="board-frame"><div class="board-ornament">${sparkle} The hidden letters ${sparkle}</div><div class="board-scroller" id="board-scroller"><div class="letter-grid" id="letter-grid" role="group" aria-label="${board.size} by ${board.size} word search grid. Tap the first and last letter of each word. You can also drag." style="--cell:clamp(23px,1.93vw,29px);grid-template-columns:repeat(${board.size},var(--cell))">${board.letters.map((letter,index)=>`<button type="button" class="letter" data-i="${index}" aria-label="Row ${Math.floor(index/board.size)+1}, column ${index%board.size+1}: ${letter}">${letter}</button>`).join('')}</div></div><div class="board-scroll-controls"><button type="button" class="pan-button" data-pan="-1" aria-label="Move grid to the left">${chevron}</button><span>Move across the letter map</span><button type="button" class="pan-button" data-pan="1" aria-label="Move grid to the right" style="transform:rotate(180deg)">${chevron}</button></div><p class="board-instructions"><b>Drag</b> across letters, or <b>tap the first and last letter</b>. Find all 35 to complete this chapter.</p><p class="game-feedback" id="game-feedback" role="status" aria-live="polite"></p></div>
-      <aside class="word-frame"><div class="word-title"><h2>Words to discover</h2><span class="word-count" id="word-count">${found.size} / 35</span></div><div class="word-progress"><div class="progress-track"><div class="progress-fill" id="word-progress" style="--percent:${found.size/35*100}%"></div></div></div><div class="words-list" id="words-list">${[...chapter.words].sort((a,b)=>a.localeCompare(b)).map(label => `<div class="word-chip ${found.has(abc(label))?'done':''}" data-code="${abc(label)}"><span class="word-dot" aria-hidden="true"></span><span>${esc(label)}</span></div>`).join('')}</div><div class="tool-row"><button type="button" class="gold-button" id="hint-button" ${hintCount>=3||found.size>=35?'disabled':''}>${sparkle} <span id="hint-label">Hint (${3-hintCount} left)</span></button><button type="button" class="ghost-button" id="restart-button">Restart level</button></div><p class="mini-help">Every correctly found word lights up gold. Your discoveries are saved automatically.</p></aside></section>`;
+      <section class="play-layout" aria-label="Interactive word search game" style="--realm-glow:${esc(realm.color)}"><div class="board-frame"><div class="board-ornament">${sparkle} The hidden letters ${sparkle}</div><div class="board-scroller" id="board-scroller"><div class="letter-grid" id="letter-grid" role="group" aria-label="${board.size} by ${board.size} word search grid. Tap the first and last letter of each word. You can also drag." style="--cell:clamp(23px,1.93vw,29px);grid-template-columns:repeat(${board.size},var(--cell))">${board.letters.map((letter,index)=>`<button type="button" class="letter" data-i="${index}" aria-label="Row ${Math.floor(index/board.size)+1}, column ${index%board.size+1}: ${letter}">${letter}</button>`).join('')}</div></div><div class="board-scroll-controls" aria-label="Scroll the letter grid"><button type="button" class="pan-button" data-pan="-1" aria-label="Scroll left">${chevron}</button><button type="button" class="pan-button" data-pan="1" aria-label="Scroll right" style="transform:rotate(180deg)">${chevron}</button></div><p class="game-feedback" id="game-feedback" role="status" aria-live="polite"></p></div>
+      <aside class="word-frame"><div class="word-title"><h2>Words to discover</h2><span class="word-count" id="word-count">${found.size} / 35</span></div><div class="word-progress"><div class="progress-track"><div class="progress-fill" id="word-progress" style="--percent:${found.size/35*100}%"></div></div></div><div class="words-list" id="words-list">${[...chapter.words].sort((a,b)=>a.localeCompare(b)).map(label => `<div class="word-chip ${found.has(abc(label))?'done':''}" data-code="${abc(label)}"><span class="word-dot" aria-hidden="true"></span><span>${esc(label)}</span></div>`).join('')}</div><div class="tool-row"><button type="button" class="gold-button" id="hint-button" ${hintCount>=3||found.size>=35?'disabled':''}>${sparkle} <span id="hint-label">Hint (${3-hintCount} left)</span></button><button type="button" class="ghost-button shuffle-button" id="shuffle-button" title="Mix up this level without losing any found words">Shuffle</button><button type="button" class="ghost-button" id="restart-button">Restart</button></div></aside></section>`;
     const grid = document.getElementById('letter-grid');
     const trail = document.createElement('div');
     trail.className='trail-readout';
     trail.setAttribute('role','status');
     trail.setAttribute('aria-label','Letters currently selected');
-    trail.innerHTML='<span>THE LETTER TRAIL</span><strong id="trail-letters">Trace a word to see every letter glow here</strong>';
+    trail.innerHTML='<strong id="trail-letters">· · ·</strong>';
     document.getElementById('board-scroller').insertAdjacentElement('afterend',trail);
-    const panControls=document.querySelector('.board-scroll-controls');
-    const panToggle=document.createElement('button');
-    panToggle.type='button'; panToggle.className='pan-toggle';
-    panToggle.textContent='Move the grid';
-    panToggle.setAttribute('aria-pressed','false');
-    panToggle.title='Switch between selecting letters and scrolling the letter grid';
-    panControls?.append(panToggle);
-    panToggle.addEventListener('click',()=>{
-      if(!game)return;
-      game.panMode=!game.panMode;
-      panToggle.setAttribute('aria-pressed',String(game.panMode));
-      panToggle.textContent=game.panMode?'Select letters':'Move the grid';
-      grid.style.touchAction=game.panMode?'pan-x pan-y':'none';
-      grid.style.cursor=game.panMode?'grab':'crosshair';
-      game.pending=null; game.gesture=null; paintPreview(null,null);
-      notice(game.panMode?'Swipe to move the letter grid. Tap Select letters when ready.':'Drag over letters to trace your answer.');
-    });
     const buttonNodes = [...grid.querySelectorAll('.letter')];
     game.buttonNodes = buttonNodes;
     updateFoundVisuals();
@@ -196,6 +181,18 @@
       if (Number(button.dataset.level)===levelIndex) renderChapter(realmIndex,levelIndex);
     }));
     document.getElementById('hint-button').addEventListener('click', hint);
+    document.getElementById('shuffle-button').addEventListener('click', () => {
+      // A new layout for this specific realm and level. Previously solved words
+      // stay solved, and the same shuffled board reopens after refreshing.
+      const k = keyFor(realm,levelIndex);
+      const oldLayout = (Number(progress.shuffles[k]) || 0) >>> 0;
+      progress.shuffles[k] = (oldLayout + 1) >>> 0 || 1;
+      boards.delete(k + ':' + oldLayout);
+      save();
+      renderChapter(realmIndex,levelIndex);
+      notice('Letters shuffled! Your discoveries are safe.');
+      chime([523,659,784]);
+    });
     document.getElementById('restart-button').addEventListener('click', () => {
       if (!confirm('Start this level over? All 35 word discoveries for this level will be cleared.')) return;
       progress.found[keyFor(realm,levelIndex)] = [];
@@ -220,14 +217,14 @@
       return element && grid.contains(element) ? Number(element.dataset.i) : null;
     };
     grid.addEventListener('pointerdown',event => {
-      if (game?.panMode || (event.button !== 0 && event.pointerType !== 'touch') || !event.target.closest('.letter')) return;
+      if ((event.button !== 0 && event.pointerType !== 'touch') || !event.target.closest('.letter')) return;
       const first = Number(event.target.closest('.letter').dataset.i);
       game.gesture = {start:first,last:first,moved:false};
       try {grid.setPointerCapture(event.pointerId);} catch{}
       paintPreview(game.pending !== null ? game.pending : first,first);
     });
     grid.addEventListener('pointermove',event => {
-      if (!game || game.panMode) return;
+      if (!game) return;
       const index = cellAt(event);
       if(index === null)return;
       if (!game.gesture) {
@@ -241,7 +238,7 @@
       paintPreview(game.gesture.start,index);
     });
     grid.addEventListener('pointerup',event => {
-      if (!game?.gesture || game.panMode) return;
+      if (!game?.gesture) return;
       const gesture = game.gesture;
       const end = cellAt(event) ?? gesture.last;
       game.gesture = null;
@@ -264,7 +261,7 @@
     grid.addEventListener('pointercancel',()=> {if(game)game.gesture=null; paintPreview(game?.pending ?? null,game?.pending ?? null);});
     // Keyboard (Enter or Space) taps without pointer events.
     grid.addEventListener('click', event => {
-      if (event.detail !== 0 || !game || game.panMode) return;
+      if (event.detail !== 0 || !game) return;
       const cell = event.target.closest('.letter');
       if (!cell) return;
       const index = Number(cell.dataset.i);
@@ -301,7 +298,7 @@
     const readout=document.getElementById('trail-letters');
     if(readout){
       const letters=path.map(i=>game.board.letters[i]).join('');
-      readout.textContent=letters?letters.split('').join(' '):'Trace a word to see every letter glow here';
+      readout.textContent=letters?letters.split('').join(' '):'· · ·';
       readout.classList.toggle('active',!!letters);
     }
   }
