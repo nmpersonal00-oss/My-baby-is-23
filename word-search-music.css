@@ -1,0 +1,100 @@
+/* The YouTube soundtrack dock belongs to gameplay only.
+   It never changes the approved illustrated Word Search selection screen. */
+.ws-music-dock[hidden],.ws-music-menu[hidden],.ws-music-video[hidden]{display:none!important}
+.ws-music-dock{
+  position:fixed;z-index:35;top:82px;right:clamp(9px,1.65vw,24px);
+  width:min(264px,calc(100vw - 22px));
+  color:#ffe9be;font:500 13px/1.4 Georgia,"Times New Roman",serif;
+  filter:drop-shadow(0 7px 19px #0009);
+  max-height:calc(100dvh - 90px);overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:#d7a766 #091522;
+}
+.ws-music-dock button,.ws-music-dock select{font:inherit}
+.ws-music-dock button:focus-visible,.ws-music-dock select:focus-visible,.ws-music-dock a:focus-visible{
+  outline:2px solid #ffebaa;outline-offset:3px;
+}
+.ws-music-tab{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  width:100%;min-height:44px;padding:9px 14px;
+  border:1px solid #f6cc878e;border-radius:15px;
+  background:linear-gradient(125deg,#071928f9,#1f2632f7,#503725ed);
+  color:#ffe8b9;cursor:pointer;
+  box-shadow:0 0 17px #e5a85047,inset 0 0 17px #e6b86e13;
+  text-shadow:0 0 9px #e2a75e80;
+  letter-spacing:.02em;
+}
+.ws-music-tab>span:first-child{color:#ffd38b;font-size:20px;line-height:1}
+.ws-music-tab #ws-music-label{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws-music-tab .ws-music-arrow{font-size:22px;transition:transform .2s}
+.ws-music-tab[aria-expanded="true"] .ws-music-arrow{transform:rotate(180deg)}
+.ws-music-tab:hover{border-color:#ffe5ae;box-shadow:0 0 23px #f9c9787a}
+.ws-music-menu{
+  margin-top:7px;padding:13px 12px 12px;
+  border:1px solid #dfb875a3;border-radius:15px;
+  background:linear-gradient(155deg,#091a2afa,#162231f9,#201c26f9);
+  box-shadow:0 0 30px #d99f5055,inset 0 0 20px #ffd89411;
+}
+.ws-music-caption{text-align:center;letter-spacing:.17em;font:600 10px/1.4 Georgia,serif;color:#f4c67c;margin:0 0 10px}
+.ws-music-mode{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+.ws-music-mode button{
+  min-height:35px;border-radius:10px;border:1px solid #c6a46e6f;
+  background:#0b202bf0;color:#f5dab3;cursor:pointer;
+}
+.ws-music-mode button.selected{
+  background:linear-gradient(145deg,#78512fc9,#3c3140ef);
+  color:#fff4d0;border-color:#ffe4a6;
+  box-shadow:0 0 12px #eebf6b70,inset 0 0 13px #e7bd6933;
+}
+.ws-music-field{
+  display:block;margin:9px 0 4px;
+  color:#eecf9c;font-size:12px;letter-spacing:.04em;
+}
+.ws-music-menu select{
+  display:block;width:100%;max-width:100%;
+  padding:8px 27px 8px 8px;min-height:37px;
+  background:#071423;color:#fff2d0;
+  border:1px solid #deb67e91;border-radius:9px;
+  text-overflow:ellipsis;cursor:pointer;
+}
+.ws-music-menu select:disabled{opacity:.78;cursor:not-allowed}
+.ws-music-transport{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:12px 0}
+.ws-music-transport button{
+  min-height:34px;min-width:44px;padding:7px 10px;
+  border:1px solid #cfa87c96;border-radius:9px;
+  color:#ffebc0;background:#1b2736;cursor:pointer;
+}
+.ws-music-transport #ws-music-play{
+  flex:1;color:#1a1210;background:linear-gradient(140deg,#fff1c6,#e2b26d);
+  font-weight:700;
+}
+.ws-music-transport button:hover{box-shadow:0 0 12px #f3b864a1}
+.ws-music-menu a{
+  color:#f4c991;display:block;padding:7px 2px 0;
+  text-align:center;text-decoration:underline;text-underline-offset:3px;font-size:12px;
+}
+.ws-music-video{
+  margin-top:7px;overflow:hidden;border:1px solid #d6ae73a1;
+  border-radius:13px;background:#081322;
+  box-shadow:0 0 23px #edbb6754;
+}
+#ws-music-player,#ws-music-player iframe{
+  display:block;width:100%!important;height:205px!important;
+  min-height:200px!important;border:0;
+}
+.ws-music-status{
+  margin:0;padding:9px 11px 10px;
+  min-height:33px;max-height:67px;overflow-y:auto;
+  background:#091724f5;color:#ffdfa9;
+  font-size:12px;line-height:1.38;text-align:center;
+}
+@media(max-width:720px){
+  .ws-music-dock{
+    top:64px;right:8px;width:min(222px,calc(100vw - 16px));
+    max-height:calc(100dvh - 76px);
+  }
+  .ws-music-tab{padding:8px 10px;min-height:40px;font-size:12px}
+  .ws-music-menu{padding:9px 9px}
+  .ws-music-status{font-size:11px}
+  #ws-music-player,#ws-music-player iframe{height:205px!important}
+}
+@media(prefers-reduced-motion:reduce){.ws-music-tab .ws-music-arrow{transition:none}}
