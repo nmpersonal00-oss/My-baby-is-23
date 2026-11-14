@@ -3,40 +3,110 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#060e19">
-  <meta name="description" content="Matching Memory, an enchanted GIF-to-name game in Rayan's Dark Forest.">
+  <meta name="theme-color" content="#07101e">
+  <meta name="description" content="Match magical GIFs with their names in Rayan's living enchanted Dark Forest.">
   <title>Matching Memory · Rayan's Dark Forest</title>
   <link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="../assets/memory-matching-approved.avif" type="image/avif">
-  <link rel="stylesheet" href="../memory-matching.css?v=9">
+  <link rel="preload" href="../assets/rayans-dark-forest.avif" as="image" type="image/avif">
+  <link rel="stylesheet" href="../memory-matching.css?v=10">
   <script defer src="../memory-matching-data.js?v=1"></script>
-  <script defer src="../memory-matching.js?v=9"></script>
+  <script defer src="../memory-matching.js?v=10"></script>
 </head>
 <body class="memory-page">
-  <div class="memory-ambient" aria-hidden="true"></div>
-  <main id="memory-viewport" class="memory-viewport" aria-label="Matching Memory enchanted forest">
-    <div class="memory-scene" id="memory-scene">
-      <img src="../assets/memory-matching-approved.avif" width="1447" height="1087" alt="" class="memory-art" draggable="false" fetchpriority="high">
-      <div class="memory-fireflies" id="memory-fireflies" aria-hidden="true"></div>
-      <h1 class="visually-hidden">Matching Memory · Rayan's Dark Forest</h1>
-      <p class="visually-hidden">Match moving pictures on the left to their correct names on the right. The ten spaces on both sides are empty for now.</p>
-      <a class="memory-hotspot memory-home" href="../index.html" aria-label="Back to Rayan's Dark Forest home"></a>
-      <button id="memory-sound" class="memory-hotspot memory-sound" type="button" aria-label="Turn enchanted sounds off" aria-pressed="true"></button>
-      <nav id="memory-worlds" aria-label="Choose a world" class="memory-worlds"></nav>
-      <nav id="memory-rounds" aria-label="Choose a round" class="memory-rounds"></nav>
-      <div id="memory-progress-fill" class="memory-progress-fill" aria-hidden="true"></div>
-      <div id="memory-progress-text" class="memory-progress-text" role="status" aria-live="polite">0% (0 / 10)</div>
-      <div id="memory-note" class="memory-note">The GIF and name slots are empty for now. We'll fill them together soon.</div>
-      <div id="memory-slots" class="memory-slots" aria-label="Ten GIF spaces and ten name spaces"></div>
-      <svg id="memory-connections" class="memory-connections" viewBox="0 0 1447 1087" aria-hidden="true" focusable="false"></svg>
-      <button id="memory-shuffle" type="button" class="memory-hotspot memory-shuffle" aria-label="Shuffle current matching round"></button>
-      <button id="memory-choose-world" type="button" class="memory-hotspot memory-choose-world" aria-label="Choose another world"></button>
-      <p id="memory-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
-    </div>
-  </main>
+  <!-- Forest pictures decorate the page only. Every piece of the interface below is real HTML. -->
+  <div class="memory-landscape" aria-hidden="true">
+    <div class="memory-side-art"></div>
+    <div class="memory-mist"></div>
+    <div id="memory-fireflies" class="memory-fireflies"></div>
+  </div>
+
+  <div class="memory-shell">
+    <header class="memory-topbar">
+      <a class="memory-pill memory-home" href="../index.html" aria-label="Back to Rayan's Dark Forest">
+        <span aria-hidden="true">←</span> Back to the Forest
+      </a>
+      <a class="memory-brand" href="../index.html">
+        <span class="brand-flower" aria-hidden="true">❀</span>
+        <span>Rayan’s Dark Forest</span>
+        <span class="brand-flower" aria-hidden="true">❀</span>
+      </a>
+      <button id="memory-sound" type="button" class="memory-pill memory-sound" aria-pressed="true" aria-label="Turn magical sounds off">
+        <span id="memory-sound-icon" aria-hidden="true">♫</span>
+        <span id="memory-sound-label">Sound on</span>
+        <span class="memory-switch" aria-hidden="true"><span></span></span>
+      </button>
+    </header>
+
+    <main class="memory-main" id="memory-main">
+      <div class="memory-hero">
+        <span class="memory-hero-butterfly" aria-hidden="true">✦</span>
+        <h1>Matching Memory</h1>
+        <span class="memory-hero-butterfly" aria-hidden="true">✦</span>
+        <p>Match the GIFs with their correct names across the worlds you love.</p>
+      </div>
+
+      <section class="memory-world-section" id="memory-world-section" aria-labelledby="memory-world-heading">
+        <h2 id="memory-world-heading" class="memory-section-title"><span aria-hidden="true">❧</span> Choose a World <span aria-hidden="true">❧</span></h2>
+        <div class="memory-world-scroll">
+          <nav id="memory-worlds" class="memory-worlds" aria-label="Choose a world"></nav>
+        </div>
+      </section>
+
+      <section class="memory-board-shell" aria-label="Matching Memory game">
+        <div class="memory-board-filigree" aria-hidden="true"></div>
+        <div class="memory-rounds-row">
+          <nav id="memory-rounds" class="memory-rounds" aria-label="Choose a round"></nav>
+        </div>
+
+        <div class="memory-progress-row">
+          <span class="memory-progress-label">Progress</span>
+          <div class="memory-progress-track" id="memory-progress-track" role="progressbar" aria-label="Matches completed" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+            <div id="memory-progress-fill" class="memory-progress-fill"></div>
+          </div>
+          <span id="memory-progress-text" class="memory-progress-text">0% (0 / 10)</span>
+        </div>
+
+        <p id="memory-note" class="memory-note" role="status">
+          The GIF and name spaces are intentionally empty for now. We’ll fill them together.
+        </p>
+
+        <div class="memory-columns-heading">
+          <h2 class="memory-column-title">GIFS</h2>
+          <span class="memory-moon" aria-hidden="true">☾</span>
+          <h2 class="memory-column-title">NAMES</h2>
+        </div>
+
+        <div class="memory-grid-scroller">
+          <div id="memory-grid" class="memory-grid" aria-label="Match GIFs on the left with names on the right">
+            <ol id="memory-gif-list" class="memory-slot-list" aria-label="GIF spaces"></ol>
+            <div class="memory-connection-lane" aria-hidden="true"><span class="memory-connection-star">✦</span></div>
+            <ol id="memory-name-list" class="memory-slot-list" aria-label="Name spaces"></ol>
+            <svg id="memory-connections" class="memory-connections" aria-hidden="true"></svg>
+          </div>
+        </div>
+
+        <div id="memory-feedback" class="memory-feedback" role="status" aria-live="polite">Choose a world and round to explore.</div>
+
+        <div class="memory-actions">
+          <button id="memory-shuffle" type="button" class="memory-action">
+            <span aria-hidden="true">⤨</span> Shuffle
+          </button>
+          <button id="memory-choose-world" type="button" class="memory-action memory-action-featured">
+            <span aria-hidden="true">♕</span> Choose Another World
+          </button>
+        </div>
+        <div class="memory-panel-rose rose-left" aria-hidden="true">✿</div>
+        <div class="memory-panel-rose rose-right" aria-hidden="true">✿</div>
+      </section>
+    </main>
+
+    <footer class="memory-footer">Made with love, for my sweet boy <span aria-hidden="true">♡</span> Forever and always</footer>
+  </div>
+
   <div id="memory-dialog-root"></div>
+  <p class="memory-screenreader" id="memory-live" role="status" aria-live="polite" aria-atomic="true"></p>
 </body>
 </html>

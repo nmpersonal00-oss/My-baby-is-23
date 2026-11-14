@@ -1,68 +1,89 @@
-/* The approved artwork stays unaltered. Accessible controls are aligned on top. */
+/* Matching Memory: genuine interactive controls, never screenshot hotspots.
+   GIF and name content lives in memory-matching-data.js (empty until provided). */
 (() => {
   'use strict';
-  const SCENE_WIDTH=1447, SCENE_HEIGHT=1087;
-  const COUNT=10;
-  const worlds=Array.isArray(window.MEMORY_MATCH_DATA)?window.MEMORY_MATCH_DATA:[];
   const $=id=>document.getElementById(id);
-  const worldNav=$('memory-worlds'),roundNav=$('memory-rounds'),slots=$('memory-slots');
-  if(!worldNav||!roundNav||!slots||worlds.length===0)return;
-  const KEY='rayans-dark-forest.gif-name-matching.v1';
-  const escaped=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const pct=(n,total)=>`${(100*n/total).toFixed(5)}%`;
-  let saved={};
+  const worlds=Array.isArray(window.MEMORY_MATCH_DATA)?window.MEMORY_MATCH_DATA:[];
+  const worldNav=$('memory-worlds'),roundNav=$('memory-rounds');
+  const gifList=$('memory-gif-list'),nameList=$('memory-name-list');
+  const progressTrack=$('memory-progress-track'),progressFill=$('memory-progress-fill');
+  const progressText=$('memory-progress-text'),feedback=$('memory-feedback');
+  const note=$('memory-note'),live=$('memory-live');
+  const dialogRoot=$('memory-dialog-root');
+  const board=$('memory-grid'),connections=$('memory-connections');
+  const shuffleButton=$('memory-shuffle'),chooseWorldButton=$('memory-choose-world');
+  const soundButton=$('memory-sound');
+  const MAX=10,ROUNDS=5,KEY='rayans-dark-forest.gif-name-matching.v1';
+  const LAST='rayans-dark-forest.memory-last-view.v1';
+  if(!worldNav||!roundNav||!gifList||!nameList||!progressTrack||!connections||!dialogRoot)return;
+  const escapeHTML=value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const symbols=['♘','✦','♜','⚙','♣','⚔','☾','♡'];
+  const pictureIcon='<svg viewBox="0 0 32 28" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="3" width="27" height="22" rx="3"/><circle cx="10" cy="10" r="2.5"/><path d="m4 22 8-8 6 5 5-7 6 9"/></svg>';
+  const progress={completed:{}};
   try{
-    const val=JSON.parse(localStorage.getItem(KEY)||'{}');
-    if(val&&typeof val==='object'&&val.completed&&typeof val.completed==='object')saved=val.completed;
-  }catch{};
+    const saved=JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(saved&&typeof saved==='object'&&saved.completed&&typeof saved.completed==='object'&&!Array.isArray(saved.completed)){
+      progress.completed=saved.completed;
+    }
+  }catch{}
+  let selectedWorld=0,selectedRound=1;
+  try{
+    const saved=JSON.parse(localStorage.getItem(LAST)||'{}');
+    const index=worlds.findIndex(world=>world.id===saved.world);
+    if(index>=0)selectedWorld=index;
+    if(Number.isInteger(saved.round)&&saved.round>=1&&saved.round<=ROUNDS)selectedRound=saved.round;
+  }catch{}
+  let game=null,modal=null,lastFocused=null,soundOn=true,audio=null,mismatchTimer=null,pulseTimer=null,winTimer=null;
 
-  function imageURL(path){
-    if(typeof path!=='string'||!path.trim())return '';
+  function announce(message){
+    if(feedback)feedback.textContent=message;
+    if(live)live.textContent=message;
+  }
+  function saveView(){
+    try{localStorage.setItem(LAST,JSON.stringify({world:worlds[selectedWorld].id,round:selectedRound}));}catch{}
+  }
+  function safeURL(raw){
+    if(typeof raw!=='string'||!raw.trim())return '';
     try{
-      const url=new URL(path.trim(),location.href);
-      if(['https:','http:'].includes(url.protocol)||(location.protocol==='file:'&&url.protocol==='file:'))return url.href;
+      const url=new URL(raw.trim(),window.location.href);
+      if(url.protocol==='https:'||url.protocol==='http:'||(window.location.protocol==='file:'&&url.protocol==='file:'))return url.href;
     }catch{}
     return '';
   }
-  function configuredPairs(world,round){
-    const raw=world?.rounds?.[round-1]?.pairs;
-    if(!Array.isArray(raw))return [];
-    const names=new Set(),out=[];
-    for(let i=0;i<raw.length&&out.length<COUNT;i++){
-      const item=raw[i],name=typeof item?.name==='string'?item.name.trim():'';
-      const gif=imageURL(item?.gif);
-      if(!name||!gif||names.has(name.toLocaleLowerCase()))continue;
-      names.add(name.toLocaleLowerCase());
-      out.push({id:i,name,gif});
+  function pairsFor(world,round){
+    const source=world&&world.rounds&&world.rounds[round-1]&&world.rounds[round-1].pairs;
+    if(!Array.isArray(source))return [];
+    const seen=new Set(),result=[];
+    for(let i=0;i<source.length&&result.length<MAX;i++){
+      const pair=source[i];
+      const name=pair&&typeof pair.name==='string'?pair.name.trim():'';
+      const gif=safeURL(pair&&pair.gif);
+      if(!name||!gif||seen.has(name.toLocaleLowerCase()))continue;
+      seen.add(name.toLocaleLowerCase());
+      result.push({id:i,name,gif});
     }
-    return out;
+    return result;
   }
-  const key=(world,round)=>`${world.id}:${round}`;
-  const signature=pairs=>JSON.stringify(pairs.map(p=>[p.name,p.gif]));
-  function finishedRound(world,round){
-    const pairs=configuredPairs(world,round);
-    return pairs.length>0&&saved[key(world,round)]===signature(pairs);
+  const progressKey=(world,round)=>world.id+':'+round;
+  const signature=pairs=>JSON.stringify(pairs.map(pair=>[pair.name,pair.gif]));
+  function roundDone(world,round){
+    const pairs=pairsFor(world,round);
+    return pairs.length>0&&progress.completed[progressKey(world,round)]===signature(pairs);
   }
-  function saveComplete(world,round,pairs){
-    saved[key(world,round)]=signature(pairs);
-    try{localStorage.setItem(KEY,JSON.stringify({completed:saved}));}
-    catch{say('All GIFs have found their names. Your browser could not save progress.');}
+  function saveCompletion(world,round,pairs){
+    progress.completed[progressKey(world,round)]=signature(pairs);
+    try{localStorage.setItem(KEY,JSON.stringify(progress));}
+    catch{announce('All pairs matched! Your browser could not save the progress.');}
   }
-  function shuffled(items){
-    const out=items.slice();
-    for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}
-    return out;
+  function shuffle(items){
+    const list=items.slice();
+    for(let i=list.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [list[i],list[j]]=[list[j],list[i]];
+    }
+    return list;
   }
-  const categoryLeft=[223,345,464,586,707,830,950,1074];
-  const categoryWidths=[119,115,116,118,120,118,123,124];
-  const roundLeft=[353,503,647,794,938];
-  const roundWidth=[128,123,124,123,123];
-  const gifX=310,gifW=397,namesX=831,nameW=298;
-  const centers=[517,558,600,643,684,726,767,806,848,889];
-  const slotHeight=37;
-  let worldIndex=0,round=1,game=null,soundOn=true,audio=null,wrongTimeout=null,dialog=null;
-  function say(message){$('memory-live').textContent=message;}
-  function tone(notes){
+  function sound(notes){
     if(!soundOn)return;
     try{
       const Audio=window.AudioContext||window.webkitAudioContext;
@@ -74,217 +95,305 @@
         const oscillator=audio.createOscillator(),gain=audio.createGain();
         oscillator.type='sine';oscillator.frequency.value=pitch;
         gain.gain.setValueAtTime(.0001,start+i*.08);
-        gain.gain.exponentialRampToValueAtTime(.07,start+i*.08+.024);
-        gain.gain.exponentialRampToValueAtTime(.0001,start+i*.08+.3);
+        gain.gain.exponentialRampToValueAtTime(.055,start+i*.08+.025);
+        gain.gain.exponentialRampToValueAtTime(.0001,start+i*.08+.28);
         oscillator.connect(gain);gain.connect(audio.destination);
-        oscillator.start(start+i*.08);oscillator.stop(start+i*.08+.31);
+        oscillator.start(start+i*.08);oscillator.stop(start+i*.08+.29);
       });
     }catch{}
   }
-  function place(element,x,y,w,h){
-    element.style.left=pct(x,SCENE_WIDTH);element.style.top=pct(y,SCENE_HEIGHT);
-    element.style.width=pct(w,SCENE_WIDTH);element.style.height=pct(h,SCENE_HEIGHT);
+  function clearTimers(){
+    clearTimeout(mismatchTimer);clearTimeout(pulseTimer);clearTimeout(winTimer);
+    mismatchTimer=null;pulseTimer=null;winTimer=null;
   }
-  function buildNav(){
-    worlds.forEach((world,index)=>{
-      if(index>=categoryLeft.length)return;
-      const button=document.createElement('button');
-      button.type='button';button.className='memory-world';
-      button.setAttribute('aria-label',`Choose ${world.title}`);button.title=world.title;
-      button.dataset.world=world.id;
-      place(button,categoryLeft[index],217,categoryWidths[index],117);
-      button.addEventListener('click',()=>{
-        worldIndex=index;round=1;newRound();say(`${world.title} selected, round 1 of 5.`);
-        tone([523,659]);
-      });
-      worldNav.appendChild(button);
-    });
-    for(let i=0;i<5;i++){
-      const button=document.createElement('button');
-      button.type='button';button.className='memory-round';button.dataset.round=String(i+1);
-      button.innerHTML=`<span aria-hidden="true" class="round-dot"></span><span>Round ${i+1}</span>`;
-      button.setAttribute('aria-label',`Choose round ${i+1}`);
-      place(button,roundLeft[i],350,roundWidth[i],35);
-      button.addEventListener('click',()=>{round=i+1;newRound();say(`${worlds[worldIndex].title}: round ${round} of 5.`);tone([523,659]);});
-      roundNav.appendChild(button);
-    }
+  function flashBoard(){
+    board.classList.remove('is-shuffling');
+    // A reflow allows consecutive clicks to restart the sparkle animation.
+    void board.offsetWidth;
+    board.classList.add('is-shuffling');
+    clearTimeout(pulseTimer);
+    pulseTimer=setTimeout(()=>board.classList.remove('is-shuffling'),700);
   }
-  function updateNav(){
-    worldNav.querySelectorAll('button').forEach((button,index)=>{
-      button.setAttribute('aria-pressed',String(index===worldIndex));
-      button.setAttribute('aria-label',`${worlds[index].title}${index===worldIndex?' selected':''}`);
-    });
-    roundNav.querySelectorAll('button').forEach((button,index)=>{
-      button.setAttribute('aria-pressed',String(index+1===round));
-      button.title=finishedRound(worlds[worldIndex],index+1)?`Round ${index+1} completed`:`Round ${index+1}`;
-    });
+  function worldArtwork(world){
+    const name=String(world.artwork||'').replace(/[^a-zA-Z0-9._-]/g,'');
+    return '../assets/'+name;
   }
-  function clearTransient(){clearTimeout(wrongTimeout);wrongTimeout=null;if(dialog){dialog.remove();dialog=null;}}
-  function buildSlot(side,item,row){
-    const el=document.createElement('button');el.type='button';el.className='memory-slot';
-    el.dataset.side=side;el.dataset.row=String(row);
-    const isGif=side==='gif';
-    place(el,isGif?gifX:namesX,centers[row]-slotHeight/2,isGif?gifW:nameW,slotHeight);
-    if(!item){
-      el.disabled=true;el.tabIndex=-1;
-      el.setAttribute('aria-label',`Empty ${isGif?'GIF':'name'} slot ${row+1}`);
-      return el;
-    }
-    el.classList.add('is-filled');el.dataset.pair=String(item.id);
-    el.setAttribute('aria-pressed','false');
-    el.setAttribute('aria-label',isGif?`GIF ${row+1}, select matching picture`:`${item.name}, name ${row+1}`);
-    if(isGif){
-      const img=document.createElement('img');img.src=item.gif;img.alt='';img.loading='lazy';
-      img.decoding='async';img.draggable=false;el.appendChild(img);
-      el.title='Select the matching GIF (double-click to enlarge)';
-      el.addEventListener('dblclick',()=>showGifPreview(item));
-    }else{el.textContent=item.name;}
-    el.addEventListener('click',()=>choose(side,item.id));
-    return el;
+  function renderWorlds(){
+    worldNav.innerHTML=worlds.map((world,index)=>`
+      <button type="button" class="memory-world" data-world="${index}"
+        aria-pressed="${String(selectedWorld===index)}" aria-label="${escapeHTML(world.title)}${selectedWorld===index?', selected':''}"
+        style="--world-art:url('${worldArtwork(world)}')">
+        <span class="memory-world-mark" aria-hidden="true">${symbols[index]||'✦'}</span>
+        <span>${escapeHTML(world.title)}</span>
+      </button>`).join('');
   }
-  function newRound(){
-    clearTransient();
-    const world=worlds[worldIndex],pairs=configuredPairs(world,round);
-    const left=shuffled(pairs),right=shuffled(pairs);
-    if(pairs.length>1&&left.every((p,i)=>p.id===right[i].id))right.push(right.shift());
-    game={world,round,pairs,left,right,selected:null,matched:new Set(),locked:false,done:false};
-    slots.replaceChildren();
-    for(let i=0;i<COUNT;i++){
-      slots.appendChild(buildSlot('gif',left[i],i));
-      slots.appendChild(buildSlot('name',right[i],i));
-    }
-    updateNav();updateProgress();renderConnections();
-    $('memory-note').textContent=pairs.length
-      ?`Match each moving GIF to its name · ${pairs.length} ${pairs.length===1?'pair':'pairs'} ready to discover.`
-      :'The GIF and name spaces are empty for now. We will fill them together soon.';
+  function renderRounds(){
+    roundNav.innerHTML=Array.from({length:ROUNDS},(_,index)=>{
+      const round=index+1,active=selectedRound===round,done=roundDone(worlds[selectedWorld],round);
+      return `<button type="button" class="memory-round" data-round="${round}" aria-pressed="${String(active)}"
+        aria-label="Round ${round}${done?', completed':''}">
+        <span class="memory-round-dot" aria-hidden="true"></span><span>Round ${round}${done?' ✧':''}</span>
+      </button>`;
+    }).join('');
+  }
+  function slotMarkup(side,pair,index){
+    const empty=!pair,kind=side==='gif'?'GIF':'name';
+    const content=empty?(side==='gif'
+      ?`<span class="memory-placeholder" aria-hidden="true">${pictureIcon}<span>GIF</span></span>`
+      :'<span class="memory-placeholder" aria-hidden="true"></span>')
+      :side==='gif'? `<img src="${escapeHTML(pair.gif)}" alt="" loading="lazy" decoding="async" draggable="false">`
+      :`<span>${escapeHTML(pair.name)}</span>`;
+    const label=empty?`Empty ${kind} space ${index+1}; no content yet`:
+      side==='gif'?`GIF ${index+1}; choose its matching name`:`${pair.name}; choose its matching GIF`;
+    return `<li class="memory-slot-row"><span class="memory-slot-number" aria-hidden="true">${index+1}.</span>
+      <button type="button" class="memory-slot${empty?' is-empty':''}" data-side="${side}" data-row="${index}"
+        ${empty?'':`data-pair="${pair.id}"`} aria-label="${escapeHTML(label)}" aria-pressed="false">
+        ${content}
+      </button>
+      ${!empty&&side==='gif'? `<button type="button" class="memory-preview" data-preview="${pair.id}" aria-label="Enlarge GIF ${index+1}">⌕</button>`:''}
+    </li>`;
   }
   function updateProgress(){
-    const matched=game?game.matched.size:0,max=game&&game.pairs.length?game.pairs.length:COUNT;
-    const percent=100*matched/max;
-    $('memory-progress-fill').style.width=pct(580*percent/100,SCENE_WIDTH);
-    $('memory-progress-text').textContent=`${Math.round(percent)}% (${matched} / ${max})`;
+    const count=game?game.matched.size:0,total=game&&game.pairs.length?game.pairs.length:MAX;
+    const percent=Math.round(100*count/total);
+    progressFill.style.width=percent+'%';
+    progressText.textContent=`${percent}% (${count} / ${total})`;
+    progressTrack.setAttribute('aria-valuenow',String(count));
+    progressTrack.setAttribute('aria-valuemax',String(total));
   }
-  function paintSlots(){
+  function drawConnections(){
     if(!game)return;
-    slots.querySelectorAll('[data-pair]').forEach(el=>{
-      const id=Number(el.dataset.pair);
-      const sel=game.selected&&game.selected.id===id&&game.selected.side===el.dataset.side;
-      const matched=game.matched.has(id);
-      el.classList.toggle('is-selected',Boolean(sel));el.classList.toggle('is-matched',matched);
-      el.setAttribute('aria-pressed',String(Boolean(sel||matched)));
-      el.disabled=matched;
-    });
-    updateProgress();renderConnections();
-  }
-  function renderConnections(){
-    const svg=$('memory-connections');
-    if(!game){svg.replaceChildren();return;}
-    const fragment=document.createDocumentFragment();
+    const box=board.getBoundingClientRect();
+    if(!box.width||!box.height)return;
+    connections.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
+    const paths=[];
     for(const id of game.matched){
-      const li=game.left.findIndex(p=>p.id===id),ri=game.right.findIndex(p=>p.id===id);
-      if(li<0||ri<0)continue;
-      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-      const y1=centers[li],y2=centers[ri];
-      path.setAttribute('d',`M 710 ${y1} C 770 ${y1}, 770 ${y2}, 831 ${y2}`);
-      fragment.appendChild(path);
+      const a=gifList.querySelector(`[data-pair="${id}"]`);
+      const b=nameList.querySelector(`[data-pair="${id}"]`);
+      if(!a||!b)continue;
+      const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
+      const x1=ra.right-box.left,y1=ra.top+ra.height/2-box.top;
+      const x2=rb.left-box.left,y2=rb.top+rb.height/2-box.top;
+      const mid=(x1+x2)/2;
+      paths.push(`<path d="M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}"/>`);
     }
-    svg.replaceChildren(fragment);
+    connections.innerHTML=paths.join('');
   }
-  function choose(side,id){
+  function updateSlots(){
+    if(!game)return;
+    for(const slot of board.querySelectorAll('.memory-slot[data-pair]')){
+      const id=Number(slot.dataset.pair),side=slot.dataset.side;
+      const selected=game.selected&&game.selected.id===id&&game.selected.side===side;
+      const matched=game.matched.has(id);
+      slot.classList.toggle('is-selected',Boolean(selected));
+      slot.classList.toggle('is-matched',matched);
+      slot.setAttribute('aria-pressed',String(Boolean(selected||matched)));
+      slot.disabled=matched;
+    }
+    for(const preview of gifList.querySelectorAll('.memory-preview')){
+      preview.disabled=game.matched.has(Number(preview.dataset.preview));
+    }
+    updateProgress();drawConnections();
+  }
+  function newRound(message){
+    clearTimers();
+    const world=worlds[selectedWorld],pairs=pairsFor(world,selectedRound);
+    const left=shuffle(pairs),right=shuffle(pairs);
+    if(pairs.length>1&&left.every((pair,i)=>pair.id===right[i].id)){
+      right.push(right.shift());
+    }
+    game={world,round:selectedRound,pairs,left,right,selected:null,matched:new Set(),locked:false,done:false};
+    gifList.innerHTML=Array.from({length:MAX},(_,i)=>slotMarkup('gif',left[i],i)).join('');
+    nameList.innerHTML=Array.from({length:MAX},(_,i)=>slotMarkup('name',right[i],i)).join('');
+    note.textContent=pairs.length
+      ?`Choose a GIF on the left, then the correct name on the right. ${pairs.length} ${pairs.length===1?'pair':'pairs'} ready.`
+      :'The GIF and name slots are intentionally empty for now. This is a real interactive board, ready for our GIFs.';
+    renderWorlds();renderRounds();updateProgress();drawConnections();saveView();
+    announce(message||(pairs.length
+      ?`${world.title}, round ${selectedRound}: find the matching names.`
+      :`${world.title}, round ${selectedRound}: all ten GIF and name spaces are ready. We'll add the content next.`));
+  }
+  function selectWorld(index){
+    if(!Number.isInteger(index)||index<0||index>=worlds.length)return;
+    selectedWorld=index;selectedRound=1;
+    newRound(worlds[index].title+' selected. Round 1 of 5.');
+    sound([523,659]);closeDialog();
+  }
+  function selectRound(value){
+    if(!Number.isInteger(value)||value<1||value>ROUNDS)return;
+    selectedRound=value;newRound('Round '+value+' of 5 selected for '+worlds[selectedWorld].title+'.');
+    sound([523,659]);
+  }
+  function choose(side,id,slot){
     const current=game;
-    if(!current||current.done||current.locked||current.matched.has(id))return;
-    if(!current.pairs.some(p=>p.id===id))return;
+    if(!current||current.done||current.locked)return;
+    if(id===null||!current.pairs.some(pair=>pair.id===id)){
+      if(slot){slot.classList.add('is-selected');setTimeout(()=>slot.classList.remove('is-selected'),470);}
+      announce('This '+(side==='gif'?'GIF':'name')+' space is empty for now. We will add the '+(side==='gif'?'animation':'name')+' later.');
+      return;
+    }
+    if(current.matched.has(id))return;
     if(!current.selected){
-      current.selected={side,id};paintSlots();tone([440]);
-      say(side==='gif'?'GIF chosen. Select its matching name.':'Name chosen. Select its matching GIF.');
+      current.selected={side,id};updateSlots();sound([440]);
+      announce(side==='gif'?'GIF selected. Now choose its correct name.':'Name selected. Now choose the matching GIF.');
       return;
     }
     if(current.selected.side===side){
-      current.selected={side,id};paintSlots();
-      say(`Selection changed. Choose ${side==='gif'?'a name':'a GIF'} on the other side.`);
+      current.selected={side,id};updateSlots();
+      announce('Selection changed. Choose '+(side==='gif'?'a name':'a GIF')+' on the other side.');
       return;
     }
     const previous=current.selected;current.selected=null;
     if(previous.id===id){
-      current.matched.add(id);paintSlots();tone([523,659,784]);
-      const name=current.pairs.find(p=>p.id===id)?.name||'the pair';
-      say(`Perfect match! ${name}. ${current.matched.size} of ${current.pairs.length} pairs found.`);
+      current.matched.add(id);updateSlots();sound([523,659,784]);
+      const pair=current.pairs.find(p=>p.id===id);
+      announce('Perfect match! '+pair.name+'. '+current.matched.size+' of '+current.pairs.length+' pairs found.');
       if(current.matched.size===current.pairs.length){
-        current.done=true;saveComplete(current.world,current.round,current.pairs);
-        updateNav();setTimeout(()=>{if(game===current)showVictory();},390);
+        current.done=true;
+        saveCompletion(current.world,current.round,current.pairs);
+        renderRounds();
+        winTimer=setTimeout(()=>{if(game===current)showVictory();},500);
       }
     }else{
-      current.locked=true;paintSlots();
-      const buttons=[...slots.querySelectorAll('[data-pair]')].filter(el=>
-        (el.dataset.side===previous.side&&Number(el.dataset.pair)===previous.id)||
-        (el.dataset.side===side&&Number(el.dataset.pair)===id));
-      buttons.forEach(el=>el.classList.add('is-wrong'));tone([311,277]);
-      say('Not quite. Try a different name or GIF.');
-      wrongTimeout=setTimeout(()=>{
+      current.locked=true;updateSlots();
+      const a=board.querySelector(`[data-side="${previous.side}"][data-pair="${previous.id}"]`);
+      const b=board.querySelector(`[data-side="${side}"][data-pair="${id}"]`);
+      if(a)a.classList.add('is-wrong');
+      if(b)b.classList.add('is-wrong');
+      announce('Those two do not match. Give it another try.');
+      sound([311,277]);
+      mismatchTimer=setTimeout(()=>{
         if(game!==current)return;
-        current.locked=false;buttons.forEach(el=>el.classList.remove('is-wrong'));
-      },680);
+        current.locked=false;
+        if(a)a.classList.remove('is-wrong');
+        if(b)b.classList.remove('is-wrong');
+      },660);
     }
+  }
+  function closeDialog(){
+    if(modal){modal.remove();modal=null;}
+    if(lastFocused&&lastFocused.isConnected)lastFocused.focus();
+    lastFocused=null;
+  }
+  function openDialog(content){
+    closeDialog();
+    lastFocused=document.activeElement;
+    modal=document.createElement('div');
+    modal.className='memory-dialog-shade';
+    modal.innerHTML='<div class="memory-dialog" role="dialog" aria-modal="true" aria-labelledby="memory-dialog-title">'+content+'</div>';
+    dialogRoot.appendChild(modal);
+    modal.querySelector('button')?.focus();
+  }
+  function showWorldPicker(){
+    const options=worlds.map((world,index)=>
+      `<button type="button" data-choose-world="${index}">${symbols[index]||'✧'} &nbsp; ${escapeHTML(world.title)}</button>`).join('');
+    openDialog(`<h2 id="memory-dialog-title">Choose another enchanted world</h2>
+      <p>Where shall our next memory adventure begin?</p>
+      <div class="memory-dialog-worlds">${options}</div>
+      <div class="memory-dialog-buttons"><button type="button" data-close-dialog>Return to the game</button></div>`);
+    announce('World chooser opened. Select one of eight worlds.');
+  }
+  function showGifPreview(id){
+    const pair=game&&game.pairs.find(p=>p.id===id);
+    if(!pair)return;
+    openDialog(`<h2 id="memory-dialog-title">A closer look</h2>
+      <img src="${escapeHTML(pair.gif)}" alt="Enlarged GIF clue">
+      <div class="memory-dialog-buttons"><button type="button" data-close-dialog>Return to matching</button></div>`);
   }
   function showVictory(){
     if(!game||!game.done)return;
-    clearTransient();
     const {world,round,pairs}=game;
-    dialog=document.createElement('div');dialog.className='memory-dialog-backdrop';
-    dialog.innerHTML=`<section class="memory-dialog" role="dialog" aria-modal="true" aria-labelledby="memory-victory-title">
-      <div class="memory-dialog-mark" aria-hidden="true">♡ ✦ ♡</div>
-      <h2 id="memory-victory-title">Beautifully matched, my sweet boy!</h2>
-      <p>All ${pairs.length} GIFs found their names. This little moment is saved in our enchanted forest.</p>
-      <div class="memory-dialog-actions"><button type="button" class="memory-dialog-button" data-choice="replay">Play again</button>
-      <button type="button" class="memory-dialog-button" data-choice="next">${round<5?'Next round':'Choose a world'}</button></div>
-    </section>`;
-    dialog.addEventListener('click',event=>{
-      const choice=event.target.closest('[data-choice]')?.dataset.choice;
-      if(choice==='replay')newRound();
-      if(choice==='next'){
-        if(round<5){round++;newRound();}
-        else{$('memory-worlds').querySelector('button')?.focus();clearTransient();}
-      }
-    });
-    $('memory-dialog-root').appendChild(dialog);dialog.querySelector('button')?.focus();tone([523,659,784,1046]);
-  }
-  function showGifPreview(pair){
-    if(dialog)return;
-    dialog=document.createElement('div');dialog.className='memory-dialog-backdrop';
-    const panel=document.createElement('section');panel.className='memory-dialog';
-    panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');
-    const title=document.createElement('h2');title.textContent='A closer look';
-    const img=document.createElement('img');img.src=pair.gif;img.alt='Selected moving picture';
-    img.style.cssText='display:block;max-width:100%;max-height:50vh;width:auto;height:auto;object-fit:contain;margin:16px auto;border-radius:12px';
-    const button=document.createElement('button');button.className='memory-dialog-button';button.textContent='Return to the game';
-    button.addEventListener('click',clearTransient);
-    panel.append(title,img,button);dialog.appendChild(panel);
-    $('memory-dialog-root').appendChild(dialog);button.focus();
+    sound([523,659,784,1046]);
+    openDialog(`<h2 id="memory-dialog-title">Beautifully matched, my sweet boy!</h2>
+      <p>All ${pairs.length} moving pictures found their names. This round now glows in our forest.</p>
+      <div class="memory-dialog-buttons">
+        <button type="button" data-replay>Play again</button>
+        <button type="button" data-next-round>${round<ROUNDS?'Next round':'Choose another world'}</button>
+        <button type="button" data-close-dialog>Stay here</button>
+      </div>`);
+    announce(world.title+' round '+round+' completed!');
   }
   function makeFireflies(){
     const field=$('memory-fireflies');
-    if(!field||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    let seed=1761;const random=()=>((seed=seed*16807%2147483647)-1)/2147483646;
-    for(let i=0;i<43;i++){
-      const light=document.createElement('i');light.className='memory-firefly';light.setAttribute('aria-hidden','true');
-      light.style.setProperty('--x',`${random()*100}%`);light.style.setProperty('--y',`${random()*100}%`);
-      light.style.setProperty('--sz',`${1.5+random()*2.4}px`);light.style.setProperty('--drift',`${-17+random()*34}px`);
-      light.style.setProperty('--duration',`${3+random()*5}s`);light.style.setProperty('--delay',`${-random()*7}s`);
-      field.appendChild(light);
+    if(!field||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    let seed=1761;
+    const random=()=>((seed=seed*16807%2147483647)-1)/2147483646;
+    for(let i=0;i<38;i++){
+      const fly=document.createElement('i');fly.className='memory-firefly';fly.setAttribute('aria-hidden','true');
+      fly.style.setProperty('--x',(1+random()*98)+'%');
+      fly.style.setProperty('--y',(2+random()*94)+'%');
+      fly.style.setProperty('--sz',(1.4+random()*2.3)+'px');
+      fly.style.setProperty('--drift',(-16+random()*32)+'px');
+      fly.style.setProperty('--duration',(3+random()*5)+'s');
+      fly.style.setProperty('--delay',(-random()*8)+'s');
+      field.appendChild(fly);
     }
   }
-  $('memory-sound').addEventListener('click',()=>{
-    soundOn=!soundOn;const button=$('memory-sound');button.setAttribute('aria-pressed',String(soundOn));
-    button.setAttribute('aria-label',soundOn?'Turn enchanted sounds off':'Turn enchanted sounds on');
-    button.dataset.muted=String(!soundOn);if(soundOn)tone([523,659]);
+
+  worldNav.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-world]');
+    if(button)selectWorld(Number(button.dataset.world));
   });
-  $('memory-shuffle').addEventListener('click',()=>{newRound();say(game.pairs.length?'GIFs and names shuffled. Good luck!':'The empty GIF and name spaces are ready for us to fill.');tone([494,587]);});
-  $('memory-choose-world').addEventListener('click',()=>{
-    say('Choose a world from the eight illustrated worlds above.');
-    worldNav.querySelector('button')?.focus();tone([523,659]);
+  roundNav.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-round]');
+    if(button)selectRound(Number(button.dataset.round));
+  });
+  board.addEventListener('click',event=>{
+    const preview=event.target.closest('button[data-preview]');
+    if(preview){showGifPreview(Number(preview.dataset.preview));return;}
+    const slot=event.target.closest('button.memory-slot');
+    if(slot)choose(slot.dataset.side,slot.hasAttribute('data-pair')?Number(slot.dataset.pair):null,slot);
+  });
+  shuffleButton.addEventListener('click',()=>{
+    newRound();
+    flashBoard();
+    announce(game.pairs.length?'GIFs and names reshuffled. Try a new matching path!':
+      'The empty GIF and name spaces sparkle, but there is nothing to shuffle until we add GIFs and names.');
+    sound([494,587,659]);
+  });
+  chooseWorldButton.addEventListener('click',showWorldPicker);
+  dialogRoot.addEventListener('click',event=>{
+    const worldButton=event.target.closest('button[data-choose-world]');
+    if(worldButton){selectWorld(Number(worldButton.dataset.chooseWorld));return;}
+    if(event.target.closest('[data-close-dialog]')){closeDialog();return;}
+    if(event.target.closest('[data-replay]')){
+      closeDialog();newRound('This round has been reset. Let the matching begin!');
+      return;
+    }
+    if(event.target.closest('[data-next-round]')){
+      const last=selectedRound>=ROUNDS;closeDialog();
+      if(last){showWorldPicker();return;}
+      selectRound(selectedRound+1);
+    }
+  });
+  soundButton.addEventListener('click',()=>{
+    soundOn=!soundOn;
+    soundButton.setAttribute('aria-pressed',String(soundOn));
+    soundButton.setAttribute('aria-label',soundOn?'Turn magical sounds off':'Turn magical sounds on');
+    $('memory-sound-label').textContent=soundOn?'Sound on':'Sound off';
+    $('memory-sound-icon').textContent=soundOn?'♫':'♪';
+    announce(soundOn?'Magical sounds turned on.':'Magical sounds turned off.');
+    if(soundOn)sound([523,659]);
   });
   window.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&dialog){clearTransient();$('memory-shuffle').focus();}
+    if(!modal)return;
+    if(event.key==='Escape'){event.preventDefault();closeDialog();return;}
+    if(event.key==='Tab'){
+      const focusable=[...modal.querySelectorAll('button:not([disabled])')];
+      if(!focusable.length)return;
+      const first=focusable[0],last=focusable[focusable.length-1];
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    }
   });
-  buildNav();makeFireflies();newRound();
+  window.addEventListener('resize',drawConnections,{passive:true});
+  document.querySelector('.memory-grid-scroller')?.addEventListener('scroll',drawConnections,{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)drawConnections();});
+  makeFireflies();
+  if(!worlds.length){
+    worldNav.textContent='Worlds will appear when the game data loads.';
+    announce('The matching-world data did not load.');
+  }else{
+    newRound();
+  }
 })();
