@@ -45,3 +45,33 @@
 .ws-music-open:hover{box-shadow:0 0 13px #f7c87c8c}
 .ws-music-help{margin:11px 0 0;text-align:center;color:#f1d9b7;font:italic 12px/1.4 Georgia,serif}
 @media(max-width:720px){.ws-music-dock{top:61px;right:7px;width:min(210px,calc(100vw - 14px))}.ws-music-tab{min-height:39px;padding:7px 9px}.ws-music-menu{padding:10px}}
+
+
+/* Single-click soundtrack launch: opens YouTube elsewhere; never overlays the game. */
+.ws-music-dock{width:min(245px,calc(100vw - 18px))}
+.ws-music-actions{display:flex;gap:6px;align-items:stretch}
+.ws-music-start{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:10px 9px;min-height:43px;
+  border:1px solid #f6d38da8;border-radius:13px;
+  background:linear-gradient(125deg,#76512dbf,#e1b36e,#76512dd8);
+  color:#21150b!important;font:700 13px/1.2 Georgia,"Times New Roman",serif;
+  text-decoration:none!important;white-space:nowrap;
+  box-shadow:0 0 16px #edb75b62,inset 0 0 12px #fff4b841;
+}
+.ws-music-start:hover{box-shadow:0 0 23px #f3bf73a2}
+.ws-music-actions .ws-music-tab{
+  flex:0 0 53px;min-width:0;width:53px;justify-content:center;
+  padding:8px 5px;border-radius:13px;
+}
+.ws-music-actions .ws-music-tab>span:first-child{font-size:19px}
+.ws-music-actions .ws-music-arrow{font-size:19px}
+.ws-music-menu .ws-music-caption{
+  margin:0 0 12px;overflow-wrap:anywhere;
+  letter-spacing:.08em;
+}
+@media(max-width:720px){
+  .ws-music-dock{width:min(214px,calc(100vw - 14px))}
+  .ws-music-start{font-size:12px;min-height:40px;padding:8px 6px}
+  .ws-music-actions .ws-music-tab{flex-basis:42px;width:42px}
+}
