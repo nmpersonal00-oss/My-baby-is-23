@@ -79,6 +79,7 @@
   soundButton.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     soundButton.setAttribute('aria-pressed',String(soundEnabled));
+    soundButton.setAttribute('aria-label',soundEnabled?'Turn magical sound effects off':'Turn magical sound effects on');
     soundButton.title = soundEnabled ? 'Magical sounds (on)' : 'Magical sounds (off)';
     soundButton.querySelector('#sound-label').textContent = soundEnabled ? 'Sound on' : 'Sound off';
     soundButton.querySelector('svg').innerHTML = soundEnabled ? '<path d="M4 9v6h4l6 4V5L8 9H4Z" stroke-linejoin="round"/><path d="M17 9a5 5 0 0 1 0 6M19 5a10 10 0 0 1 0 14" stroke-linecap="round"/>' : '<path d="M4 9v6h4l6 4V5L8 9H4Z" stroke-linejoin="round"/><path d="M18 9l4 6m0-6-4 6" stroke-linecap="round"/>';
