@@ -36,42 +36,37 @@ No packages, build tools, external fonts, or remote image services are required.
 
 The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The approved illustration is now published in this repository at `assets/wordsearch-worlds.webp`. The game uses it directly, with invisible interactive buttons aligned to each illustrated level badge. The original PNG is retained in the downloadable build, while the website uses a web-optimized copy. If the image cannot load, the standard playable menu remains available.
 
-## Matching Memory · Real interactive game (November 2026)
+## Memory Matching · Approved Gothic Citadel design (November 2026)
 
-The Matching Memory chapter lives at `chapters/memory-game.html`. The first build
-mistakenly used a full screenshot of the approved mockup as the page itself, with
-transparent hotspots over the picture. That has been replaced with **real HTML
-buttons, image elements, text labels, level selectors, and accessible controls**.
+The Matching Memory tab now implements the **approved second Gothic design** as a
+real website interface. The background is the actual clean user-provided
+moonlit citadel and waterfalls illustration, published as
+`assets/memory-gothic-citadel.avif`. It does **not** use a screenshot of the
+finished game UI.
 
-The page keeps the approved visual direction: deep moonlit forest scenery, ornate
-glowing gold frames, pink flower details, eight illustrated world tiles, five
-round buttons, sparkles, and a wide GIF-to-name matching board. The old approved
-illustration is used **only as cropped decorative scenery at the screen edges**,
-not as the interface or the source of visible button labels. The forest background
-is the existing `assets/rayans-dark-forest.avif` artwork.
+- Real Home button and crowned R sidebar. The sidebar intentionally has
+  **no Trivia Quiz or Hangman** buttons.
+- Eight illustrated vertical categories: Hollow Knight, Hollow Knight:
+  Silksong, Shadow of the Colossus, Lies of P, Terraria, Dark Souls,
+  Bloodborne, and Sanrio. The category artwork uses a small sprite cut from
+  the supplied design (`assets/memory-category-icons.webp`).
+- Five real round buttons per category (40 boards). Ten wide GIF slots
+  oppose ten empty name slots, with a clear view of the waterfall between
+  them. The GIF image uses `object-fit:contain` and is never distorted.
+- **Gold borders by default. Purple glowing borders appear only when a
+  category, round, or matching slot is actively selected/matched.**
+- The center is clear by default: a purple SVG line only appears between
+  an actual, correctly matched GIF/name pair, and stays attached to that pair.
+  Incorrect guesses never create a line.
+- The matching data stays intentionally empty in
+  `memory-matching-data.js`, as requested. To fill a round later, add up to
+  ten `{ name: 'Character', gif: '../assets/character.gif' }` entries to
+  its `pairs` array. The two sides shuffle separately, and progress for
+  completed rounds is saved in localStorage.
+- Fully interactive category and round buttons, Shuffle, optional original
+  synthesized sound, animated fireflies, match feedback, victory dialog,
+  and keyboard/focus support.
+- Responsive desktop/tablet/mobile interface; the background is scenic
+  while all game controls are actual HTML/CSS/JavaScript.
 
-### How the matching game works
-
-- 8 worlds: Hollow Knight, Hollow Knight: Silksong, Shadow of the Colossus,
-  Lies of P, Terraria, Dark Souls, Bloodborne, and Sanrio.
-- 5 playable round selectors per world: 40 boards in total.
-- Each board has 10 **real interactive GIF/image slots** and 10 matching name
-  slots. By design all 40 boards are initially empty; there are no fake clues.
-- The **Choose Another World** button opens an actual world-selection dialog.
-  **Shuffle** reacts even while empty and shuffles both columns once content is
-  added. The sound control visibly toggles on and off.
-- Add up to ten `{ name: 'Character', gif: '../assets/character.gif' }` items
-  to any round inside `memory-matching-data.js`. Both GIF and name must be
-  present; missing pairs stay blank.
-- Click/tap/keyboard-select a GIF on the left and its name on the right.
-  Correct pairs glow and are linked by an SVG thread. Incorrect matches can
-  be retried. Completed levels are saved in browser localStorage.
-- GIFs use `object-fit: contain` and a separate zoom control, so they are
-  displayed without stretching. The wide matching board can be horizontally
-  scrolled on smaller screens without squeezing the GIFs too narrow.
-- No JavaScript packages or backend are needed. The homepage and Word Search
-  source files have not been modified.
-
-The page is interactive even before any content is supplied: selecting worlds,
-rounds and empty slots produces immediate, visible status feedback. Empty
-slots deliberately cannot produce a match until GIF/name content is configured.
+The homepage and Word Search files are unchanged.
