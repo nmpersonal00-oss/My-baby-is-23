@@ -23,7 +23,7 @@
     if(typeof src!=='string'||!src.trim())return '';
     try{
       const url=new URL(src.trim(),window.location.href);
-      return url.protocol==='https:'||url.protocol==='http:'?url.href:'';
+      return url.protocol==='https:'||url.protocol==='http:'||(url.protocol==='file:'&&window.location.protocol==='file:')?url.href:'';
     }catch{return '';}
   };
   function pairsFor(world,level){
