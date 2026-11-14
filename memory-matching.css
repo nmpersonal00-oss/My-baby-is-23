@@ -81,7 +81,6 @@ svg{display:block}
 .memory-game-title h1{margin:0;color:#ffebbf;text-shadow:0 0 19px #e3a35f8f;font:italic 500 clamp(40px,5.2vw,66px)/1 'Cormorant Garamond',Georgia,serif}
 .memory-game-title p{margin:9px 0 0;color:#efcfab;font:italic 23px/1.2 'Cormorant Garamond',Georgia,serif}
 .memory-game-panel{max-width:1070px;margin:auto;padding:18px clamp(12px,2vw,22px) 21px;border:1px solid #e1b17889;border-radius:23px;background:linear-gradient(150deg,#102632ed,#081622f5);box-shadow:0 13px 54px #0008,0 0 33px #eab3571a,inset 0 0 25px #f0cc8911}
-.memory-game-panel:before{content:"";display:block;pointer-events:none;position:absolute}
 .memory-metrics{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,28px);flex-wrap:wrap;margin:0 auto 13px}
 .memory-metric{text-align:center;color:#eccb9a;font:500 11px/1.35 'Cinzel',Georgia,serif;letter-spacing:.08em;text-transform:uppercase}
 .memory-metric strong{display:block;color:#ffebbd;font:600 31px/1.1 'Cormorant Garamond',Georgia,serif;letter-spacing:0}
