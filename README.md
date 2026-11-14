@@ -1,6 +1,6 @@
 # Rayan's Dark Forest
 
-A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search chapter added.**
+A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search and Matching Memory chapters are playable.**
 
 ## Homepage
 
@@ -14,7 +14,7 @@ A lovingly illustrated, interactive forest home screen built around the exact ap
 
 1. Scavenger Hunt
 2. Word Search Puzzle — fully playable
-3. Matching Memory Game
+3. Matching Memory Game — fully playable
 4. Secret Love Notes
 5. Mystery Treasure Trail
 
@@ -35,3 +35,12 @@ No packages, build tools, external fonts, or remote image services are required.
 ## Exact illustrated Word Search (new)
 
 The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The approved illustration is now published in this repository at `assets/wordsearch-worlds.webp`. The game uses it directly, with invisible interactive buttons aligned to each illustrated level badge. The original PNG is retained in the downloadable build, while the website uses a web-optimized copy. If the image cannot load, the standard playable menu remains available.
+
+## Matching Memory · Fresh rebuild
+
+- A brand-new matching game at `chapters/memory-game.html` replaces the earlier image-slot mockup and artwork-based hotspot layout.
+- Seven themed worlds matching the Word Search collections, each with five selectable rounds: **35 rounds total**.
+- Flip two cards at a time and find matching illustrated word/sigil pairs. The challenge increases from 4 to 12 pairs per round.
+- Every completed round stores a personal-best move count and time in the current browser's `localStorage` (`rayans-dark-forest.memory.v2`). Replay, change levels, or return to the library at any time.
+- Uses existing forest and realm artwork, glowing gold-and-pink styling, optional synthesized sound effects, keyboard-accessible buttons, and mobile-responsive cards.
+- This chapter needs no additional packages or backend. The homepage and the Word Search files are unchanged.
