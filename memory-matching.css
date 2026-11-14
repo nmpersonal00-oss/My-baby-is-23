@@ -21,7 +21,10 @@ button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer;font:inhe
 .memory-world{top:20%;height:10.8%;width:8.05%;border-radius:20px}
 .memory-world:hover,.memory-world[aria-pressed="true"]:focus-visible{box-shadow:0 0 16px 5px #ffd38b9c,inset 0 0 14px 4px #ffcd7b6b;border-radius:18px}
 .memory-world[aria-pressed="true"]::after{content:"";position:absolute;inset:3px;border:2px solid #ffdda47a;border-radius:17px;box-shadow:0 0 14px #ffca71d6,inset 0 0 14px #ffcb6e66;pointer-events:none}
-.memory-round{top:32.1%;width:8.4%;height:3.9%;border-radius:50px}
+.memory-round{top:32.1%;width:8.4%;height:3.9%;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid #e4b77fa8;border-radius:50px;background:linear-gradient(140deg,#0c1123f5,#231628f2);color:#ffe7c6;font:italic 600 clamp(9px,1vw,15px)/1 Georgia,serif;box-shadow:inset 0 0 12px #dfa55e28}
+.memory-round .round-dot{width:12px;height:12px;flex:none;border:1px solid #ffe0b2;border-radius:50%;background:#0d1329;box-shadow:0 0 5px #efb85b77}
+.memory-round[aria-pressed="true"]{background:linear-gradient(130deg,#662a4af2,#331c39f9);border-color:#ffe1b2;box-shadow:0 0 14px 3px #ffb7bca9,inset 0 0 13px #ffbd8062}
+.memory-round[aria-pressed="true"] .round-dot{background:#fff1cf;box-shadow:0 0 9px 3px #ffb5b6}
 .memory-round[aria-pressed="true"]::after{content:"";position:absolute;inset:1px;border-radius:50px;box-shadow:0 0 17px 5px #ffbd90c4,inset 0 0 12px 2px #ff89ba70;border:1.5px solid #ffdfb6c8}
 .memory-round:not([aria-pressed="true"]):hover{box-shadow:0 0 13px 3px #ffe2a880}
 .memory-progress-fill{position:absolute;left:28.2%;top:36.9%;height:.68%;width:0;background:linear-gradient(90deg,#cf747f,#ffb8c9,#fff0ab);border-radius:50px;box-shadow:0 0 13px 5px #ffb6a68a;pointer-events:none;transition:width .4s}
