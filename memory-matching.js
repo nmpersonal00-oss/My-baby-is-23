@@ -6,7 +6,7 @@
   const $=id=>document.getElementById(id);
   let shownCategory=0,shownRound=0,chosenCategory=null,chosenRound=null;
   const categoryButtons=[],roundButtons=[];
-  function fit(){const scale=Math.min(innerWidth/W,innerHeight/H);holder.style.width=(W*scale)+"px";holder.style.height=(H*scale)+"px";stage.style.transform="scale("+scale+")";}
+  function fit(){const width=holder.clientWidth||innerWidth,height=holder.clientHeight||innerHeight;stage.style.transform=`scale(${width/W},${height/H})`;}
   function hotspot(parent,x,y,w,h,label,click){const b=document.createElement("button");b.type="button";b.className="hotspot";b.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px`;b.setAttribute("aria-label",label);b.addEventListener("click",click);parent.appendChild(b);return b;}
   const catYs=[260,322,385,446,507,568,629,690];
   categories.forEach((name,i)=>categoryButtons.push(hotspot($("categories"),231,catYs[i],286,58,`Choose ${name}`,()=>chooseCategory(i))));
