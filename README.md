@@ -1,6 +1,6 @@
 # Rayan's Dark Forest
 
-A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search and Matching Memory chapters are playable.**
+A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search is playable, and Matching Memory has an empty GIF-to-name matching board ready for content.**
 
 ## Homepage
 
@@ -14,7 +14,7 @@ A lovingly illustrated, interactive forest home screen built around the exact ap
 
 1. Scavenger Hunt
 2. Word Search Puzzle — fully playable
-3. Matching Memory Game — fully playable
+3. Matching Memory Game — interactive GIF-to-name matching setup, waiting for GIFs and names
 4. Secret Love Notes
 5. Mystery Treasure Trail
 
@@ -36,11 +36,30 @@ No packages, build tools, external fonts, or remote image services are required.
 
 The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The approved illustration is now published in this repository at `assets/wordsearch-worlds.webp`. The game uses it directly, with invisible interactive buttons aligned to each illustrated level badge. The original PNG is retained in the downloadable build, while the website uses a web-optimized copy. If the image cannot load, the standard playable menu remains available.
 
-## Matching Memory · Fresh rebuild
+## Matching Memory · GIF-to-name matching setup
 
-- A brand-new matching game at `chapters/memory-game.html` replaces the earlier image-slot mockup and artwork-based hotspot layout.
-- Seven themed worlds matching the Word Search collections, each with five selectable rounds: **35 rounds total**.
-- Flip two cards at a time and find matching illustrated word/sigil pairs. The challenge increases from 4 to 12 pairs per round.
-- Every completed round stores a personal-best move count and time in the current browser's `localStorage` (`rayans-dark-forest.memory.v2`). Replay, change levels, or return to the library at any time.
-- Uses existing forest and realm artwork, glowing gold-and-pink styling, optional synthesized sound effects, keyboard-accessible buttons, and mobile-responsive cards.
-- This chapter needs no additional packages or backend. The homepage and the Word Search files are unchanged.
+The Memory chapter at `chapters/memory-game.html` shares the **exact homepage forest illustration** (`assets/rayans-dark-forest.avif`) and the warm, animated, glowing fireflies. Its gold, dark-forest and pink accents match the completed Word Search aesthetic. The homepage and Word Search files are unchanged.
+
+The intended game is **not** flip-card memory. Ten picture/GIF frames appear on the left and ten name/character/item frames on the right. A player selects an animated picture and its matching name; correct matches remain lit and are joined by a golden thread. Incorrect pairs can be tried again.
+
+- **8 original categories**: Hollow Knight, Hollow Knight: Silksong, Shadow of the Colossus, Lies of P, Terraria, Dark Souls, Bloodborne, and Sanrio.
+- **5 selectable rounds per category**, for 40 matching-board setups in total.
+- All GIF and name positions are **deliberately empty**. There are no demo clues, fake names, or GIFs in the game.
+- Content is separate in `memory-matching-data.js`, so adding real GIFs and their corresponding names later won't require rebuilding the page.
+- When pairs are added, the two columns shuffle separately, provide tap/click/keyboard matching, visible connection lines, progress, optional chimes, and a round-complete message.
+- Completed rounds (once configured with at least one pair) are stored in this browser only using `localStorage` (`rayans-dark-forest.gif-name-matching.v1`).
+
+### Adding GIFs and names later
+
+Edit the `pairs` array for the appropriate category/round inside `memory-matching-data.js`. Each array accepts up to ten matching entries:
+
+```js
+{ pairs: [
+  { name: 'Character Name', gif: '../assets/character-name.gif' },
+  { name: 'Another Character', gif: 'https://example.com/another-character.gif' }
+] }
+```
+
+The sample above is instructional only; the actual arrays remain empty. For reliable playback, prefer files you can host in `assets/`. Use images you own or are permitted to use. Once supplied, the game displays each GIF on the left, each name on the right, and knows which ones belong together by their shared pair record.
+
+No packages or backend are required. Open `chapters/memory-game.html` from the website's existing forest lantern.
