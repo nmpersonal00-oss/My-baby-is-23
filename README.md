@@ -36,30 +36,27 @@ No packages, build tools, external fonts, or remote image services are required.
 
 The Word Search page now supports the seven illustrated puzzle cards in the approved artwork, with 5 playable levels per card and 35 words per level. The transparent click targets align with the illustrated level numbers and the original local progress key is retained. The approved illustration is now published in this repository at `assets/wordsearch-worlds.webp`. The game uses it directly, with invisible interactive buttons aligned to each illustrated level badge. The original PNG is retained in the downloadable build, while the website uses a web-optimized copy. If the image cannot load, the standard playable menu remains available.
 
-## Matching Memory · GIF-to-name matching setup
+## Matching Memory · Approved enchanted artwork (November 2026)
 
-The Memory chapter at `chapters/memory-game.html` shares the **exact homepage forest illustration** (`assets/rayans-dark-forest.avif`) and the warm, animated, glowing fireflies. Its gold, dark-forest and pink accents match the completed Word Search aesthetic. The homepage and Word Search files are unchanged.
+The Matching Memory chapter is based directly on the approved **Matching Memory** illustration
+at `assets/memory-matching-approved.avif`. It preserves the luminous moonlit forest,
+gold borders, pink blossoms, waterfalls, illustrated world tiles, and ten wide GIF slots
+opposite ten name slots. Animated fireflies and subtle interaction glows float above the artwork.
 
-The intended game is **not** flip-card memory. Ten picture/GIF frames appear on the left and ten name/character/item frames on the right. A player selects an animated picture and its matching name; correct matches remain lit and are joined by a golden thread. Incorrect pairs can be tried again.
+- Eight original worlds: Hollow Knight, Hollow Knight: Silksong, Shadow of the Colossus,
+  Lies of P, Terraria, Dark Souls, Bloodborne, and Sanrio.
+- Five selectable rounds per world, 40 matching boards total.
+- Each round has ten GIF positions and ten name positions, intentionally **empty** until
+  the owner's GIFs and names are chosen; nothing is prefilled with fake examples.
+- Future content goes into `memory-matching-data.js`: each round's `pairs` can include
+  up to ten `{ name: 'Name', gif: '../assets/file.gif' }` objects.
+- Once the content is added, selecting one GIF and one name checks the match, draws
+  a glowing connection line, gives optional sound feedback, and saves completion
+  in this browser. Double-click a loaded GIF to see it larger. GIFs use
+  `object-fit: contain`, never distorted or stretched.
+- Full illustration scales without distortion. Narrow portrait screens can
+  horizontally pan across the magical board, as on the original forest homepage.
+- No build tools or backend required. Homepage and Word Search source files are untouched.
 
-- **8 original categories**: Hollow Knight, Hollow Knight: Silksong, Shadow of the Colossus, Lies of P, Terraria, Dark Souls, Bloodborne, and Sanrio.
-- **5 selectable rounds per category**, for 40 matching-board setups in total.
-- All GIF and name positions are **deliberately empty**. There are no demo clues, fake names, or GIFs in the game.
-- Content is separate in `memory-matching-data.js`, so adding real GIFs and their corresponding names later won't require rebuilding the page.
-- When pairs are added, the two columns shuffle separately, provide tap/click/keyboard matching, visible connection lines, progress, optional chimes, and a round-complete message.
-- Completed rounds (once configured with at least one pair) are stored in this browser only using `localStorage` (`rayans-dark-forest.gif-name-matching.v1`).
-
-### Adding GIFs and names later
-
-Edit the `pairs` array for the appropriate category/round inside `memory-matching-data.js`. Each array accepts up to ten matching entries:
-
-```js
-{ pairs: [
-  { name: 'Character Name', gif: '../assets/character-name.gif' },
-  { name: 'Another Character', gif: 'https://example.com/another-character.gif' }
-] }
-```
-
-The sample above is instructional only; the actual arrays remain empty. For reliable playback, prefer files you can host in `assets/`. Use images you own or are permitted to use. Once supplied, the game displays each GIF on the left, each name on the right, and knows which ones belong together by their shared pair record.
-
-No packages or backend are required. Open `chapters/memory-game.html` from the website's existing forest lantern.
+The original approved illustration is used as the actual page artwork, not a
+reconstruction from generic panels.
