@@ -1,0 +1,27 @@
+/* Keep pointer/touch interactions free of temporary browser focus rectangles.
+   Keyboard navigation still receives a clear focus indicator. */
+body :is(button, a, [tabindex]):focus:not(:focus-visible){
+  outline:none;
+}
+body :is(button, a, [tabindex]){
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* The illustrated atlas already shows the controls in its artwork.
+   Do not draw a second border/glow around cards or level hotspots on hover. */
+.atlas-card::after,.atlas-level::after,.atlas-return::after{
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+.atlas-card:is(:hover,:focus-visible)::after,
+.atlas-level:is(:hover,:focus-visible)::after,
+.atlas-return:is(:hover,:focus-visible)::after{
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+/* Visible but less intrusive focus for people navigating by keyboard. */
+.atlas-card:focus-visible,.atlas-level:focus-visible,.atlas-return:focus-visible{
+  outline:2px solid #ffe6a6;
+  outline-offset:2px;
+}
+/* Letter selection/found states are intentionally untouched. */
