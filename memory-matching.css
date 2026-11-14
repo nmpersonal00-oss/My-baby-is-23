@@ -1,8 +1,9 @@
-/* The user's provided reference is the complete visual design.
-   Only transparent interaction hotspots are placed on top of its pixels. */
-*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}
-body{display:grid;place-items:center;overflow:hidden;background:#07021b url("assets/memory-matching-stage.webp") center/cover no-repeat;font-family:Georgia,serif}
-#memory-holder{position:relative;flex:none}
+/* The reference artwork provides the title, borders, category icons, flowers,
+   and navigation. Only the empty game slots and dynamic text are rendered above it. */
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0}
+body{display:grid;place-items:center;overflow:hidden;background:#05020e;font-family:Georgia,'Times New Roman',serif}
+#memory-holder{position:relative;flex:none;overflow:visible}
 #memory-stage{position:absolute;left:0;top:0;width:1670px;height:941px;transform-origin:top left;background:url("assets/memory-matching-stage.webp") center/100% 100% no-repeat}
 .hotspot{position:absolute;display:block;padding:0;border:0;background:transparent;color:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .hotspot:focus:not(:focus-visible){outline:none}
@@ -11,9 +12,12 @@ body{display:grid;place-items:center;overflow:hidden;background:#07021b url("ass
 .home{left:15px;top:207px;width:172px;height:81px}.trivia{left:15px;top:329px;width:172px;height:85px}.hangman{left:15px;top:455px;width:172px;height:83px}
 #categories,#rounds,#image-slots,#name-slots{position:absolute;inset:0;pointer-events:none}
 #categories .hotspot,#rounds .hotspot,#image-slots .hotspot,#name-slots .hotspot{pointer-events:auto}
-#categories .hotspot.chosen:not(.original-selected),#rounds .hotspot.chosen:not(.original-selected){border-radius:12px;box-shadow:0 0 6px 2px #ff79ff,0 0 18px 3px #ed36ff,inset 0 0 12px #db37ef5c}
-#rounds .hotspot.chosen:not(.original-selected){border-radius:50%}
-#category-display,#round-display{position:absolute;pointer-events:none;display:none;align-items:center;justify-content:center;color:#ffefd1;font-size:27px;font-weight:bold;line-height:1;text-align:center;text-shadow:0 1px 2px #000,0 0 8px #bd8349}
-#category-display{left:665px;top:196px;width:213px;height:46px;background:#11091c}
-#round-display{left:962px;top:199px;width:152px;height:39px;background:#10091c;font-size:22px}
+#categories .hotspot.chosen{border-radius:13px;box-shadow:0 0 7px 2px #ff79ff,0 0 16px 3px #ed36ff,inset 0 0 12px #e52af180}
+#rounds .hotspot.chosen{border-radius:50%;box-shadow:0 0 8px 2px #ff79ff,0 0 19px 4px #ed36ff}
+#category-display,#round-display{position:absolute;pointer-events:none;display:flex;align-items:center;justify-content:center;color:#ffefd1;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:bold;line-height:1;text-align:center;text-shadow:0 1px 2px #000,0 0 8px #bd8349}
+#category-display{left:663px;top:198px;width:214px;height:45px}
+#round-display{left:960px;top:201px;width:150px;height:36px;font-size:22px}
+#image-slots .hotspot,#name-slots .hotspot{background:none;overflow:visible}
+#image-slots .hotspot svg,#name-slots .hotspot svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 3px #e1984d99)}
+#image-slots .hotspot:focus-visible,#name-slots .hotspot:focus-visible{outline:2px solid #ffcf8e;outline-offset:1px;border-radius:9px}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
