@@ -2,47 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#050e16">
-  <meta name="description" content="A living enchanted forest of GIF-and-name matching memories, made for my sweet boy.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#060e19">
+  <meta name="description" content="Matching Memory, an enchanted GIF-to-name game in Rayan's Dark Forest.">
   <title>Matching Memory · Rayan's Dark Forest</title>
   <link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="preload" href="../assets/rayans-dark-forest.avif" as="image" type="image/avif">
-  <link rel="stylesheet" href="../memory-matching.css?v=8">
+  <link rel="preload" as="image" href="../assets/memory-matching-approved.avif" type="image/avif">
+  <link rel="stylesheet" href="../memory-matching.css?v=9">
   <script defer src="../memory-matching-data.js?v=1"></script>
-  <script defer src="../memory-matching.js?v=8"></script>
+  <script defer src="../memory-matching.js?v=9"></script>
 </head>
-<body>
-  <!-- The same exact illustrated forest used by the approved homepage. -->
-  <div class="memory-forest" aria-hidden="true">
-    <img class="memory-forest-art" src="../assets/rayans-dark-forest.avif" width="1671" height="941" alt="" draggable="false">
-    <div class="memory-forest-shade"></div>
-    <div class="memory-fireflies" id="memory-fireflies"></div>
-  </div>
-  <div class="memory-shell">
-    <header class="memory-top">
-      <a class="memory-home" href="../index.html" aria-label="Back to Rayan's Dark Forest">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m14 5-7 7 7 7M8 12h12" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Back to the Forest</span>
-      </a>
-      <a class="memory-brand" href="../index.html">Rayan’s <span>Dark Forest</span>
-        <svg viewBox="0 0 32 27" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 25C11 20 2 14 2 8c0-7 10-9 14-1 4-8 14-6 14 1 0 6-9 12-14 17Z"/></svg>
-      </a>
-      <button id="memory-sound" class="memory-sound" type="button" aria-pressed="true" aria-label="Turn magical sounds off">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9v6h4l6 4V5L8 9H4Z" stroke-linejoin="round"/><path d="M17 9a5 5 0 0 1 0 6M19 5a10 10 0 0 1 0 14" stroke-linecap="round"/></svg>
-        <span id="memory-sound-label">Sound on</span>
-      </button>
-    </header>
-    <main id="memory-app" class="memory-app"><p class="memory-loading">Opening our enchanted memories…</p></main>
-    <footer class="memory-footer">
-      <span>Made with love, for my sweet boy</span>
-      <svg viewBox="0 0 36 20" fill="none" stroke="currentColor" aria-hidden="true"><path d="M18 18C13 13 3 9 3 5c0-6 11-5 15 2 4-7 15-8 15-2 0 4-10 8-15 13Z"/></svg>
-      <span>Forever and always</span>
-    </footer>
-  </div>
-  <p class="memory-announcer" id="memory-announcer" role="status" aria-live="polite" aria-atomic="true"></p>
+<body class="memory-page">
+  <div class="memory-ambient" aria-hidden="true"></div>
+  <main id="memory-viewport" class="memory-viewport" aria-label="Matching Memory enchanted forest">
+    <div class="memory-scene" id="memory-scene">
+      <img src="../assets/memory-matching-approved.avif" width="1447" height="1087" alt="" class="memory-art" draggable="false" fetchpriority="high">
+      <div class="memory-fireflies" id="memory-fireflies" aria-hidden="true"></div>
+      <h1 class="visually-hidden">Matching Memory · Rayan's Dark Forest</h1>
+      <p class="visually-hidden">Match moving pictures on the left to their correct names on the right. The ten spaces on both sides are empty for now.</p>
+      <a class="memory-hotspot memory-home" href="../index.html" aria-label="Back to Rayan's Dark Forest home"></a>
+      <button id="memory-sound" class="memory-hotspot memory-sound" type="button" aria-label="Turn enchanted sounds off" aria-pressed="true"></button>
+      <nav id="memory-worlds" aria-label="Choose a world" class="memory-worlds"></nav>
+      <nav id="memory-rounds" aria-label="Choose a round" class="memory-rounds"></nav>
+      <div id="memory-progress-fill" class="memory-progress-fill" aria-hidden="true"></div>
+      <div id="memory-progress-text" class="memory-progress-text" role="status" aria-live="polite">0% (0 / 10)</div>
+      <div id="memory-note" class="memory-note">The GIF and name slots are empty for now. We'll fill them together soon.</div>
+      <div id="memory-slots" class="memory-slots" aria-label="Ten GIF spaces and ten name spaces"></div>
+      <svg id="memory-connections" class="memory-connections" viewBox="0 0 1447 1087" aria-hidden="true" focusable="false"></svg>
+      <button id="memory-shuffle" type="button" class="memory-hotspot memory-shuffle" aria-label="Shuffle current matching round"></button>
+      <button id="memory-choose-world" type="button" class="memory-hotspot memory-choose-world" aria-label="Choose another world"></button>
+      <p id="memory-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </main>
+  <div id="memory-dialog-root"></div>
 </body>
 </html>

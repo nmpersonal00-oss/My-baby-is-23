@@ -1,376 +1,290 @@
-(function memoryMatching(){
+/* The approved artwork stays unaltered. Accessible controls are aligned on top. */
+(() => {
   'use strict';
-  const app=document.getElementById('memory-app');
-  const announcer=document.getElementById('memory-announcer');
-  const soundButton=document.getElementById('memory-sound');
-  const worlds=window.MEMORY_MATCH_DATA;
-  if(!app||!announcer||!soundButton||!Array.isArray(worlds)||worlds.length===0)return;
-
-  const STORAGE='rayans-dark-forest.gif-name-matching.v1';
-  const MAX_SLOTS=10;
-  const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const heart='<svg viewBox="0 0 32 29" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 27C11 21 2 15 2 8 2 .5 12-1 16 7 20-1 30 .5 30 8c0 7-9 13-14 19Z"/></svg>';
-  const key=(world,level)=>world.id+':'+level;
-  const state={completed:{}};
+  const SCENE_WIDTH=1447, SCENE_HEIGHT=1087;
+  const COUNT=10;
+  const worlds=Array.isArray(window.MEMORY_MATCH_DATA)?window.MEMORY_MATCH_DATA:[];
+  const $=id=>document.getElementById(id);
+  const worldNav=$('memory-worlds'),roundNav=$('memory-rounds'),slots=$('memory-slots');
+  if(!worldNav||!roundNav||!slots||worlds.length===0)return;
+  const KEY='rayans-dark-forest.gif-name-matching.v1';
+  const escaped=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const pct=(n,total)=>`${(100*n/total).toFixed(5)}%`;
+  let saved={};
   try{
-    const saved=JSON.parse(localStorage.getItem(STORAGE)||'{}');
-    if(saved&&typeof saved==='object'&&saved.completed&&typeof saved.completed==='object'&&!Array.isArray(saved.completed)){
-      state.completed=saved.completed;
-    }
-  }catch{/* An unavailable save store should never block the game. */}
+    const val=JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(val&&typeof val==='object'&&val.completed&&typeof val.completed==='object')saved=val.completed;
+  }catch{};
 
-  const safeImage=src=>{
-    if(typeof src!=='string'||!src.trim())return '';
+  function imageURL(path){
+    if(typeof path!=='string'||!path.trim())return '';
     try{
-      const url=new URL(src.trim(),window.location.href);
-      return url.protocol==='https:'||url.protocol==='http:'||(url.protocol==='file:'&&window.location.protocol==='file:')?url.href:'';
-    }catch{return '';}
-  };
-  function pairsFor(world,level){
-    const round=world.rounds&&world.rounds[level-1];
-    const input=round&&Array.isArray(round.pairs)?round.pairs:[];
-    const seen=new Set(),result=[];
-    for(let i=0;i<input.length&&result.length<MAX_SLOTS;i++){
-      const pair=input[i];
-      if(!pair||typeof pair.name!=='string')continue;
-      const name=pair.name.trim(),gif=safeImage(pair.gif);
-      if(!name||!gif||seen.has(name.toLocaleLowerCase()))continue;
-      seen.add(name.toLocaleLowerCase());
-      result.push({id:i,name,gif});
+      const url=new URL(path.trim(),location.href);
+      if(['https:','http:'].includes(url.protocol)||(location.protocol==='file:'&&url.protocol==='file:'))return url.href;
+    }catch{}
+    return '';
+  }
+  function configuredPairs(world,round){
+    const raw=world?.rounds?.[round-1]?.pairs;
+    if(!Array.isArray(raw))return [];
+    const names=new Set(),out=[];
+    for(let i=0;i<raw.length&&out.length<COUNT;i++){
+      const item=raw[i],name=typeof item?.name==='string'?item.name.trim():'';
+      const gif=imageURL(item?.gif);
+      if(!name||!gif||names.has(name.toLocaleLowerCase()))continue;
+      names.add(name.toLocaleLowerCase());
+      out.push({id:i,name,gif});
     }
-    return result;
+    return out;
   }
-  const signature=pairs=>JSON.stringify(pairs.map(pair=>[pair.name,pair.gif]));
-  const isDone=(world,level)=>{
-    const pairs=pairsFor(world,level);
-    return pairs.length>0&&state.completed[key(world,level)]===signature(pairs);
-  };
-  function saveDone(world,level,pairs){
-    state.completed[key(world,level)]=signature(pairs);
-    try{localStorage.setItem(STORAGE,JSON.stringify(state));}
-    catch{announce('All matches found! Saving progress is unavailable in this browser.');}
+  const key=(world,round)=>`${world.id}:${round}`;
+  const signature=pairs=>JSON.stringify(pairs.map(p=>[p.name,p.gif]));
+  function finishedRound(world,round){
+    const pairs=configuredPairs(world,round);
+    return pairs.length>0&&saved[key(world,round)]===signature(pairs);
   }
-  const shuffled=values=>{
-    const items=values.slice();
-    for(let i=items.length-1;i>0;i--){
-      const j=Math.floor(Math.random()*(i+1));
-      [items[i],items[j]]=[items[j],items[i]];
-    }
-    return items;
-  };
-  let game=null,modal=null,soundOn=true,audio=null,hideWrongTimer=null;
-  const totalDone=()=>worlds.reduce((total,world)=>total+Array.from({length:5},(_,idx)=>isDone(world,idx+1)?1:0).reduce((a,b)=>a+b,0),0);
-
-  function clearTransient(){
-    clearTimeout(hideWrongTimer);hideWrongTimer=null;
-    if(modal){modal.remove();modal=null;}
+  function saveComplete(world,round,pairs){
+    saved[key(world,round)]=signature(pairs);
+    try{localStorage.setItem(KEY,JSON.stringify({completed:saved}));}
+    catch{say('All GIFs have found their names. Your browser could not save progress.');}
   }
-  function chime(notes){
+  function shuffled(items){
+    const out=items.slice();
+    for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}
+    return out;
+  }
+  const categoryLeft=[223,345,464,586,707,830,950,1074];
+  const categoryWidths=[119,115,116,118,120,118,123,124];
+  const roundLeft=[353,503,647,794,938];
+  const roundWidth=[128,123,124,123,123];
+  const gifX=310,gifW=397,namesX=831,nameW=298;
+  const centers=[517,558,600,643,684,726,767,806,848,889];
+  const slotHeight=37;
+  let worldIndex=0,round=1,game=null,soundOn=true,audio=null,wrongTimeout=null,dialog=null;
+  function say(message){$('memory-live').textContent=message;}
+  function tone(notes){
     if(!soundOn)return;
     try{
       const Audio=window.AudioContext||window.webkitAudioContext;
       if(!Audio)return;
       audio ||= new Audio();
       if(audio.state==='suspended')audio.resume();
-      const base=audio.currentTime;
+      const start=audio.currentTime;
       notes.forEach((pitch,i)=>{
-        const osc=audio.createOscillator(),gain=audio.createGain();
-        osc.type='sine';osc.frequency.value=pitch;
-        gain.gain.setValueAtTime(.0001,base+i*.085);
-        gain.gain.exponentialRampToValueAtTime(.06,base+i*.085+.025);
-        gain.gain.exponentialRampToValueAtTime(.0001,base+i*.085+.29);
-        osc.connect(gain);gain.connect(audio.destination);
-        osc.start(base+i*.085);osc.stop(base+i*.085+.30);
+        const oscillator=audio.createOscillator(),gain=audio.createGain();
+        oscillator.type='sine';oscillator.frequency.value=pitch;
+        gain.gain.setValueAtTime(.0001,start+i*.08);
+        gain.gain.exponentialRampToValueAtTime(.07,start+i*.08+.024);
+        gain.gain.exponentialRampToValueAtTime(.0001,start+i*.08+.3);
+        oscillator.connect(gain);gain.connect(audio.destination);
+        oscillator.start(start+i*.08);oscillator.stop(start+i*.08+.31);
       });
-    }catch{/* Sound is optional. */}
+    }catch{}
   }
-  soundButton.addEventListener('click',()=>{
-    soundOn=!soundOn;
-    soundButton.setAttribute('aria-pressed',String(soundOn));
-    soundButton.setAttribute('aria-label',soundOn?'Turn magical sounds off':'Turn magical sounds on');
-    document.getElementById('memory-sound-label').textContent=soundOn?'Sound on':'Sound off';
-    if(soundOn)chime([523,659]);
-  });
-  function announce(message){
-    announcer.textContent=message;
-    const box=document.getElementById('memory-feedback');
-    if(box)box.textContent=message;
+  function place(element,x,y,w,h){
+    element.style.left=pct(x,SCENE_WIDTH);element.style.top=pct(y,SCENE_HEIGHT);
+    element.style.width=pct(w,SCENE_WIDTH);element.style.height=pct(h,SCENE_HEIGHT);
   }
-
-  // Mirrors the small, living golden fireflies used on the real forest homepage.
-  function makeFireflies(){
-    const field=document.getElementById('memory-fireflies');
-    if(!field||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    let seed=1761;
-    const random=()=>((seed=seed*16807%2147483647)-1)/2147483646;
-    for(let i=0;i<43;i++){
-      const fly=document.createElement('i');
-      fly.className='memory-firefly';
-      fly.style.setProperty('--x',(2+random()*96)+'%');
-      fly.style.setProperty('--y',(4+random()*91)+'%');
-      fly.style.setProperty('--size',(1.4+random()*2.2)+'px');
-      fly.style.setProperty('--drift',(-17+random()*34)+'px');
-      fly.style.setProperty('--duration',(3+random()*5)+'s');
-      fly.style.setProperty('--delay',(-random()*6)+'s');
-      field.appendChild(fly);
+  function buildNav(){
+    worlds.forEach((world,index)=>{
+      if(index>=categoryLeft.length)return;
+      const button=document.createElement('button');
+      button.type='button';button.className='memory-world';
+      button.setAttribute('aria-label',`Choose ${world.title}`);button.title=world.title;
+      button.dataset.world=world.id;
+      place(button,categoryLeft[index],217,categoryWidths[index],117);
+      button.addEventListener('click',()=>{
+        worldIndex=index;round=1;newRound();say(`${world.title} selected, round 1 of 5.`);
+        tone([523,659]);
+      });
+      worldNav.appendChild(button);
+    });
+    for(let i=0;i<5;i++){
+      const button=document.createElement('button');
+      button.type='button';button.className='memory-round';button.dataset.round=String(i+1);
+      button.innerHTML=`<span aria-hidden="true" class="round-dot"></span><span>Round ${i+1}</span>`;
+      button.setAttribute('aria-label',`Choose round ${i+1}`);
+      place(button,roundLeft[i],350,roundWidth[i],35);
+      button.addEventListener('click',()=>{round=i+1;newRound();say(`${worlds[worldIndex].title}: round ${round} of 5.`);tone([523,659]);});
+      roundNav.appendChild(button);
     }
   }
-
-  function renderLibrary(){
-    clearTransient();game=null;
-    const done=totalDone(),total=worlds.length*5;
-    const worldsDone=worlds.filter(world=>Array.from({length:5},(_,i)=>isDone(world,i+1)).every(Boolean)).length;
-    app.innerHTML=`<section class="memory-hero" aria-labelledby="memory-heading">
-      <p class="memory-eyebrow">A little wonderland of memories</p>
-      <h1 id="memory-heading">Matching <em>Memory</em></h1>
-      <div class="memory-flourish">${heart}</div>
-      <p class="memory-hero-copy">Some memories are too precious to forget. Match each magical moving picture to the name it belongs to.</p>
-      <p class="memory-caption">Eight enchanted worlds · Five rounds each · Made just for my sweet boy</p>
-    </section>
-    <section class="memory-overview" aria-label="Your progress">
-      <strong>Our little enchanted journey</strong>
-      <div class="overview-numbers">
-        <span><b>${done}</b> / ${total} rounds</span>
-        <span><b>${worldsDone}</b> / ${worlds.length} worlds</span>
-      </div>
-      <div class="memory-track" style="width:min(190px,100%);flex:0 1 190px;--progress:${done/total*100}%" role="progressbar" aria-label="Completed rounds" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><span></span></div>
-    </section>
-    <section class="memory-worlds" aria-label="Choose a matching memory world">
-      ${worlds.map((world,index)=>{
-        const count=Array.from({length:5},(_,i)=>isDone(world,i+1)).filter(Boolean).length;
-        const art=String(world.artwork||'').replace(/[^a-z0-9.-]/gi,'');
-        return `<article class="memory-world">
-          <div class="memory-world-art" aria-hidden="true" style="--world-image:url('../assets/${art}')"></div>
-          <div class="memory-world-body">
-            <span class="memory-world-index">ENCHANTED WORLD ${String(index+1).padStart(2,'0')}</span>
-            <h2 class="memory-world-title"><a href="#/${esc(world.id)}/1">${esc(world.title)}</a></h2>
-            <p class="memory-world-subtitle">${esc(world.tagline)}</p>
-            <div class="memory-world-spacer"></div>
-            <nav class="memory-levels" aria-label="${esc(world.title)} rounds">
-              ${Array.from({length:5},(_,i)=>`<a class="memory-level ${isDone(world,i+1)?'done':''}" href="#/${esc(world.id)}/${i+1}" aria-label="${esc(world.title)}, round ${i+1}${isDone(world,i+1)?', completed':''}">${i+1}</a>`).join('')}
-            </nav>
-            <div class="memory-world-bottom">
-              <span><b>${count}</b> / 5 rounds</span>
-              <div class="memory-track" role="progressbar" aria-label="${esc(world.title)} progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${count}" style="--progress:${count*20}%"><span></span></div>
-            </div>
-          </div>
-        </article>`;
-      }).join('')}
-    </section>`;
-    document.title="Matching Memory · Rayan's Dark Forest";
+  function updateNav(){
+    worldNav.querySelectorAll('button').forEach((button,index)=>{
+      button.setAttribute('aria-pressed',String(index===worldIndex));
+      button.setAttribute('aria-label',`${worlds[index].title}${index===worldIndex?' selected':''}`);
+    });
+    roundNav.querySelectorAll('button').forEach((button,index)=>{
+      button.setAttribute('aria-pressed',String(index+1===round));
+      button.title=finishedRound(worlds[worldIndex],index+1)?`Round ${index+1} completed`:`Round ${index+1}`;
+    });
   }
-
-  function slotMarkup(side,pair,row){
-    const isGif=side==='gif',name=isGif?'GIF':'name';
-    if(!pair){
-      return `<li><button type="button" class="memory-slot is-empty" disabled aria-label="Empty ${name} space ${row+1}"></button></li>`;
+  function clearTransient(){clearTimeout(wrongTimeout);wrongTimeout=null;if(dialog){dialog.remove();dialog=null;}}
+  function buildSlot(side,item,row){
+    const el=document.createElement('button');el.type='button';el.className='memory-slot';
+    el.dataset.side=side;el.dataset.row=String(row);
+    const isGif=side==='gif';
+    place(el,isGif?gifX:namesX,centers[row]-slotHeight/2,isGif?gifW:nameW,slotHeight);
+    if(!item){
+      el.disabled=true;el.tabIndex=-1;
+      el.setAttribute('aria-label',`Empty ${isGif?'GIF':'name'} slot ${row+1}`);
+      return el;
     }
-    const content=isGif
-      ?`<img src="${esc(pair.gif)}" alt="" loading="lazy" decoding="async">`
-      :`<span>${esc(pair.name)}</span>`;
-    const label=isGif?`GIF clue ${row+1}`:`${pair.name}, name choice ${row+1}`;
-    return `<li><button type="button" class="memory-slot" data-side="${side}" data-pair="${pair.id}" data-row="${row}" aria-label="${esc(label)}" aria-pressed="false">${content}</button></li>`;
+    el.classList.add('is-filled');el.dataset.pair=String(item.id);
+    el.setAttribute('aria-pressed','false');
+    el.setAttribute('aria-label',isGif?`GIF ${row+1}, select matching picture`:`${item.name}, name ${row+1}`);
+    if(isGif){
+      const img=document.createElement('img');img.src=item.gif;img.alt='';img.loading='lazy';
+      img.decoding='async';img.draggable=false;el.appendChild(img);
+      el.title='Select the matching GIF (double-click to enlarge)';
+      el.addEventListener('dblclick',()=>showGifPreview(item));
+    }else{el.textContent=item.name;}
+    el.addEventListener('click',()=>choose(side,item.id));
+    return el;
   }
-  function renderGame(world,level){
+  function newRound(){
     clearTransient();
-    const pairs=pairsFor(world,level);
+    const world=worlds[worldIndex],pairs=configuredPairs(world,round);
     const left=shuffled(pairs),right=shuffled(pairs);
-    if(pairs.length>1){
-      // Keep the two columns from appearing pre-matched by accident.
-      for(let i=0;i<8&&right.every((pair,j)=>pair.id===left[j].id);i++){
-        const first=right.shift();right.push(first);
-      }
+    if(pairs.length>1&&left.every((p,i)=>p.id===right[i].id))right.push(right.shift());
+    game={world,round,pairs,left,right,selected:null,matched:new Set(),locked:false,done:false};
+    slots.replaceChildren();
+    for(let i=0;i<COUNT;i++){
+      slots.appendChild(buildSlot('gif',left[i],i));
+      slots.appendChild(buildSlot('name',right[i],i));
     }
-    game={world,level,pairs,left,right,selected:null,matched:new Set(),locked:false,finished:false};
-    const ready=pairs.length>0;
-    const firstMessage=ready
-      ?'Choose a GIF on the left and the matching name on the right.'
-      :'The ten GIF spaces and ten name spaces are ready. We can add your pictures and names next.';
-    app.innerHTML=`<section class="memory-game-nav">
-      <a class="memory-return" href="#library">‹ &nbsp; All eight worlds</a>
-      <nav class="memory-rounds" aria-label="Choose a round"><span class="memory-rounds-label">ROUND</span>
-        ${Array.from({length:5},(_,i)=>`<a href="#/${esc(world.id)}/${i+1}" class="memory-round ${level===i+1?'current':''} ${isDone(world,i+1)?'done':''}" ${level===i+1?'aria-current="step"':''} aria-label="Round ${i+1}${isDone(world,i+1)?', completed':''}">${i+1}</a>`).join('')}
-      </nav>
-    </section>
-    <header class="memory-game-hero">
-      <p class="memory-eyebrow">The Enchanted Matching Memory · Round ${level} of 5</p>
-      <h1>${esc(world.title)}</h1>
-      <p>${esc(world.tagline)}</p>
-    </header>
-    <section class="memory-stage" aria-label="Match moving pictures to their names">
-      <div class="memory-stats">
-        <strong>Magical matches <b id="memory-count">0</b> / <b id="memory-total">${pairs.length||MAX_SLOTS}</b></strong>
-        <span class="memory-stats-note">${ready?'Choose a picture, then its name':'All spaces intentionally empty for now'}</span>
-      </div>
-      <div class="memory-track memory-progress" id="memory-track" role="progressbar" aria-label="Matches found" aria-valuemin="0" aria-valuemax="${pairs.length||MAX_SLOTS}" aria-valuenow="0" style="--progress:0%"><span></span></div>
-      <div class="memory-columns" id="memory-columns">
-        <section class="memory-column" aria-label="GIF clues">
-          <h2 class="memory-column-header"><span>Moving pictures</span><span>GIFS</span></h2>
-          <ol class="memory-slot-list">${Array.from({length:MAX_SLOTS},(_,i)=>slotMarkup('gif',left[i],i)).join('')}</ol>
-        </section>
-        <div class="memory-thread" aria-hidden="true"><span class="memory-thread-rune">✧</span></div>
-        <section class="memory-column" aria-label="Name choices">
-          <h2 class="memory-column-header"><span>Matching names</span><span>WORDS</span></h2>
-          <ol class="memory-slot-list">${Array.from({length:MAX_SLOTS},(_,i)=>slotMarkup('name',right[i],i)).join('')}</ol>
-        </section>
-        <svg id="memory-matched-lines" class="memory-matched-lines" aria-hidden="true"></svg>
-      </div>
-      <p id="memory-feedback" class="memory-feedback" role="status" aria-live="polite">${firstMessage}</p>
-      <div class="memory-actions">
-        <button type="button" class="memory-button" data-action="shuffle">Shuffle &amp; begin again</button>
-        <a href="#library" class="memory-button secondary">Choose another world</a>
-      </div>
-      <p class="memory-tip">One matching GIF + one name makes a pair. Successful matches glow with a little golden thread.</p>
-    </section>`;
-    document.title=world.title+' · Matching Memory · Rayan\'s Dark Forest';
+    updateNav();updateProgress();renderConnections();
+    $('memory-note').textContent=pairs.length
+      ?`Match each moving GIF to its name · ${pairs.length} ${pairs.length===1?'pair':'pairs'} ready to discover.`
+      :'The GIF and name spaces are empty for now. We will fill them together soon.';
   }
-
-  function paintState(){
+  function updateProgress(){
+    const matched=game?game.matched.size:0,max=game&&game.pairs.length?game.pairs.length:COUNT;
+    const percent=100*matched/max;
+    $('memory-progress-fill').style.width=pct(580*percent/100,SCENE_WIDTH);
+    $('memory-progress-text').textContent=`${Math.round(percent)}% (${matched} / ${max})`;
+  }
+  function paintSlots(){
     if(!game)return;
-    const selected=game.selected;
-    for(const button of document.querySelectorAll('#memory-columns [data-pair]')){
-      const id=Number(button.dataset.pair);
-      const chosen=selected&&selected.side===button.dataset.side&&selected.id===id;
-      const done=game.matched.has(id);
-      button.classList.toggle('is-selected',Boolean(chosen));
-      button.classList.toggle('is-matched',done);
-      button.setAttribute('aria-pressed',String(Boolean(chosen||done)));
-      button.disabled=done;
-    }
-    const found=document.getElementById('memory-count');
-    const track=document.getElementById('memory-track');
-    if(found)found.textContent=game.matched.size;
-    if(track){
-      track.setAttribute('aria-valuenow',game.matched.size);
-      track.style.setProperty('--progress',(game.matched.size/Math.max(1,game.pairs.length)*100)+'%');
-    }
-    drawConnections();
+    slots.querySelectorAll('[data-pair]').forEach(el=>{
+      const id=Number(el.dataset.pair);
+      const sel=game.selected&&game.selected.id===id&&game.selected.side===el.dataset.side;
+      const matched=game.matched.has(id);
+      el.classList.toggle('is-selected',Boolean(sel));el.classList.toggle('is-matched',matched);
+      el.setAttribute('aria-pressed',String(Boolean(sel||matched)));
+      el.disabled=matched;
+    });
+    updateProgress();renderConnections();
   }
-
-  function drawConnections(){
-    const board=document.getElementById('memory-columns');
-    const svg=document.getElementById('memory-matched-lines');
-    if(!game||!board||!svg)return;
-    const bounds=board.getBoundingClientRect();
-    if(bounds.width===0||bounds.height===0)return;
-    svg.setAttribute('viewBox',`0 0 ${bounds.width} ${bounds.height}`);
-    const paths=[];
+  function renderConnections(){
+    const svg=$('memory-connections');
+    if(!game){svg.replaceChildren();return;}
+    const fragment=document.createDocumentFragment();
     for(const id of game.matched){
-      const gif=Array.from(board.querySelectorAll('[data-side="gif"]')).find(node=>Number(node.dataset.pair)===id);
-      const name=Array.from(board.querySelectorAll('[data-side="name"]')).find(node=>Number(node.dataset.pair)===id);
-      if(!gif||!name)continue;
-      const a=gif.getBoundingClientRect(),b=name.getBoundingClientRect();
-      const x1=a.right-bounds.left,y1=a.top+a.height/2-bounds.top;
-      const x2=b.left-bounds.left,y2=b.top+b.height/2-bounds.top;
-      const mid=(x1+x2)/2;
-      paths.push(`<path d="M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}"/>`);
+      const li=game.left.findIndex(p=>p.id===id),ri=game.right.findIndex(p=>p.id===id);
+      if(li<0||ri<0)continue;
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      const y1=centers[li],y2=centers[ri];
+      path.setAttribute('d',`M 710 ${y1} C 770 ${y1}, 770 ${y2}, 831 ${y2}`);
+      fragment.appendChild(path);
     }
-    svg.innerHTML=paths.join('');
+    svg.replaceChildren(fragment);
   }
-
-  function completeRound(){
-    if(!game||game.finished)return;
-    game.finished=true;
-    const {world,level,pairs}=game;
-    saveDone(world,level,pairs);
-    announce('Every moving picture has found its name. Beautifully matched!');
-    chime([523,659,784,1046]);
-    modal=document.createElement('div');
-    modal.className='memory-victory-overlay';
-    modal.id='memory-victory-overlay';
-    modal.innerHTML=`<div class="memory-victory-card" role="dialog" aria-modal="true" aria-labelledby="memory-victory-heading">
-      <div class="memory-victory-mark" aria-hidden="true">♡ ✧ ♡</div>
-      <p class="memory-eyebrow">Every memory shines</p>
-      <h2 id="memory-victory-heading">You found every match, my sweet boy!</h2>
-      <p>All ${pairs.length} pictures found their names. This enchanted round is now saved for you.</p>
-      <div class="memory-actions">
-        <button type="button" class="memory-button secondary" data-action="replay">Play this round again</button>
-        <a class="memory-button" href="${level<5?`#/${esc(world.id)}/${level+1}`:'#library'}">${level<5?'Next round ✧':'Choose another world'}</a>
-      </div>
-    </div>`;
-    document.body.appendChild(modal);
-    modal.querySelector('a').focus();
-  }
-
   function choose(side,id){
     const current=game;
-    if(!current||current.finished||current.locked||current.matched.has(id)||!current.pairs.some(pair=>pair.id===id))return;
+    if(!current||current.done||current.locked||current.matched.has(id))return;
+    if(!current.pairs.some(p=>p.id===id))return;
     if(!current.selected){
-      current.selected={side,id};
-      paintState();chime([440]);
-      announce(side==='gif'?'GIF selected. Now choose its matching name.':'Name selected. Now choose its matching GIF.');
+      current.selected={side,id};paintSlots();tone([440]);
+      say(side==='gif'?'GIF chosen. Select its matching name.':'Name chosen. Select its matching GIF.');
       return;
     }
     if(current.selected.side===side){
-      current.selected={side,id};
-      paintState();
-      announce('Selection changed. Choose a '+(side==='gif'?'name':'GIF')+' on the other side.');
+      current.selected={side,id};paintSlots();
+      say(`Selection changed. Choose ${side==='gif'?'a name':'a GIF'} on the other side.`);
       return;
     }
-    const first=current.selected;
-    current.selected=null;
-    if(first.id===id){
-      current.matched.add(id);
-      paintState();chime([523,659,784]);
-      announce('A perfect match! '+current.pairs.find(pair=>pair.id===id).name+' shines in the forest. '+current.matched.size+' of '+current.pairs.length+' matched.');
-      if(current.matched.size===current.pairs.length)completeRound();
+    const previous=current.selected;current.selected=null;
+    if(previous.id===id){
+      current.matched.add(id);paintSlots();tone([523,659,784]);
+      const name=current.pairs.find(p=>p.id===id)?.name||'the pair';
+      say(`Perfect match! ${name}. ${current.matched.size} of ${current.pairs.length} pairs found.`);
+      if(current.matched.size===current.pairs.length){
+        current.done=true;saveComplete(current.world,current.round,current.pairs);
+        updateNav();setTimeout(()=>{if(game===current)showVictory();},390);
+      }
     }else{
-      current.locked=true;paintState();
-      const a=document.querySelector(`#memory-columns [data-side="${first.side}"][data-pair="${first.id}"]`);
-      const b=document.querySelector(`#memory-columns [data-side="${side}"][data-pair="${id}"]`);
-      if(a)a.classList.add('is-wrong');
-      if(b)b.classList.add('is-wrong');
-      announce('Not quite—those two do not belong together. Try another pair.');
-      chime([311,277]);
-      hideWrongTimer=setTimeout(()=>{
+      current.locked=true;paintSlots();
+      const buttons=[...slots.querySelectorAll('[data-pair]')].filter(el=>
+        (el.dataset.side===previous.side&&Number(el.dataset.pair)===previous.id)||
+        (el.dataset.side===side&&Number(el.dataset.pair)===id));
+      buttons.forEach(el=>el.classList.add('is-wrong'));tone([311,277]);
+      say('Not quite. Try a different name or GIF.');
+      wrongTimeout=setTimeout(()=>{
         if(game!==current)return;
-        current.locked=false;
-        if(a)a.classList.remove('is-wrong');
-        if(b)b.classList.remove('is-wrong');
-      },600);
+        current.locked=false;buttons.forEach(el=>el.classList.remove('is-wrong'));
+      },680);
     }
   }
-
-  function route(){
+  function showVictory(){
+    if(!game||!game.done)return;
     clearTransient();
-    game=null;
-    let hash='';
-    try{hash=decodeURIComponent(window.location.hash);}catch{/* Invalid URL: open world selection. */}
-    const match=/^#\/([a-z0-9-]+)\/([1-5])$/.exec(hash);
-    const world=match&&worlds.find(item=>item.id===match[1]);
-    if(world)renderGame(world,Number(match[2]));
-    else renderLibrary();
-    window.scrollTo(0,0);
+    const {world,round,pairs}=game;
+    dialog=document.createElement('div');dialog.className='memory-dialog-backdrop';
+    dialog.innerHTML=`<section class="memory-dialog" role="dialog" aria-modal="true" aria-labelledby="memory-victory-title">
+      <div class="memory-dialog-mark" aria-hidden="true">♡ ✦ ♡</div>
+      <h2 id="memory-victory-title">Beautifully matched, my sweet boy!</h2>
+      <p>All ${pairs.length} GIFs found their names. This little moment is saved in our enchanted forest.</p>
+      <div class="memory-dialog-actions"><button type="button" class="memory-dialog-button" data-choice="replay">Play again</button>
+      <button type="button" class="memory-dialog-button" data-choice="next">${round<5?'Next round':'Choose a world'}</button></div>
+    </section>`;
+    dialog.addEventListener('click',event=>{
+      const choice=event.target.closest('[data-choice]')?.dataset.choice;
+      if(choice==='replay')newRound();
+      if(choice==='next'){
+        if(round<5){round++;newRound();}
+        else{$('memory-worlds').querySelector('button')?.focus();clearTransient();}
+      }
+    });
+    $('memory-dialog-root').appendChild(dialog);dialog.querySelector('button')?.focus();tone([523,659,784,1046]);
   }
-
-  app.addEventListener('click',event=>{
-    const slot=event.target.closest('#memory-columns [data-side][data-pair]');
-    if(slot&&app.contains(slot)){choose(slot.dataset.side,Number(slot.dataset.pair));return;}
-    const action=event.target.closest('[data-action="shuffle"]');
-    if(action&&game){
-      const {world,level}=game;
-      renderGame(world,level);
-      announce(pairsFor(world,level).length?'The moving pictures and names are shuffled!':'The empty board is ready to fill whenever you are.');
+  function showGifPreview(pair){
+    if(dialog)return;
+    dialog=document.createElement('div');dialog.className='memory-dialog-backdrop';
+    const panel=document.createElement('section');panel.className='memory-dialog';
+    panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');
+    const title=document.createElement('h2');title.textContent='A closer look';
+    const img=document.createElement('img');img.src=pair.gif;img.alt='Selected moving picture';
+    img.style.cssText='display:block;max-width:100%;max-height:50vh;width:auto;height:auto;object-fit:contain;margin:16px auto;border-radius:12px';
+    const button=document.createElement('button');button.className='memory-dialog-button';button.textContent='Return to the game';
+    button.addEventListener('click',clearTransient);
+    panel.append(title,img,button);dialog.appendChild(panel);
+    $('memory-dialog-root').appendChild(dialog);button.focus();
+  }
+  function makeFireflies(){
+    const field=$('memory-fireflies');
+    if(!field||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    let seed=1761;const random=()=>((seed=seed*16807%2147483647)-1)/2147483646;
+    for(let i=0;i<43;i++){
+      const light=document.createElement('i');light.className='memory-firefly';light.setAttribute('aria-hidden','true');
+      light.style.setProperty('--x',`${random()*100}%`);light.style.setProperty('--y',`${random()*100}%`);
+      light.style.setProperty('--sz',`${1.5+random()*2.4}px`);light.style.setProperty('--drift',`${-17+random()*34}px`);
+      light.style.setProperty('--duration',`${3+random()*5}s`);light.style.setProperty('--delay',`${-random()*7}s`);
+      field.appendChild(light);
     }
+  }
+  $('memory-sound').addEventListener('click',()=>{
+    soundOn=!soundOn;const button=$('memory-sound');button.setAttribute('aria-pressed',String(soundOn));
+    button.setAttribute('aria-label',soundOn?'Turn enchanted sounds off':'Turn enchanted sounds on');
+    button.dataset.muted=String(!soundOn);if(soundOn)tone([523,659]);
   });
-  document.body.addEventListener('click',event=>{
-    const action=event.target.closest('#memory-victory-overlay [data-action="replay"]');
-    if(action&&game){
-      const {world,level}=game;
-      renderGame(world,level);
-      announce('Ready for another matching adventure!');
-    }
+  $('memory-shuffle').addEventListener('click',()=>{newRound();say(game.pairs.length?'GIFs and names shuffled. Good luck!':'The empty GIF and name spaces are ready for us to fill.');tone([494,587]);});
+  $('memory-choose-world').addEventListener('click',()=>{
+    say('Choose a world from the eight illustrated worlds above.');
+    worldNav.querySelector('button')?.focus();tone([523,659]);
   });
   window.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&modal){
-      modal.remove();modal=null;
-      const link=app.querySelector('[data-action="shuffle"]');
-      if(link)link.focus();
-    }
+    if(event.key==='Escape'&&dialog){clearTransient();$('memory-shuffle').focus();}
   });
-  window.addEventListener('resize',drawConnections,{passive:true});
-  window.addEventListener('scroll',drawConnections,{passive:true});
-  window.addEventListener('hashchange',route);
-  makeFireflies();
-  route();
+  buildNav();makeFireflies();newRound();
 })();
