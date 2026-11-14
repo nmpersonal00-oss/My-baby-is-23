@@ -32,3 +32,34 @@
   .category-title{padding:4px 10px}
   .round-heading{padding:7px 12px}
 }
+
+
+/* Reference composition: narrow illustrated navigation rail, category panel,
+   and two aligned ten-slot columns over the unobstructed castle vista. */
+@media(min-width:1100px){
+ .memory-app{grid-template-columns:11.6% minmax(0,1fr)}
+ .game{padding-left:1.4%;padding-right:1.5%}
+ .play-area{grid-template-columns:24.5% minmax(0,1fr);gap:3.2%}
+ .categories{border-radius:42px 42px 30px 30px}
+ .match-grid{grid-template-columns:minmax(0,1fr) minmax(13%,25%) minmax(0,1fr)}
+ .category-list{gap:5px}
+ .category{border-radius:11px}
+ .game-toolbar{justify-content:space-between}
+ .category-title{font-size:clamp(17px,1.85vw,29px)}
+ .round-list{gap:7px}
+ .gif-column,.name-column{gap:6px}
+ .gif-card,.name-card{border-radius:12px}
+}
+.heading h1{letter-spacing:.01em;color:#ffe7b2;text-shadow:0 2px 1px #6e260d,0 0 4px #ff8c38,0 0 12px #ff9e55,0 0 22px #f46b49}
+.heading h2{color:#ffefd4;text-shadow:0 2px 2px #000,0 0 9px #e3a56d}
+.sidebar{background:linear-gradient(90deg,#0c041cde,#1c0826b0);border-right:3px ridge #f9b45d}
+.categories{box-shadow:inset 0 0 0 4px #5c2d26,0 0 0 3px #b27a3b,0 0 20px #d87a4e80}
+.categories h3{font-weight:normal}
+.category{background:linear-gradient(105deg,#160c29f5,#3e113a9c 52%,#080a1fcb)}
+.category.active{background:linear-gradient(105deg,#360c5c,#5a1684c9,#1b0b45)}
+.gif-card{background:linear-gradient(105deg,#09152a9c,#191138ad,#070e24c4)}
+.name-card{background:linear-gradient(105deg,#170719ee,#0a091cdd,#220c29ef)}
+.name-card:before,.name-card:after{color:#ffcf7d}
+.round.active{background:#4d0d57}
+.match-count{border-radius:40px}
+@media(min-width:1100px) and (min-height:680px){.status{font-size:0;min-height:0;margin:0}}
