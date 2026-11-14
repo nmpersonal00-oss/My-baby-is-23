@@ -1,9 +1,27 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08031b"><title>Memory Matching · Rayan's Dark Forest</title><link rel="icon" href="../assets/heart.svg" type="image/svg+xml"><link rel="stylesheet" href="../memory-matching.css?v=1"><script defer src="../memory-matching.js?v=1"></script></head>
-<body><div class="memory-app">
-<aside class="sidebar" aria-label="Game navigation"><div class="monogram" aria-hidden="true"><span>♛</span><strong>R</strong><small>❦</small></div><a class="nav-btn" href="../index.html"><span>⌂</span> HOME</a><button class="nav-btn" type="button" data-section="trivia"><span>?</span> TRIVIA<br>QUIZ</button><button class="nav-btn" type="button" data-section="hangman"><span>♜</span> HANGMAN</button></aside>
-<main class="game"><header class="heading"><h1>Rayan's Dark Forest</h1><h2>✦ Memory Matching ✦</h2><p>Match each GIF to its correct name.</p></header>
-<div class="play-area"><section class="categories ornate" aria-label="Choose a category"><h3>♛<br>CHOOSE A CATEGORY</h3><div id="category-list" class="category-list"></div></section>
-<section class="match-panel"><div class="game-toolbar"><div class="category-title ornate"><span id="category-symbol">♜</span><span id="category-name">Hollow Knight</span></div><div class="round-heading ornate" id="round-heading">Round 1 of 5</div><nav class="round-list" id="round-list" aria-label="Choose round"></nav></div>
-<div class="match-grid"><div class="gif-column" id="gif-column" aria-label="GIF cards"></div><div class="connection-area" aria-hidden="true"><svg id="connections" viewBox="0 0 180 600" preserveAspectRatio="none"></svg></div><div class="name-column" id="name-column" aria-label="Name cards"></div></div>
-<div class="match-count ornate">✦ &nbsp; <span id="match-count">10 Matches per Round</span> &nbsp; ✦</div><p id="game-status" class="status" role="status" aria-live="polite"></p></section></div></main></div></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07021b">
+<title>Memory Matching · Rayan's Dark Forest</title>
+<link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../memory-matching.css?v=4">
+<script defer src="../memory-matching.js?v=4"></script>
+</head>
+<body>
+<main id="memory-holder" aria-label="Rayan's Dark Forest Memory Matching">
+  <div id="memory-stage">
+    <a class="hotspot home" href="../index.html" aria-label="Home"></a>
+    <button class="hotspot trivia" type="button" aria-label="Trivia Quiz (coming later)" disabled></button>
+    <button class="hotspot hangman" type="button" aria-label="Hangman (coming later)" disabled></button>
+    <nav id="categories" aria-label="Choose a category"></nav>
+    <nav id="rounds" aria-label="Choose a round"></nav>
+    <div id="category-display" aria-live="polite"></div>
+    <div id="round-display" aria-live="polite"></div>
+    <div id="image-slots" aria-label="Ten empty image spaces"></div>
+    <div id="name-slots" aria-label="Ten empty name spaces"></div>
+    <p id="memory-status" class="sr-only" role="status" aria-live="polite"></p>
+  </div>
+</main>
+</body>
+</html>
