@@ -43,13 +43,16 @@
   wrap.className='ws-music-dock';
   wrap.hidden=true;
   wrap.setAttribute('aria-label','Soundtrack playlists');
-  wrap.innerHTML=`<button type="button" class="ws-music-tab" id="ws-music-tab" aria-expanded="false" aria-controls="ws-music-menu"><span aria-hidden="true">♫</span><span id="ws-music-label">Soundtracks</span><span aria-hidden="true" class="ws-music-arrow">⌄</span></button>
+  wrap.innerHTML=`<div class="ws-music-actions">
+    <a id="ws-music-start" class="ws-music-start" target="_blank" rel="noopener noreferrer" aria-label="Start this world's soundtrack in YouTube">▶ Play soundtrack ↗</a>
+    <button type="button" class="ws-music-tab" id="ws-music-tab" aria-label="Choose soundtrack" aria-expanded="false" aria-controls="ws-music-menu"><span aria-hidden="true">♫</span><span class="ws-music-arrow" aria-hidden="true">⌄</span></button>
+  </div>
   <div class="ws-music-menu" id="ws-music-menu" hidden>
-    <p class="ws-music-caption">YOUR SOUNDTRACKS</p>
+    <p class="ws-music-caption" id="ws-music-label">YOUR SOUNDTRACKS</p>
     <label class="ws-music-field" for="ws-music-source">Choose playlist</label>
     <select id="ws-music-source" aria-label="Choose a soundtrack playlist"></select>
-    <a id="ws-music-youtube-link" class="ws-music-open" target="_blank" rel="noopener noreferrer">Listen on YouTube ↗</a>
-    <p class="ws-music-help">Playlists open separately so no video covers your word search. Songs continue in YouTube's playlist.</p>
+    <a id="ws-music-youtube-link" class="ws-music-open" target="_blank" rel="noopener noreferrer">▶ Start selected playlist ↗</a>
+    <p class="ws-music-help">YouTube opens in another tab. Press Play there if needed, then return to this puzzle to hear the music.</p>
   </div>`;
   document.body.append(wrap);
   const tab=wrap.querySelector('#ws-music-tab');
@@ -57,6 +60,7 @@
   const source=wrap.querySelector('#ws-music-source');
   const link=wrap.querySelector('#ws-music-youtube-link');
   const label=wrap.querySelector('#ws-music-label');
+  const quickPlay=wrap.querySelector('#ws-music-start');
   const save=()=>{try{localStorage.setItem(pickKey,JSON.stringify(choices));}catch{}};
   const update=()=>{
     const sources=SOUNDTRACKS[realm]||[];
@@ -67,8 +71,13 @@
     source.replaceChildren(...sources.map((entry,i)=>new Option(entry.label,String(i))));
     source.value=String(index);
     link.href=sources[index].url;
-    link.setAttribute('aria-label','Listen to '+sources[index].label+' on YouTube in a separate tab');
-    label.textContent=NAMES[realm]+' ♫';
+    quickPlay.href=sources[index].url;
+    quickPlay.title='Play '+sources[index].label+' in a separate YouTube tab';
+    quickPlay.setAttribute('aria-label','Play '+sources[index].label+' on YouTube in a separate tab');
+    link.setAttribute('aria-label','Play '+sources[index].label+' on YouTube in a separate tab');
+    label.textContent=NAMES[realm]+' SOUNDTRACK';
+    tab.title='Choose '+NAMES[realm]+' playlist';
+    tab.setAttribute('aria-label','Choose '+NAMES[realm]+' playlist');
   };
   const sync=()=>{
     const match=location.hash.match(/^#\/([a-z]+)\/[1-5]$/);
