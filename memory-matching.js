@@ -56,11 +56,13 @@
   };
   function storeBest(world,round,moves,seconds){
     const previous=best(world,round);
-    if(!previous||moves<previous.moves||(moves===previous.moves&&seconds<previous.seconds)){
+    const improved=!previous||moves<previous.moves||(moves===previous.moves&&seconds<previous.seconds);
+    if(improved){
       progress.best[key(world,round)]={moves,seconds};
     }
     try{localStorage.setItem(STORE,JSON.stringify(progress));}
     catch{announce('Round finished! Browser storage is unavailable, so scores may not stay after this visit.');}
+    return improved;
   }
   const completed=(world)=>PAIR_COUNTS.reduce((total,_,i)=>total+(best(world,i+1)?1:0),0);
   const totalCompleted=()=>WORLDS.reduce((total,world)=>total+completed(world),0);
@@ -286,7 +288,7 @@
         game.finished=true;
         game.finishedSeconds=elapsed();
         clearInterval(timerInterval);timerInterval=null;
-        storeBest(game.world,game.round,game.moves,game.finishedSeconds);
+        game.newBest=storeBest(game.world,game.round,game.moves,game.finishedSeconds);
         announce('Every pair found! Round '+game.round+' completed in '+game.moves+' moves.');
         victoryTimeout=setTimeout(()=>{if(active===game)showVictory();},500);
       }
@@ -304,7 +306,7 @@
 
   function showVictory(){
     if(!active||!active.finished)return;
-    const game=active,prev=best(game.world,game.round);
+    const game=active;
     const last=game.round===5;
     const target=last?'#library':`#/${game.world.id}/${game.round+1}`;
     const modal=document.createElement('div');
@@ -313,7 +315,7 @@
       <div class="memory-victory-icon" aria-hidden="true">♡ ✦ ♡</div>
       <p class="memory-eyebrow">A magical memory completed</p>
       <h2 id="memory-victory-heading">Beautifully done, my sweet boy!</h2>
-      <p>You found all ${PAIR_COUNTS[game.round-1]} pairs in <strong>${game.moves} moves</strong> and <strong>${timerText(game.finishedSeconds)}</strong>. ${prev&&prev.moves===game.moves&&prev.seconds===game.finishedSeconds?'A new personal best is shining in the forest!':'Your round is saved in the forest!'}</p>
+      <p>You found all ${PAIR_COUNTS[game.round-1]} pairs in <strong>${game.moves} moves</strong> and <strong>${timerText(game.finishedSeconds)}</strong>. ${game.newBest?'A new personal best is shining in the forest!':'Your completed round is shining in the forest!'}</p>
       <div class="memory-actions">
         <button type="button" class="memory-button secondary" data-action="replay">Play again</button>
         <a href="${target}" class="memory-button" id="memory-victory-next">${last?'Choose a world':'Next round ✦'}</a>
@@ -330,7 +332,9 @@
     clearTimers();
     const modal=document.getElementById('memory-victory-shade');
     if(modal)modal.remove();
-    const match=/^#\/([a-z]+)\/([1-5])$/.exec(decodeURIComponent(window.location.hash));
+    let hash='';
+    try{hash=decodeURIComponent(window.location.hash);}catch{/* Treat malformed URLs as the library. */}
+    const match=/^#\/([a-z]+)\/([1-5])$/.exec(hash);
     const world=match&&WORLDS.find(item=>item.id===match[1]);
     if(world)renderGame(world,Number(match[2]));else renderLibrary();
     window.scrollTo(0,0);
