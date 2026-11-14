@@ -28,7 +28,7 @@
   let game = null;
   let boardSizeObserver = null;
   let boardFitHandler = null;
-  let soundEnabled = false;
+  let soundEnabled = true;
   let audio = null;
   let victory = null;
   let announced = '';
