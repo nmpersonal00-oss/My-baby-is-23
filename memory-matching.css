@@ -2,8 +2,8 @@
    and navigation. Only the empty game slots and dynamic text are rendered above it. */
 *{box-sizing:border-box}
 html,body{width:100%;height:100%;margin:0}
-body{display:grid;place-items:center;overflow:hidden;background:#05020e;font-family:Georgia,'Times New Roman',serif}
-#memory-holder{position:relative;flex:none;overflow:visible}
+body{display:block;overflow:hidden;background:#05020e;font-family:Georgia,'Times New Roman',serif}
+#memory-holder{position:relative;display:block;width:100vw;height:100vh;width:100dvw;height:100dvh;overflow:hidden}
 #memory-stage{position:absolute;left:0;top:0;width:1670px;height:941px;transform-origin:top left;background:url("assets/memory-matching-stage.webp") center/100% 100% no-repeat}
 .hotspot{position:absolute;display:block;padding:0;border:0;background:transparent;color:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .hotspot:focus:not(:focus-visible){outline:none}
