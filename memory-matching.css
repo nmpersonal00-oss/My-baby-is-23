@@ -214,3 +214,17 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff2bd;outline-offset:3p
   *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .memory-fireflies{display:none}
 }
+
+/* A real zoom control is available beside each populated GIF. */
+.memory-slot-row{position:relative}
+.memory-preview{flex:0 0 28px;min-height:28px;padding:0;border:1px solid #efd198aa;border-radius:50%;
+  background:#241732de;color:#ffe6b2;font:24px/1 Georgia,serif;box-shadow:0 0 11px #e8b67775}
+.memory-preview:hover,.memory-preview:focus-visible{box-shadow:0 0 18px #ffcc8f}
+.memory-preview:disabled{opacity:.5;cursor:default}
+.memory-grid.is-shuffling .memory-slot{animation:memory-shuffle-flash .62s ease-out}
+@keyframes memory-shuffle-flash{
+  0%{filter:brightness(1)}43%{filter:brightness(1.75);box-shadow:0 0 23px #ffe0b7,inset 0 0 20px #f6c88b}
+  100%{filter:brightness(1)}
+}
+@media(max-width:760px){.memory-preview{flex-basis:22px;min-height:22px;font-size:18px}}
+@media(prefers-reduced-motion:reduce){.memory-grid.is-shuffling .memory-slot{animation:none}}
