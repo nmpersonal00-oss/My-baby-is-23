@@ -46,6 +46,7 @@
   };
   let world=null, sourceIndex=0, player=null, ready=false, playing=false;
   let apiPending=false, loadingSource=false, skipBusy=false, lastListKey='', soundStarted=false;
+  let loadedWorld=null, loadedSourceIndex=-1, embedErrorCount=0;
   const dock=document.createElement('aside');
   dock.className='ws-music-dock';
   dock.hidden=true;
@@ -162,6 +163,8 @@
         if(autoPlay)player.loadPlaylist(args);
         else player.cuePlaylist(args);
       }
+      loadedWorld=world;
+      loadedSourceIndex=sourceIndex;
       loadingSource=false;
     }catch(err){
       loadingSource=false;
@@ -201,7 +204,10 @@
     settings.enabled=enabled;remember();updateMode();
     if(enabled){
       if(!player){loadAPI();return;}
-      if(ready){try {player.playVideo();}catch{loadSource(true);}}
+      if(ready){
+        if(loadedWorld!==world || loadedSourceIndex!==sourceIndex)loadSource(true);
+        else try{player.playVideo();}catch{loadSource(true);}
+      }
       note('Tap Play if your browser blocks automatic music.');
     }else{
       playing=false;stateText();
@@ -222,12 +228,12 @@
               event.target.getIframe().setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
               event.target.setLoop(false);
             }catch{}
-            if(world&&settings.enabled)loadSource(true);
+            if(world&&settings.enabled&&!dock.hidden)loadSource(true);
           },
           onStateChange(event){
             if(!window.YT||!YT.PlayerState)return;
             if(event.data===YT.PlayerState.PLAYING){
-              playing=true;soundStarted=true;stateText();updateTracks();
+              playing=true;soundStarted=true;embedErrorCount=0;stateText();updateTracks();
             }else if(event.data===YT.PlayerState.PAUSED){
               playing=false;stateText();note('Paused · press Play to resume');
             }else if(event.data===YT.PlayerState.CUED){
@@ -251,8 +257,14 @@
             playing=false;stateText();
             const code=event.data;
             if(code===100||code===101||code===150){
+              embedErrorCount++;
+              if(embedErrorCount>5){
+                note('YouTube is blocking these tracks. Open the source playlist on YouTube.');
+                menu.hidden=false;tab.setAttribute('aria-expanded','true');
+                return;
+              }
               note('A YouTube track cannot play here. Skipping…');
-              setTimeout(()=>{if(settings.enabled&&world)nextSong();},500);
+              setTimeout(()=>{if(settings.enabled&&world&&!dock.hidden)nextSong();},500);
             }else{
               note('This YouTube video is unavailable. Try another song or the playlist link.');
             }
@@ -293,7 +305,8 @@
     if(nextWorld===world){
       updateMode();
       if(settings.enabled&&player&&ready&&!playing){
-        try{player.playVideo();}catch{}
+        if(loadedWorld!==world || loadedSourceIndex!==sourceIndex)loadSource(true);
+        else try{player.playVideo();}catch{}
       }
       return;
     }
