@@ -104,3 +104,6 @@ button,a{-webkit-tap-highlight-color:transparent}button{font:inherit}a{color:inh
 /* Keep the animated garden out of tab order while a secret letter is open. */
 .love-garden[hidden]{display:none!important}
 body.reading-note{overflow:hidden}
+
+/* The reader sits above the site's navigation while open. */
+body.reading-note #love-app{z-index:20}
