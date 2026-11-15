@@ -209,7 +209,7 @@
     say(text||(pairs.length&&numberOfGifs===0
       ? `${world.title} • Round ${selectedRound}: all ten names are ready and shuffled; the artwork spaces are intentionally empty.`
       : pairs.length
-        ? `${world.title} • Round ${selectedRound}: choose a artwork and its matching name (${numberOfGifs} artworks added so far).`
+        ? `${world.title} • Round ${selectedRound}: choose an artwork and its matching name (${numberOfGifs} artworks added so far).`
         : `${world.title} • Round ${selectedRound}: ten empty artwork spaces and ten empty name spaces are ready for content.`));
     requestAnimationFrame(drawLinks);
   }
@@ -248,7 +248,7 @@
     }
     if(current.selected.side===side){
       current.selected={side,id};updateSelection();
-      say(`Selection changed. Now choose ${side==='gif'?'a name':'a artwork'} on the other side.`);
+      say(`Selection changed. Now choose ${side==='gif'?'a name':'an artwork'} on the other side.`);
       return;
     }
     const previous=current.selected;current.selected=null;
@@ -300,7 +300,7 @@
     const pair=game?.pairs.find(item=>item.id===id);
     if(!pair)return;
     showDialog(`<h2 id="memory-dialog-title">A closer look</h2>
-      <img src="${htmlEscape(pair.gif)}" alt="Enlarged moving picture">
+      <img src="${htmlEscape(pair.gif)}" alt="Enlarged artwork">
       <div class="memory-dialog-actions"><button type="button" data-action="close">Return to matching</button></div>`);
   }
   function sparkles(){
