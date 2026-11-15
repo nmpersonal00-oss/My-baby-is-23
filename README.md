@@ -337,3 +337,12 @@ scrolling. The approved background and AI-painted category icons remain.
 
 Round 1 of Hollow Knight still uses the same ten approved GIF assets;
 further background/animation revisions are a separate content stage.
+
+
+## Word Search · Music on each world
+
+The Word Search has its own built-in player, separate from sound effects and all other games. Each of the seven puzzle worlds has an independent playlist. Music starts when you enter a world, stays on the same track as you switch its five levels, advances to the next song, and stops when you return to the seven-world menu. Use **Play / Pause**, **Next**, and the **♫** settings button; the player is only displayed inside Word Search levels.
+
+**Add music once on each device/browser:** Download your audio albums from the private [Google Drive music folder](https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5), and extract downloaded ZIP files. Open any Word Search level, press **♫**, and choose **Import downloaded album folders** to select a folder containing the ten named soundtrack subfolders. The app maps Dark Souls 1/2 to Dark Souls, Lies of P to Lies, Bloodborne to Bloodborne, Mandalorian / Jedi Survivor to Star Wars, Terraria to Terraria, Kawaii Lofi to Princess, and Hollow Knight / Silksong to Hollow Knight. Alternatively, use **Add songs to this world** to choose MP3s for only the current category. MP3 is recommended; MP4 audio plays only when the browser supports its codec. Files are saved privately in browser IndexedDB, not uploaded to GitHub or sent to a server. Check that the browser has enough available storage. Browser data clearing or using a new device requires importing again.
+
+**Autoplay limits:** Clicking a world usually permits the soundtrack to start immediately. If the browser blocks sound on a restored/direct link, tap **Play** or touch the puzzle once. A manual Pause is respected until you press Play or enter a different world. Since private Drive files cannot be streamed directly by a public static website, the existing recordings are not embedded or published in this public repository. Only file imports on the user's device enable playback.
