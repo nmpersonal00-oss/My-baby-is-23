@@ -1,6 +1,6 @@
 /* Rayan's Dark Forest / Memory Matching
    All interface elements are real controls layered over the CLEAN forest image.
-   To supply GIFs and matching names later, edit memory-matching-data.js only. */
+   To supply artworks and matching names later, edit memory-matching-data.js only. */
 (() => {
   'use strict';
   const $=id=>document.getElementById(id);
@@ -68,9 +68,10 @@
     for(let i=0;i<input.length&&out.length<MAX;i++){
       const entry=input[i];
       const name=typeof entry?.name==='string'?entry.name.trim():'';
-      const gif=safeImage(entry?.gif);
-      // A word may be displayed before its matching GIF has been added.
-      // Keep its stable pair ID; only the GIF column stays empty for now.
+      // Hide existing GIF artwork without deleting the files. New images come next.
+      const gif='';
+      // A word may be displayed before its matching artwork has been added.
+      // Keep its stable pair ID; only the artwork column stays empty for now.
       if(!name||unique.has(name.toLocaleLowerCase()))continue;
       unique.add(name.toLocaleLowerCase());
       out.push({id:i,name,gif});
@@ -133,8 +134,8 @@
   }
   function slot(side,pair,row){
     const isGif=side==='gif',empty=!pair||(isGif&&!pair.gif);
-    const label=empty?`Empty ${isGif?'GIF':'name'} space ${row+1}`:
-      isGif?`GIF clue ${row+1}; choose its name`:`${pair.name}; select matching GIF`;
+    const label=empty?`Empty ${isGif?'artwork':'name'} space ${row+1}`:
+      isGif?`artwork clue ${row+1}; choose its name`:`${pair.name}; select matching artwork`;
     const body=empty?(isGif?'':'<span class="memory-empty-name" aria-hidden="true"></span>'):
       isGif?`<img src="${htmlEscape(pair.gif)}" alt="" loading="eager" decoding="async" draggable="false">`:
       `<span>${htmlEscape(pair.name)}</span>`;
@@ -206,10 +207,10 @@
     names.innerHTML=Array.from({length:MAX},(_,i)=>slot('name',right[i],i)).join('');
     connections.innerHTML='';updateProgress();saveView();
     say(text||(pairs.length&&numberOfGifs===0
-      ? `${world.title} • Round ${selectedRound}: all ten names are ready and shuffled; the GIF spaces are intentionally empty.`
+      ? `${world.title} • Round ${selectedRound}: all ten names are ready and shuffled; the artwork spaces are intentionally empty.`
       : pairs.length
-        ? `${world.title} • Round ${selectedRound}: choose a GIF and its matching name (${numberOfGifs} GIFs added so far).`
-        : `${world.title} • Round ${selectedRound}: ten empty GIF spaces and ten empty name spaces are ready for content.`));
+        ? `${world.title} • Round ${selectedRound}: choose a artwork and its matching name (${numberOfGifs} artworks added so far).`
+        : `${world.title} • Round ${selectedRound}: ten empty artwork spaces and ten empty name spaces are ready for content.`));
     requestAnimationFrame(drawLinks);
   }
   function switchWorld(i){
@@ -228,26 +229,26 @@
     if(!current||current.done||current.locked)return;
     if(id===null){
       button.classList.add('is-selected');
-      say(`This ${side==='gif'?'GIF':'name'} space is empty. We can add its content next.`);
+      say(`This ${side==='gif'?'artwork':'name'} space is empty. We can add its content next.`);
       setTimeout(()=>{if(game===current)button.classList.remove('is-selected');},420);
       return;
     }
     if(current.matched.has(id))return;
     if(side==='name'&&!current.pairs.find(pair=>pair.id===id)?.gif){
-      // The name is real but its corresponding GIF is still a future task.
+      // The name is real but its corresponding artwork is still a future task.
       button.classList.add('is-selected');
-      say('“'+current.pairs.find(pair=>pair.id===id).name+'” is ready! We will add its matching GIF later.');
+      say('“'+current.pairs.find(pair=>pair.id===id).name+'” is ready! We will add its matching artwork later.');
       setTimeout(()=>{if(game===current)button.classList.remove('is-selected');},650);
       return;
     }
     if(!current.selected){
       current.selected={side,id};updateSelection();chime([440]);
-      say(side==='gif'?'GIF selected — now pick its matching name.':'Name selected — now pick the matching GIF.');
+      say(side==='gif'?'artwork selected — now pick its matching name.':'Name selected — now pick the matching artwork.');
       return;
     }
     if(current.selected.side===side){
       current.selected={side,id};updateSelection();
-      say(`Selection changed. Now choose ${side==='gif'?'a name':'a GIF'} on the other side.`);
+      say(`Selection changed. Now choose ${side==='gif'?'a name':'a artwork'} on the other side.`);
       return;
     }
     const previous=current.selected;current.selected=null;
@@ -255,7 +256,7 @@
       current.matched.add(id);updateSelection();chime([523,659,784]);
       const label=current.pairs.find(item=>item.id===id).name;
       say(`A magical match! ${label}. ${current.matched.size} out of ${current.pairs.length} found.`);
-      // A round is complete only after all ten names have matching GIFs.
+      // A round is complete only after all ten names have matching artworks.
       if(current.pairs.length===MAX&&current.pairs.every(pair=>Boolean(pair.gif))&&
         current.matched.size===MAX){
         current.done=true;saveCompleted(current.world,current.round,current.pairs);renderRounds();
@@ -336,10 +337,10 @@
   shuffleButton.addEventListener('click',()=>{
     const hasNames=Boolean(game?.pairs.length),hasGifs=Boolean(game?.pairs.some(pair=>pair.gif));
     resetRound(hasNames&&!hasGifs
-      ? 'The ten names have been reshuffled! The GIF spaces are still empty.'
+      ? 'The ten names have been reshuffled! The artwork spaces are still empty.'
       : hasGifs
-        ? 'The GIFs and names have been shuffled!'
-        : 'The spaces are still empty, ready for your GIFs and names.');
+        ? 'The artworks and names have been shuffled!'
+        : 'The spaces are still empty, ready for your artworks and names.');
     chime([494,587]);
   });
   soundButton.addEventListener('click',()=>{
