@@ -166,7 +166,7 @@
       if (error?.name === 'NotAllowedError') {
         message = 'Tap Play to allow music in this browser.';
       } else if (error?.name !== 'AbortError') {
-        message = 'This file could not play. Try choosing an MP3 again.';
+        message = REMOTE_URL ? 'The forest soundtrack could not load. Please check the music server.' : 'This file could not play. Try choosing an MP3 again.';
       }
     } finally {
       loading = false;
@@ -293,7 +293,7 @@
   audio.addEventListener('pause', update);
   audio.addEventListener('error', () => {
     if (!savedFile) return;
-    message = 'The selected audio could not play; choose an MP3 in settings.';
+    message = REMOTE_URL ? 'The forest soundtrack is not available yet. Please check the music server.' : 'The selected audio could not play; choose an MP3 in settings.';
     update();
   });
   window.addEventListener('pagehide', () => { rememberPosition(true); audio.pause(); });
@@ -322,6 +322,8 @@
     audio.load();
     find('forest-cozy-import').hidden = true;
     deleteButton.hidden = true;
+    const localOnlyNote = menu.querySelector('.forest-music-note');
+    if (localOnlyNote) localOnlyNote.hidden = true;
     const instructions = menu.querySelector('p');
     if (instructions) instructions.textContent = 'Cozy Library is part of your forest. No music uploads are needed.';
   }
