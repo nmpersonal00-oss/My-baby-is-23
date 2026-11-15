@@ -54,7 +54,9 @@
       const entry=input[i];
       const name=typeof entry?.name==='string'?entry.name.trim():'';
       const gif=safeImage(entry?.gif);
-      if(!name||!gif||unique.has(name.toLocaleLowerCase()))continue;
+      // A word may be displayed before its matching GIF has been added.
+      // Keep its stable pair ID; only the GIF column stays empty for now.
+      if(!name||unique.has(name.toLocaleLowerCase()))continue;
       unique.add(name.toLocaleLowerCase());
       out.push({id:i,name,gif});
     }
@@ -64,7 +66,8 @@
   const signature=pairs=>JSON.stringify(pairs.map(pair=>[pair.name,pair.gif]));
   function isComplete(world,round){
     const pairs=pairsFor(world,round);
-    return pairs.length>0&&saved.completed[key(world,round)]===signature(pairs);
+    return pairs.length===MAX&&pairs.every(pair=>Boolean(pair.gif))&&
+      saved.completed[key(world,round)]===signature(pairs);
   }
   function saveCompleted(world,round,pairs){
     saved.completed[key(world,round)]=signature(pairs);
@@ -117,7 +120,7 @@
     }).join('');
   }
   function slot(side,pair,row){
-    const isGif=side==='gif',empty=!pair;
+    const isGif=side==='gif',empty=!pair||(isGif&&!pair.gif);
     const label=empty?`Empty ${isGif?'GIF':'name'} space ${row+1}`:
       isGif?`GIF clue ${row+1}; choose its name`:`${pair.name}; select matching GIF`;
     const body=empty?(isGif?'<span class="memory-gif-label" aria-hidden="true">GIF</span>':'<span class="memory-empty-name" aria-hidden="true"></span>'):
@@ -178,7 +181,8 @@
   function resetRound(text){
     stopTimers();closeDialog();
     const world=worlds[selectedWorld],pairs=pairsFor(world,selectedRound);
-    const left=shuffle(pairs),right=shuffle(pairs);
+    const left=shuffle(pairs.filter(pair=>Boolean(pair.gif))),right=shuffle(pairs);
+    const numberOfGifs=left.length;
     if(right.length>1&&right.every((pair,i)=>pair.id===left[i].id))right.push(right.shift());
     game={world,round:selectedRound,pairs,left,right,selected:null,matched:new Set(),locked:false,done:false};
     title.textContent=world.title;
@@ -188,8 +192,11 @@
     gifs.innerHTML=Array.from({length:MAX},(_,i)=>slot('gif',left[i],i)).join('');
     names.innerHTML=Array.from({length:MAX},(_,i)=>slot('name',right[i],i)).join('');
     connections.innerHTML='';updateProgress();saveView();
-    say(text||(pairs.length?`${world.title} • Round ${selectedRound}: choose a GIF and its matching name.`:
-      `${world.title} • Round ${selectedRound}: ten empty GIF spaces and ten empty name spaces are ready for content.`));
+    say(text||(pairs.length&&numberOfGifs===0
+      ? `${world.title} • Round ${selectedRound}: all ten names are ready and shuffled; the GIF spaces are intentionally empty.`
+      : pairs.length
+        ? `${world.title} • Round ${selectedRound}: choose a GIF and its matching name (${numberOfGifs} GIFs added so far).`
+        : `${world.title} • Round ${selectedRound}: ten empty GIF spaces and ten empty name spaces are ready for content.`));
     requestAnimationFrame(drawLinks);
   }
   function switchWorld(i){
@@ -213,6 +220,13 @@
       return;
     }
     if(current.matched.has(id))return;
+    if(side==='name'&&!current.pairs.find(pair=>pair.id===id)?.gif){
+      // The name is real but its corresponding GIF is still a future task.
+      button.classList.add('is-selected');
+      say('“'+current.pairs.find(pair=>pair.id===id).name+'” is ready! We will add its matching GIF later.');
+      setTimeout(()=>{if(game===current)button.classList.remove('is-selected');},650);
+      return;
+    }
     if(!current.selected){
       current.selected={side,id};updateSelection();chime([440]);
       say(side==='gif'?'GIF selected — now pick its matching name.':'Name selected — now pick the matching GIF.');
@@ -228,7 +242,9 @@
       current.matched.add(id);updateSelection();chime([523,659,784]);
       const label=current.pairs.find(item=>item.id===id).name;
       say(`A magical match! ${label}. ${current.matched.size} out of ${current.pairs.length} found.`);
-      if(current.matched.size===current.pairs.length){
+      // A round is complete only after all ten names have matching GIFs.
+      if(current.pairs.length===MAX&&current.pairs.every(pair=>Boolean(pair.gif))&&
+        current.matched.size===MAX){
         current.done=true;saveCompleted(current.world,current.round,current.pairs);renderRounds();
         winTimer=setTimeout(()=>{if(game===current)showVictory();},500);
       }
@@ -305,7 +321,12 @@
     if(b)showGif(Number(b.dataset.pair));
   });
   shuffleButton.addEventListener('click',()=>{
-    resetRound(game?.pairs.length?'The GIFs and names have been shuffled!':'The spaces are still empty, ready for your GIFs and names.');
+    const hasNames=Boolean(game?.pairs.length),hasGifs=Boolean(game?.pairs.some(pair=>pair.gif));
+    resetRound(hasNames&&!hasGifs
+      ? 'The ten names have been reshuffled! The GIF spaces are still empty.'
+      : hasGifs
+        ? 'The GIFs and names have been shuffled!'
+        : 'The spaces are still empty, ready for your GIFs and names.');
     chime([494,587]);
   });
   soundButton.addEventListener('click',()=>{
