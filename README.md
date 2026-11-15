@@ -257,3 +257,20 @@ These are background references, not sources for every individual puzzle.
 
 The memory matching game (400 names, 40 rounds, GIFs still blank),
 Word Search, and the homepage have not been changed by this update.
+
+### Hangman guess feedback and level-completion effects
+
+- The wrong-guess number is calculated from the **distinct incorrect letters**
+  guessed on the current puzzle. It displays `0 / 5 wrong` through
+  `5 / 5 wrong`, in sync with the five diamonds and hangman illustration.
+  Duplicate guesses, correct letters, and hints do **not** increment it.
+- Each new wrong letter briefly shakes the answer frame and pulses pink-red
+  light through the answer, gallows frame, and filled diamonds.
+- Completing every letter produces original CSS gold, pink and violet petal
+  confetti and a prominent **LEVEL COMPLETE!** result panel with a
+  **MOVE TO NEXT LEVEL** button immediately below the answer.
+- The button also appears on a loss, allowing continuation rather than
+  blocking the level path. Restart replays the current answer.
+- Switching categories, restarting, or proceeding clears any effects and
+  resets the mistake counter. Reduced-motion preferences are respected.
+

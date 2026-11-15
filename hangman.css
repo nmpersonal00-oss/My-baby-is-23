@@ -265,3 +265,82 @@ button:focus-visible,a:focus-visible{outline:3px solid #f9d8ff;outline-offset:4p
   .hangman-word.is-long .hangman-word-unit{gap:2px}
   .hangman-word-gap{flex-basis:7px}
 }
+
+
+/* Feedback for real incorrect guesses; the five SVG stages still use the same artwork. */
+.hangman-wrong-count{display:inline-flex;align-items:center;justify-content:center;
+  min-width:76px;padding:4px 9px;border:1px solid #eec18b;border-radius:20px;
+  background:#1b0d2ad9;color:#ffe1bd;box-shadow:0 0 7px #e6ab6780;
+  font:700 clamp(12px,1.2vw,16px)/1 'Cinzel',Georgia,serif;
+  white-space:nowrap;font-variant-numeric:tabular-nums}
+.hangman-answer-frame.is-wrong-flash{animation:hangman-error-shake .52s ease-in-out,
+  hangman-error-border .8s ease-out}
+.hangman-illustration-frame.is-wrong-flash{animation:hangman-error-border .8s ease-out}
+.hangman-wrong-track.is-wrong-flash .hangman-diamond.is-lost{
+  animation:hangman-error-diamond .7s ease-out}
+@keyframes hangman-error-shake{
+  0%,100%{transform:translateX(0)}
+  15%,45%{transform:translateX(-5px)}
+  30%,65%{transform:translateX(5px)}
+  80%{transform:translateX(-2px)}
+}
+@keyframes hangman-error-border{
+  0%,100%{box-shadow:inset 0 0 24px #b974685a,0 0 14px #f8b56c95}
+  35%{border-color:#ff638c;box-shadow:0 0 18px #ff4c78,0 0 34px #ff326888,inset 0 0 22px #ff537b9c}
+}
+@keyframes hangman-error-diamond{
+  0%,100%{filter:none}
+  45%{filter:drop-shadow(0 0 9px #ff3979) brightness(1.8)}
+}
+/* Big, immediate victory/loss announcement; the CTA sits ABOVE the keyboard. */
+.hangman-result{position:relative;margin:9px 0 14px;padding:13px 16px 15px;text-align:center;
+  border:2px solid #f8ce91;border-radius:20px;background:linear-gradient(130deg,#160a2df5,#270b36e8,#10071ff0);
+  box-shadow:0 0 19px #f0bd7a9a,inset 0 0 18px #d597a24d}
+.hangman-result[hidden]{display:none!important}
+.hangman-result.is-win{border-color:#ffd58e;box-shadow:0 0 12px #ffc981,0 0 26px #f7a8ee87,inset 0 0 20px #ae5cd54a;
+  animation:hangman-victory-glow 1.5s ease-in-out 2}
+.hangman-result.is-loss{border-color:#df84a0;box-shadow:0 0 16px #a13b6f85,inset 0 0 18px #813a6242}
+.hangman-result-title{display:block;font:700 clamp(16px,2vw,24px)/1.15 'Cinzel',Georgia,serif;
+  color:#ffe1a3;text-shadow:0 0 14px #ecb36f;letter-spacing:.03em}
+.hangman-result.is-loss .hangman-result-title{color:#ffbacf}
+.hangman-result-message{margin:6px auto 5px;max-width:95%;
+  font:600 clamp(16px,1.7vw,22px)/1.1 'Cormorant Garamond',Georgia,serif;color:#ffe8d5}
+.hangman-result .hangman-next-level:not([hidden]){margin:8px auto 0;
+  min-height:47px;padding:8px 24px;border-color:#ffd48b;
+  background:linear-gradient(125deg,#752680,#3d1558,#812a80);
+  box-shadow:0 0 12px #ffcf88,0 0 18px #ed74e788,inset 0 0 15px #f7bb8780;
+  color:#fff6d8;font-weight:700;letter-spacing:.025em;
+  animation:hangman-next-pulse 1.25s ease-in-out infinite alternate}
+.hangman-result .hangman-next-level:focus-visible{outline:3px solid #fff6d1;outline-offset:3px}
+@keyframes hangman-victory-glow{50%{box-shadow:0 0 20px #ffe2a7,0 0 45px #ed8bf6a6,inset 0 0 30px #c863d36b}}
+@keyframes hangman-next-pulse{to{box-shadow:0 0 18px #ffe5b0,0 0 29px #f38dffa6,inset 0 0 22px #f7c3b18a}}
+/* Original CSS-painted gold/purple flower-petal confetti. No emoji or screenshots. */
+.hangman-confetti{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.hangman-confetti-piece{position:absolute;left:var(--x);top:-22px;display:block;
+  width:var(--size);height:calc(var(--size) * 1.7);
+  background:#f8d48a;border-radius:80% 0 80% 0;box-shadow:0 0 7px #fbd29b88;
+  opacity:0;animation:hangman-confetti-fall var(--duration) cubic-bezier(.15,.6,.42,1)
+  var(--delay) both}
+.hangman-confetti-piece:nth-child(4n + 2){background:#e875ec;box-shadow:0 0 7px #ef9bfa9c}
+.hangman-confetti-piece:nth-child(4n + 3){background:#f6a9c9;box-shadow:0 0 7px #e898d3a4}
+.hangman-confetti-piece:nth-child(4n + 4){background:#fff3c9;box-shadow:0 0 7px #ffe7bfa4}
+@keyframes hangman-confetti-fall{
+  0%{transform:translate3d(0,-5vh,0) rotate(0deg);opacity:0}
+  8%{opacity:1}
+  80%{opacity:1}
+  100%{transform:translate3d(var(--drift),110vh,0) rotate(var(--spin));opacity:0}
+}
+@media(max-width:760px){
+ .hangman-errors{gap:8px}
+ .hangman-wrong-count{padding:4px 7px;font-size:12px}
+ .hangman-result{margin:7px 0 12px;padding:11px 9px 13px}
+ .hangman-result .hangman-next-level:not([hidden]){min-height:44px;padding:8px 16px;font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ .hangman-answer-frame.is-wrong-flash,
+ .hangman-illustration-frame.is-wrong-flash,
+ .hangman-wrong-track.is-wrong-flash .hangman-diamond.is-lost,
+ .hangman-result.is-win,.hangman-result .hangman-next-level:not([hidden]){
+   animation:none!important}
+ .hangman-confetti{display:none!important}
+}
