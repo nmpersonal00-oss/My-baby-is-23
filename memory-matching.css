@@ -264,3 +264,19 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
 }
 @media(max-width:390px){.memory-match-slot{min-height:40px}.memory-match-list{grid-template-rows:repeat(10,40px)}.memory-matching-board{grid-template-columns:minmax(112px,1fr) 38px minmax(115px,1fr)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.memory-fly{display:none}}
+
+/* Secondary forest navigation: same ornate gold treatment as Home. */
+.memory-rail-nav{display:grid;gap:13px}
+.memory-hangman-button{font-size:22px;letter-spacing:.045em}
+.memory-hangman-button[aria-current="page"]{background:linear-gradient(135deg,#34203d,#0c071c);box-shadow:0 0 17px #ffc982a3,inset 0 0 16px #e5b96d56}
+.memory-hangman-placeholder{width:min(650px,calc(100% - 24px));margin:clamp(35px,8vh,110px) auto 30px;padding:clamp(28px,5vw,62px);text-align:center;
+ border:3px double #eebc6e;border-radius:34px;background:linear-gradient(145deg,#10081fe8,#090618e8);
+ box-shadow:0 0 27px #d6a15d7d,inset 0 0 32px #e6b96d36}
+.memory-hangman-placeholder h2{margin:0 0 12px;color:#ffe4b0;font:italic 600 clamp(43px,6vw,72px)/1 'Cormorant Garamond',Georgia,serif;text-shadow:0 0 15px #edb66f}
+.memory-hangman-placeholder p{font:italic 500 clamp(21px,2.5vw,30px)/1.3 'Cormorant Garamond',Georgia,serif;color:#fbe8ce}
+.memory-hangman-placeholder a{display:inline-flex;align-items:center;justify-content:center;min-height:50px;margin-top:16px;padding:10px 24px;
+ border:2px solid #efc380;border-radius:13px;background:#100b22e8;box-shadow:0 0 13px #efba6e7a;
+ color:#ffe3b0;font:600 18px 'Cinzel',Georgia,serif}
+.memory-hangman-placeholder a:hover{box-shadow:0 0 21px #efba6ec9}
+@media(max-width:1050px){.memory-rail-nav{gap:8px}.memory-hangman-button{font-size:12px}}
+@media(max-width:720px){.memory-rail-nav{display:flex;align-items:center;gap:7px}.memory-hangman-button{font-size:13px;padding:3px 8px}.memory-hangman-placeholder{margin:35px auto 20px}}
