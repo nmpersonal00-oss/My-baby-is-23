@@ -186,6 +186,7 @@
     delete player.dataset.songId;
     player.load();
     realm = world;
+    player.loop = Boolean(world && lists[world]?.length === 1);
     index = 0;
     notice = '';
     userPaused = false;

@@ -1,11 +1,8 @@
 # Rayan's Dark Forest
 
-## Hosted soundtracks — no uploads for the recipient
+## Built-in gift soundtracks — no card, no recipient uploads
 
-The gift-ready music system is described in [FOREST-AUDIO-DEPLOY.md](FOREST-AUDIO-DEPLOY.md). It indexes 497 tracks across the seven Word Search worlds plus the supplied Cozy Library soundtrack on other pages. The husband/visitor never uploads songs. The administrator must perform the one-time Cloudflare R2 transfer and set the verified public audio base URL in `forest-audio-config.js` before hosted playback becomes active. Until then, the existing private browser-import fallback still works.
-
-
-A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search is playable, Memory Matching has a GIF-to-name board, and Secret Love Notes is now an interactive flying-letter garden.**
+Use [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the one-time free upload of **eight MP3s** to the existing GitHub `audio/` folder. Your husband uploads nothing. The app plays the supplied Cozy Library music on the homepage and non-Word-Search screens and one approved track in each of the seven Word Search worlds. The full 497-song index is archived for possible future expansion.
 
 ## Homepage
 

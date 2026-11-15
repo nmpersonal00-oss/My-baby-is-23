@@ -1,3 +1,5 @@
+**For future expansion only. The easiest, no-card gift setup is now [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md). You do not need Cloudflare.**
+
 # Deploying the Forest Soundtrack Library (gift preparation only)
 
 These steps are **for the gift creator/administrator**, not for her husband. The app will stream audio; visitors do not import any songs.
