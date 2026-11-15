@@ -1,5 +1,7 @@
 # The complete Forest music library
 
+**Alternative now available:** The music controls can read private Google Drive folders using Google sign-in and a dropped/pasted Drive **folder link**, without downloading all the audio to the laptop. The gift creator must first configure Google OAuth; see [GOOGLE-DRIVE-MUSIC.md](GOOGLE-DRIVE-MUSIC.md). This is not as automatic as a hosted soundtrack because your husband must sign in to Google and connect the shared folder.
+
 **Goal:** Your husband opens the app, taps **Enter the Forest** if his browser requires it, and music plays. He is never asked to import or upload songs.
 
 - **Everywhere outside a Word Search category:** the supplied **Cozy Library** recording plays as the shared background music.
@@ -14,7 +16,7 @@
 
 All **497 Word Search tracks** are listed in `forest-audio-manifest.js`. The Cozy Library recording is a separate, 498th file.
 
-**Current status:** The full playlists are present in the website's code, but the audio bytes are **not hosted yet**. Google Drive folders are private, so the public website cannot simply fetch them. Until the tracks are hosted, the existing local-import controls may still be visible. The recipient-free gift experience is **not finished**.
+**Current status:** The full playlists are present in the website's code, but the audio bytes are **not hosted yet**. Google Drive folders are private, so the public website cannot simply fetch them. Until the tracks are hosted, the new Google Drive link controls or existing local-import controls may still be visible. Playback with no recipient setup or Google sign-in is **not finished**.
 
 **Important:** An eight-song ZIP pack mentioned in an earlier conversation was an incorrect simplification and **must not be uploaded**. All files should be uploaded in one preparation process by the gift creator/administrator, not by the recipient. The earlier GitHub-only instructions are superseded.
 
