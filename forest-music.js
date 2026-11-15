@@ -355,9 +355,9 @@
     if (!fileId && !folderId) throw Error('Paste a Google Drive folder or audio file link.');
     if (!drive.hasAccess()) await drive.connect();
     let choices = [];
-    if (fileId && !/\\/folders\\//.test(driveInput.value)) {
+    if (fileId && !/\/folders\//.test(driveInput.value)) {
       const song = await drive.metadata(fileId);
-      if (!song.mimeType?.startsWith('audio/') && !/\\.(mp3|m4a|mp4|ogg|oga|wav|aac|flac)$/i.test(song.name || ''))
+      if (!song.mimeType?.startsWith('audio/') && !/\.(mp3|m4a|mp4|ogg|oga|wav|aac|flac)$/i.test(song.name || ''))
         throw Error('That Drive link is not an audio file.');
       choices = [{fileId:song.id,name:song.name}];
     } else {
@@ -366,7 +366,7 @@
       choices = folder.tracks.map(({fileId,name}) => ({fileId,name}));
     }
     if (!choices.length) throw Error('No audio files found in that Google Drive folder.');
-    const cozy = choices.find(song => /cozy[\\s_-]*library/i.test(song.name));
+    const cozy = choices.find(song => /cozy[\s_-]*library/i.test(song.name));
     if (cozy || choices.length === 1) {
       driveSelect.hidden = drivePick.hidden = true;
       await installDriveChoice(cozy || choices[0]);
@@ -395,7 +395,7 @@
     const transfer = event.dataTransfer;
     const text = transfer?.getData('text/uri-list') || transfer?.getData('text/plain') ||
       transfer?.getData('text/html') || '';
-    const match = text.match(/https?:\\/\\/drive\\.google\\.com\\/[^\\s"'<>]+/i);
+    const match = text.match(/https?:\/\/drive\.google\.com\/[^\s"'<>]+/i);
     if (match && (window.forestDrive?.folderId(match[0]) || window.forestDrive?.fileId(match[0]))) {
       driveInput.value = match[0];
       driveFeedback.textContent = 'Drive link received. Click “Use Google Drive music”.';
