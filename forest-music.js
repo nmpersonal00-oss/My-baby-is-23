@@ -32,6 +32,7 @@
   let ready = false;
   let message = '';
   let loading = false;
+  let retryAfterPending = false;
   let externalWorldActive = false;
   let disabledForWorld = WORD_SEARCH && WORLD_HASH.test(location.hash);
   let lastPositionSave = 0;
@@ -174,7 +175,8 @@
   }
 
   async function tryPlay() {
-    if (!ready || !savedFile || userPaused || disabledForWorld || loading) { update(); return; }
+    if (!ready || !savedFile || userPaused || disabledForWorld) { update(); return; }
+    if (loading) { retryAfterPending = true; update(); return; }
     loading = true;
     message = '';
     try {
@@ -190,6 +192,12 @@
     } finally {
       loading = false;
       update();
+      // Resume after a previous play() promise was canceled by rapid tab
+      // navigation. Only retry a single pending request, never on autoplay denial.
+      if (retryAfterPending) {
+        retryAfterPending = false;
+        if (!userPaused && !disabledForWorld && audio.paused) tryPlay();
+      }
     }
   }
 
