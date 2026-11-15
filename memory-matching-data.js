@@ -72,7 +72,7 @@
 
   // Empty until we select each keyword's GIF together.
   const liesOfPGifs = {
-    "Pinocchio": '../assets/lies-of-p/pinocchio.gif?v=4d9c23e550'
+    "Pinocchio": "../assets/lies-of-p/pinocchio.gif?v=4d9c23e550"
   };
 
   // Terraria: the 15 people, 15 bosses, and 20 important things supplied.
@@ -129,7 +129,9 @@
     "Celestial Sigil",
     "Zenith"
   ];
-  const terrariaGifs = {}; // Add GIFs by exact keyword later.
+  const terrariaGifs = {
+
+  }; // Add GIFs by exact keyword later.
 
   // Bloodborne: exactly 15 people, 15 bosses and 20 important things.
   // Every round will have 3 people, 3 bosses and 4 important things.
@@ -190,7 +192,9 @@
     "Chalice Dungeons"
   ];
   // Add an exact-name GIF path later (example: 'The Hunter': '../assets/the-hunter.gif').
-  const bloodborneGifs = {};
+  const bloodborneGifs = {
+
+  };
 
   // Dark Souls I and II — 25 terms from each game.
   // Preserve the owner's exact terms, including the long descriptive names.
@@ -261,7 +265,9 @@
     ]
   };
   // To attach a GIF in the future: 'Solaire of Astora': '../assets/solaire.gif'
-  const darkSoulsGifs = {};
+  const darkSoulsGifs = {
+
+  };
 
 
   // Hollow Knight: the 50 exact names and the five previously proposed sets.
@@ -437,7 +443,9 @@
     "Mount Fay",
     "The Slab"
   ];
-  const silksongGifs = {}; // e.g. 'Sherma': '../assets/sherma.gif'
+  const silksongGifs = {
+
+  }; // e.g. 'Sherma': '../assets/sherma.gif'
 
   // Shadow of the Colossus: five agreed sets of ten unique names.
   // The group membership is fixed; the board shuffles positions on each play.
@@ -504,7 +512,9 @@
     ]
   ];
   // Later: 'Wander': '../assets/wander.gif'
-  const colossusGifs = {};
+  const colossusGifs = {
+
+  };
   const colossusRounds = colossusRoundNames.map(names => ({
     pairs: names.map(name => ({name, gif: colossusGifs[name] || ''}))
   }));
@@ -689,16 +699,16 @@
   ];
   // Round 1: custom animated GIF artwork lives in assets/sanrio/round-1.
   const sanrioGifs = {
-    "Badtz-Maru": '../assets/sanrio/badtz-maru.gif?v=60eadd6939',
-    "Jimmy": '../assets/sanrio/jimmy.gif?v=26313fe526',
-    "Pekkle": '../assets/sanrio/pekkle.gif?v=30efc28619',
-    "Kirimichan": '../assets/sanrio/kirimichan.gif?v=3df3e664a3',
-    "My Melody": '../assets/sanrio/my-melody.gif?v=83a7c62fda',
-    "Sanrio Puroland": '../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817',
-    "Pompompurin": '../assets/sanrio/pompompurin.gif?v=571cf2332c',
-    "Cinnamoroll": '../assets/sanrio/cinnamoroll.gif?v=0d43011b74',
-    "Pochacco": '../assets/sanrio/pochacco.gif?v=2d5f45865c',
-    "Sugarbunnies": '../assets/sanrio/sugarbunnies.gif?v=7b4e62125f'
+    "My Melody": "../assets/sanrio/my-melody.gif?v=83a7c62fda",
+    "Cinnamoroll": "../assets/sanrio/cinnamoroll.gif?v=0d43011b74",
+    "Pompompurin": "../assets/sanrio/pompompurin.gif?v=571cf2332c",
+    "Pochacco": "../assets/sanrio/pochacco.gif?v=2d5f45865c",
+    "Badtz-Maru": "../assets/sanrio/badtz-maru.gif?v=60eadd6939",
+    "Pekkle": "../assets/sanrio/pekkle.gif?v=30efc28619",
+    "Kirimichan": "../assets/sanrio/kirimichan.gif?v=3df3e664a3",
+    "Jimmy": "../assets/sanrio/jimmy.gif?v=26313fe526",
+    "Sanrio Puroland": "../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817",
+    "Sugarbunnies": "../assets/sanrio/sugarbunnies.gif?v=7b4e62125f"
   };
 
   // Fixed mixed groups, freshly randomized board positions each time.
