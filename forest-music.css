@@ -121,3 +121,11 @@
  #forest-cozy-music.is-open{width:min(245px,calc(100vw - 16px))}
  #forest-cozy-music .forest-music-toggle{width:44px;height:44px;min-width:44px}
 }
+
+/* Keep all in-app chapters inside the homepage so its audio never restarts. */
+#forest-adventure-frame {
+ position:fixed;inset:0;width:100%;height:100%;height:100dvh;
+ border:0;display:block;z-index:800;background:#07131d;
+}
+#forest-adventure-frame[hidden]{display:none!important}
+body.forest-shell-in-chapter {overflow:hidden!important}
