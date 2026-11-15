@@ -147,13 +147,21 @@
       .map(name => ({name, gif: liesOfPGifs[name] || ''}))
   }));
 
-  // The groups remain stable so each eventual GIF can match its keyword.
-  // The game itself reshuffles each round's visible name tiles on replay.
-  const mixedTerrariaKeywords = shuffledForLevels(terrariaKeywords, 20261115);
+  // Shuffle each source pool independently so that every round includes
+  // 3 Terraria people, 3 bosses and 4 important things (10 total).
+  // Group membership stays fixed for adding the correct GIF later.
+  // The actual positions are randomized again on every round/replay.
+  const shuffledPeople = shuffledForLevels(terrariaKeywords.slice(0, 15), 20261115);
+  const shuffledBosses = shuffledForLevels(terrariaKeywords.slice(15, 30), 20261116);
+  const shuffledThings = shuffledForLevels(terrariaKeywords.slice(30, 50), 20261117);
   const terrariaRounds = Array.from({length:5}, (_, round) => ({
-    pairs: mixedTerrariaKeywords
-      .slice(round * 10, (round + 1) * 10)
-      .map(name => ({name, gif: terrariaGifs[name] || ''}))
+    pairs: shuffledForLevels([
+      ...shuffledPeople.slice(round * 3, round * 3 + 3),
+      ...shuffledBosses.slice(round * 3, round * 3 + 3),
+      ...shuffledThings.slice(round * 4, round * 4 + 4)
+    ], 20261200 + round).map(name => ({
+      name, gif: terrariaGifs[name] || ''
+    }))
   }));
 
   const categories = [
