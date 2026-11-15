@@ -293,7 +293,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   position:relative;display:grid;
   grid-template-columns:minmax(0,1fr) var(--memory-lane-width) minmax(0,1fr);
   grid-template-rows:auto;
-  width:min(100%,calc((100svh - 270px)*1.4));
+  width:min(100%,calc(140svh - 378px));
   max-width:1160px;min-width:0;min-height:0;
   gap:0;margin:10px auto 0;align-items:stretch;
 }
@@ -347,7 +347,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
 @media(max-height:800px) and (min-width:721px){
   .memory-heading{height:clamp(90px,15svh,145px)}
   .memory-main{padding-bottom:9px}
-  .memory-matching-board{width:min(100%,calc((100svh - 225px)*1.4))}
+  .memory-matching-board{width:min(100%,calc(140svh - 315px))}
   .memory-footer-badge{height:54px;margin-top:10px}
   .memory-footer-crown{top:-20px;font-size:36px}
   .memory-footer-badge-label{min-height:45px}
