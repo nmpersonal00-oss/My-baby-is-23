@@ -13,7 +13,6 @@
 
   const STORAGE = 'rayans-forest-cozy-music-v1';
   const AUDIO_KEY = 'cozy-library';
-  const DRIVE_KEY = 'rayans-forest-cozy-drive-song-v1';
   const SETTINGS_KEY = 'rayans-forest-cozy-settings-v1';
   const POSITION_KEY = 'rayans-forest-cozy-position-v1';
   const WORD_SEARCH = /\/chapters\/word-search\.html$/i.test(location.pathname);
@@ -63,25 +62,12 @@
     '<div class="forest-music-menu" id="forest-cozy-menu" hidden>',
     '<label for="forest-cozy-volume">Music volume</label>',
     '<input id="forest-cozy-volume" type="range" min="0" max="100" value="55" aria-label="Music volume">',
-    '<p>Link Cozy Library from Google Drive without downloading it, or import a local MP3. It plays across the Forest; Word Search worlds keep their own songs.</p>',
-    '<div class="forest-cozy-drive-area" id="forest-cozy-drive-area">',
-    '<strong>Cozy Library from Google Drive</strong>',
-    '<p>Connect once, then drop or paste a Drive folder or song link. No music downloads required.</p>',
-    '<button type="button" id="forest-cozy-drive-connect">Connect Google Drive</button>',
-    '<label for="forest-cozy-drive-link">Google Drive folder or song link</label>',
-    '<div class="forest-cozy-drop" id="forest-cozy-drop">',
-    '<span>Drop a Google Drive link here</span>',
-    '<input id="forest-cozy-drive-link" type="url" inputmode="url" placeholder="Or paste the Drive link" autocomplete="off">',
-    '</div>',
-    '<button type="button" id="forest-cozy-drive-add">Use Google Drive music</button>',
-    '<select id="forest-cozy-drive-select" aria-label="Select Cozy Library song" hidden></select>',
-    '<button type="button" id="forest-cozy-drive-pick" hidden>Play selected song</button>',
-    '<p class="forest-cozy-drive-feedback" id="forest-cozy-drive-feedback" role="status" aria-live="polite"></p>',
-    '</div>',
-    '<button type="button" id="forest-cozy-import">Or choose a local Cozy Library MP3</button>',
+    '<p>Drag your downloaded music folder anywhere onto the Forest. Or choose the folder below. Cozy Library will play throughout the app, while Word Search has its own soundtracks.</p>',
+    '<button type="button" id="forest-cozy-folder">Choose music folder from laptop</button>',
+    '<button type="button" id="forest-cozy-import">Or choose one Cozy Library MP3</button>',
     '<input id="forest-cozy-file" type="file" accept=".mp3,.m4a,.mp4,.ogg,.wav,audio/*" hidden>',
     '<button type="button" id="forest-cozy-delete">Remove saved Cozy Library music</button>',
-    '<p class="forest-music-note">Local MP3 imports stay in this browser. Drive songs play online with Google sign-in; only the song link is remembered here.</p>',
+    '<p class="forest-music-note">Music stays on the laptop; select the folder again after closing this website. No upload or Google account required.</p>',
     '</div>',
     '</div>'
   ].join('');
@@ -104,11 +90,7 @@
   const volumeSlider = find('forest-cozy-volume');
   const fileInput = find('forest-cozy-file');
   const deleteButton = find('forest-cozy-delete');
-  const driveArea = find('forest-cozy-drive-area'), driveConnect = find('forest-cozy-drive-connect');
-  const driveInput = find('forest-cozy-drive-link'), driveDrop = find('forest-cozy-drop');
-  const driveAdd = find('forest-cozy-drive-add'), driveSelect = find('forest-cozy-drive-select');
-  const drivePick = find('forest-cozy-drive-pick'), driveFeedback = find('forest-cozy-drive-feedback');
-  let driveChoices = [];
+  const hub = window.forestLocalMusic;
   volumeSlider.value = String(Math.round(audio.volume * 100));
 
   function rememberSettings() {
@@ -134,8 +116,7 @@
     playButton.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
     deleteButton.disabled = !ready || !savedFile;
     status.textContent = message || (!ready ? 'Preparing music…'
-      : !savedFile ? 'Add your Cozy Library music using ⚙'
-      : savedFile.driveId && !window.forestDrive?.hasAccess() ? 'Connect Google Drive in ⚙ to play your music'
+      : !savedFile ? 'Drop your music folder or choose it using ⚙'
       : userPaused ? 'Paused'
       : playing ? '♫ Your Cozy Library music is playing'
       : 'Tap Play if your browser blocked autoplay');
@@ -195,33 +176,13 @@
     update();
   }
 
-  async function loadDriveAudio() {
-    if (!savedFile?.driveId) return;
-    if (!window.forestDrive?.hasAccess()) throw Error('Connect Google Drive in ⚙ settings.');
-    const id = savedFile.driveId;
-    const blob = await window.forestDrive.audioBlob(id);
-    if (savedFile?.driveId !== id) return;
-    const url = URL.createObjectURL(blob);
-    audio.pause();
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
-    objectUrl = url;
-    audio.src = url;
-    audio.load();
-  }
-
   async function tryPlay() {
     if (!ready || !savedFile || userPaused || disabledForWorld) { update(); return; }
-    if (savedFile.driveId && !window.forestDrive?.hasAccess()) {
-      message = 'Connect Google Drive in ⚙ settings to play Cozy Library.';
-      update();
-      return;
-    }
     if (loading) { retryAfterPending = true; update(); return; }
     loading = true;
     message = '';
     try {
       const expectedFile = savedFile;
-      if (savedFile.driveId && !objectUrl) await loadDriveAudio();
       if (userPaused || disabledForWorld || savedFile !== expectedFile) return;
       const promise = audio.play();
       if (promise && typeof promise.then === 'function') await promise;
@@ -230,8 +191,7 @@
       if (error?.name === 'NotAllowedError') {
         message = 'Tap Play to allow music in this browser.';
       } else if (error?.name !== 'AbortError') {
-        message = savedFile?.driveId ? (error?.message || 'Could not play Google Drive audio. Reconnect and try again.')
-          : REMOTE_URL ? 'The forest soundtrack could not load. Please check the music server.' : 'This file could not play. Try choosing an MP3 again.';
+        message = REMOTE_URL ? 'The forest soundtrack could not load. Please check the music server.' : 'This file could not play. Try choosing an MP3 again.';
       }
     } finally {
       loading = false;
@@ -318,146 +278,44 @@
     audio.volume = Number(volumeSlider.value) / 100;
     rememberSettings();
   });
-  function saveDriveChoice(choice) {
-    try { localStorage.setItem(DRIVE_KEY,JSON.stringify(choice)); }
-    catch { driveFeedback.textContent = 'Your browser may not remember this song on your next visit.'; }
-  }
-  async function installDriveChoice(choice) {
-    savedFile = { driveId:choice.fileId, name:choice.name };
-    audio.pause();
-    audio.removeAttribute('src');
-    audio.load();
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
-    objectUrl = null;
-    saveDriveChoice(choice);
-    try { localStorage.removeItem(POSITION_KEY); } catch {}
-    userPaused = false;
-    rememberSettings();
-    message = '';
-    update();
-    driveFeedback.textContent = 'Linked ' + choice.name + ' from Google Drive. No download is saved.';
-    await tryPlay();
-  }
-  async function connectDrive() {
-    if (!window.forestDrive) throw Error('Google Drive integration did not load. Refresh the page.');
-    await window.forestDrive.connect();
-    driveConnect.textContent = 'Google Drive connected';
-    driveFeedback.textContent = 'Connected. Paste or drop a Google Drive music link.';
-  }
-  driveConnect.addEventListener('click',() => {
-    if (!window.forestDrive?.configured) {
-      // Use Drive's own playback page as the no-download fallback.
-      window.open('https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5', '_blank', 'noopener,noreferrer');
-      return;
-    }
-    connectDrive().then(() => {
-      if (savedFile?.driveId && !userPaused) tryPlay();
-    }).catch(error => { driveFeedback.textContent = error.message; });
-  });
-  async function chooseDriveLink() {
-    const drive = window.forestDrive;
-    if (!drive) throw Error('Google Drive integration did not load. Refresh the page.');
-    if (!drive.configured) throw Error('In-app music needs Google Drive setup first. Use Open music in Google Drive instead; no download is needed.');
-    const fileId = drive.fileId(driveInput.value);
-    const folderId = drive.folderId(driveInput.value);
-    if (!fileId && !folderId) throw Error('Paste a Google Drive folder or audio file link.');
-    if (!drive.hasAccess()) await drive.connect();
-    let choices = [];
-    if (fileId && !/\/folders\//.test(driveInput.value)) {
-      const song = await drive.metadata(fileId);
-      if (!song.mimeType?.startsWith('audio/') && !/\.(mp3|m4a|mp4|ogg|oga|wav|aac|flac)$/i.test(song.name || ''))
-        throw Error('That Drive link is not an audio file.');
-      choices = [{fileId:song.id,name:song.name}];
-    } else {
-      driveFeedback.textContent = 'Finding music in your Google Drive folder…';
-      const folder = await drive.listFolder(folderId);
-      choices = folder.tracks.map(({fileId,name}) => ({fileId,name}));
-    }
-    if (!choices.length) throw Error('No audio files found in that Google Drive folder.');
-    const cozy = choices.find(song => /cozy[\s_-]*library/i.test(song.name));
-    if (cozy || choices.length === 1) {
-      driveSelect.hidden = drivePick.hidden = true;
-      await installDriveChoice(cozy || choices[0]);
-    } else {
-      driveChoices = choices;
-      driveSelect.replaceChildren(...choices.map((song,index) => new Option(song.name,String(index))));
-      driveSelect.hidden = drivePick.hidden = false;
-      driveFeedback.textContent = 'Choose your Cozy Library song below, then tap Play selected song.';
-    }
-  }
-  driveAdd.addEventListener('click',() => {
-    driveAdd.disabled = true;
-    chooseDriveLink().catch(error => { driveFeedback.textContent = error.message; })
-      .finally(() => { driveAdd.disabled = false; });
-  });
-  drivePick.addEventListener('click',() => {
-    const selected = driveChoices[Number(driveSelect.value)];
-    if (selected) installDriveChoice(selected)
-      .catch(error => { driveFeedback.textContent = error.message; });
-  });
-  driveDrop.addEventListener('dragover',event => { event.preventDefault(); driveDrop.classList.add('is-dragging'); });
-  driveDrop.addEventListener('dragleave',() => driveDrop.classList.remove('is-dragging'));
-  driveDrop.addEventListener('drop',event => {
-    event.preventDefault();
-    driveDrop.classList.remove('is-dragging');
-    const transfer = event.dataTransfer;
-    const text = transfer?.getData('text/uri-list') || transfer?.getData('text/plain') ||
-      transfer?.getData('text/html') || '';
-    const match = text.match(/https?:\/\/drive\.google\.com\/[^\s"'<>]+/i);
-    if (match && (window.forestDrive?.folderId(match[0]) || window.forestDrive?.fileId(match[0]))) {
-      driveInput.value = match[0];
-      driveFeedback.textContent = 'Drive link received. Click “Use Google Drive music”.';
-    } else {
-      driveFeedback.textContent = 'Drive did not share a link. In Google Drive choose Copy link, then paste it here.';
-    }
-  });
-  if (!window.forestDrive?.configured) {
-    // Never display an inert "Connect" button when no OAuth client ID exists.
-    driveConnect.textContent = 'Open music in Google Drive';
-    driveFeedback.textContent = 'In-app Google Drive playback needs one-time setup. Meanwhile, tap the button above to play in Google Drive without downloading albums.';
-    const help = document.createElement('a');
-    help.href = 'https://github.com/nmpersonal00-oss/My-baby-is-23/blob/main/GOOGLE-DRIVE-MUSIC.md';
-    help.target = '_blank';
-    help.rel = 'noopener noreferrer';
-    help.textContent = 'How to enable in-app Google Drive music';
-    driveFeedback.append(document.createTextNode(' '), help);
-  } else if (window.forestDrive.hasAccess()) {
-    driveConnect.textContent = 'Google Drive connected';
-  }
-
-  find('forest-cozy-import').addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', async () => {
-    const file = fileInput.files?.[0];
-    fileInput.value = '';
-    if (!file) return;
-    if (!(/\.(mp3|m4a|mp4|ogg|oga|wav|aac)$/i.test(file.name) || /^audio\//.test(file.type))) {
-      message = 'Please choose an MP3 or another audio file.';
-      update();
-      return;
-    }
-    message = 'Saving your music on this device…';
-    update();
-    try {
-      await saveFile(file);
-      try { localStorage.removeItem(DRIVE_KEY); } catch {}
-      installFile(file);
+  // A selected laptop folder stays available in the parent page as visitors
+  // move between all the Forest games. No IndexedDB copy is required.
+  hub?.subscribe(({cozy,message:libraryMessage}) => {
+    if (cozy && cozy !== savedFile) {
+      ready = true;
+      installFile(cozy);
       try { localStorage.removeItem(POSITION_KEY); } catch {}
       userPaused = false;
       rememberSettings();
-      message = 'Saved ' + file.name + ' in this browser.';
+      message = 'Cozy Library ready from the laptop.';
       update();
-      await tryPlay();
-    } catch {
-      message = 'Could not store the file. Try a smaller MP3 or free browser storage.';
+      if (!disabledForWorld) tryPlay();
+    } else if (libraryMessage && !savedFile) {
+      message = libraryMessage;
       update();
     }
   });
+  find('forest-cozy-folder').addEventListener('click',() => {
+    if (hub?.chooseFolder) hub.chooseFolder();
+    else { message = 'Music folder picker unavailable. Refresh and try again.'; update(); }
+  });
+  find('forest-cozy-import').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change',() => {
+    const file = fileInput.files?.[0];
+    fileInput.value = '';
+    if (!file) return;
+    if (!hub) {
+      message = 'Music importer unavailable. Refresh the website.';
+      update(); return;
+    }
+    hub.importRecords([{file,path:file.name}],{preferCozy:true});
+  });
   deleteButton.addEventListener('click', async () => {
     if (!ready || !savedFile) return;
-    if (!confirm('Forget Cozy Library in this browser? Nothing is deleted from Google Drive or your files.')) return;
+    if (!confirm('Remove Cozy Library from the app? Your music file on the laptop will not be deleted.')) return;
     try {
       if (db) await removeFile();
-      try { localStorage.removeItem(DRIVE_KEY); } catch {}
+      hub?.clearCozy();
       installFile(null);
       try { localStorage.removeItem(POSITION_KEY); } catch {}
       message = 'Removed from this browser only.';
@@ -484,8 +342,7 @@
   audio.addEventListener('pause', update);
   audio.addEventListener('error', () => {
     if (!savedFile) return;
-    message = savedFile.driveId ? 'The Google Drive song could not play. Reconnect in ⚙ and try again.'
-      : REMOTE_URL ? 'The forest soundtrack is not available yet. Please check the music server.'
+    message = REMOTE_URL ? 'The forest soundtrack is not available yet. Please check the music server.'
       : 'The selected audio could not play; choose an MP3 in settings.';
     update();
   });
@@ -514,7 +371,6 @@
     audio.src = REMOTE_URL;
     audio.load();
     find('forest-cozy-import').hidden = true;
-    driveArea.hidden = true;
     deleteButton.hidden = true;
     const localOnlyNote = menu.querySelector('.forest-music-note');
     if (localOnlyNote) localOnlyNote.hidden = true;
@@ -570,27 +426,18 @@
     db = database;
     const saved = await getFile();
     ready = true;
-    let driveChoice = null;
-    try { driveChoice = JSON.parse(localStorage.getItem(DRIVE_KEY) || 'null'); } catch {}
-    if (driveChoice?.fileId && /^[A-Za-z0-9_-]{15,}$/.test(driveChoice.fileId)) {
-      savedFile = {name: driveChoice.name || 'Cozy Library',driveId:driveChoice.fileId};
-      update();
-    } else if (saved?.blob) installFile(saved.blob);
-    else { message = 'Add your Cozy Library music using ⚙'; update(); }
+    if (hub?.getCozy()) installFile(hub.getCozy());
+    else if (saved?.blob) installFile(saved.blob);
+    else { message = 'Drop your music folder or choose it using ⚙'; update(); }
     if (!userPaused && !disabledForWorld) await tryPlay();
   }).catch(() => {
-    // Google Drive playback also works if IndexedDB local file storage is blocked.
+    // Selected laptop files work even if IndexedDB is blocked.
     db = null;
     ready = true;
-    find('forest-cozy-import').disabled = true;
-    let driveChoice = null;
-    try { driveChoice = JSON.parse(localStorage.getItem(DRIVE_KEY) || 'null'); } catch {}
-    if (driveChoice?.fileId && /^[A-Za-z0-9_-]{15,}$/.test(driveChoice.fileId)) {
-      savedFile = {name:driveChoice.name || 'Cozy Library',driveId:driveChoice.fileId};
-      message = 'Connect Google Drive in ⚙ to play your music.';
-    } else {
-      message = 'Local music storage is unavailable. You can still use Google Drive.';
-    }
+    if (hub?.getCozy()) installFile(hub.getCozy());
+    else message = 'Drop your music folder or choose it using ⚙';
+    update();
+    if (hub?.getCozy() && !userPaused && !disabledForWorld) tryPlay();
     update();
   });
 })();
