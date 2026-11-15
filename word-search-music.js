@@ -53,6 +53,7 @@
     '<strong>Music already on this laptop</strong>',
     '<p id="ws-local-help">Choose the downloaded music folder or drag it here. Songs play directly from the selected folder—no upload or browser storage required.</p>',
     '<button type="button" id="ws-add-folders">Choose music folder</button>',
+    '<button type="button" id="ws-add-folders-fallback" hidden>Use regular folder chooser</button>',
     '<button type="button" id="ws-add">Or choose audio files</button>',
     '<div id="ws-local-drop" class="ws-local-drop" aria-label="Drop a local music folder or audio files">Drop a downloaded folder or audio files here</div>',
     '<label class="ws-remember-label" for="ws-remember"><input id="ws-remember" type="checkbox"> Remember songs in this browser (optional; needs free storage)</label>',
@@ -81,6 +82,7 @@
   const selection = node('ws-select'), category = node('ws-category');
   const volume = node('ws-volume'), sources = node('ws-sources');
   const fileInput = node('ws-file-input'), folderInput = node('ws-folder-input');
+  const fallbackFolderButton = node('ws-add-folders-fallback');
   const localDrop = node('ws-local-drop'), localFeedback = node('ws-local-feedback');
   const rememberLocal = node('ws-remember');
   const remove = node('ws-delete');
@@ -496,9 +498,25 @@
       importingLocal = false;
       node('ws-add').disabled = HOSTED;
       node('ws-add-folders').disabled = HOSTED;
+      fallbackFolderButton.disabled = HOSTED;
     }
   }
 
+  // The File System Access picker avoids the browser's misleading "Upload
+  // these files?" confirmation. It grants only read access to the chosen folder.
+  async function readChosenDirectory(handle, prefix = '') {
+    const path = prefix + handle.name + '/';
+    const records = [];
+    for await (const child of handle.values()) {
+      if (child.kind === 'file') {
+        const file = await child.getFile();
+        records.push({file,path:path + file.name});
+      } else if (child.kind === 'directory') {
+        records.push(...await readChosenDirectory(child,path));
+      }
+    }
+    return records;
+  }
   function entryFile(entry) {
     return new Promise((resolve,reject) => entry.file(resolve,reject));
   }
@@ -624,7 +642,29 @@
     fileInput.click();
   });
   node('ws-add-folders').addEventListener('click',() => {
-    setLocalFeedback('Choose the downloaded music folder, then click Open.');
+    setLocalFeedback('Choose the extracted music folder on the laptop.');
+    if (typeof window.showDirectoryPicker !== 'function') {
+      folderInput.click();
+      return;
+    }
+    // Must call the picker directly from the click event.
+    window.showDirectoryPicker({mode:'read'})
+      .then(handle => {
+        setLocalFeedback('Reading the chosen music folder…');
+        return readChosenDirectory(handle);
+      })
+      .then(files => importSongs(files,true))
+      .catch(error => {
+        if (error?.name === 'AbortError') {
+          setLocalFeedback('Folder selection canceled. Click Choose music folder to try again.');
+        } else {
+          fallbackFolderButton.hidden = false;
+          setLocalFeedback('The folder picker could not read that folder. Click Use regular folder chooser below. ' + (error?.message || ''));
+        }
+      });
+  });
+  fallbackFolderButton.addEventListener('click',() => {
+    setLocalFeedback('Choose the folder and confirm access if your browser asks.');
     folderInput.click();
   });
   fileInput.addEventListener('change',() => {
