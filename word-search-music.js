@@ -54,7 +54,7 @@
     '<button type="button" id="ws-add-folders">Import downloaded album folders</button>',
     '<input id="ws-file-input" type="file" accept="audio/*,.mp3,.m4a,.mp4,.ogg,.wav" multiple hidden>',
     '<input id="ws-folder-input" type="file" webkitdirectory directory multiple hidden>',
-    '<p>Download the songs from <a href="https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5" target="_blank" rel="noopener noreferrer">your Google Drive music folder</a> first.</p>',
+    '<p>Only if you prefer local import: download songs from <a href="https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5" target="_blank" rel="noopener noreferrer">your Google Drive music folder</a>. The Drive option above needs no download.</p>',
     '<div class="ws-source-folders" id="ws-sources"></div>',
     '<button type="button" id="ws-delete">Remove this world’s saved songs</button>',
     '</div>',
