@@ -28,6 +28,17 @@ The Secret Love Notes ornament opens `chapters/love-notes.html`: a full-screen, 
 - The interface includes pointer, touch, keyboard navigation, responsive layout, accessible descriptions for screen readers, and reduced-motion support.
 - The existing homepage and other games are unchanged.
 
+### Love · Thirty Polaroids (November 2026)
+
+The **Love** envelope opens `chapters/love-notes/love.html`, a fully animated, original-art scrapbook created from the approved chibi-couple illustration.
+
+- A glowing, serpentine string draws itself across the scene. **Thirty individually interactive Polaroids** appear in order, with tiny sparkles and a gentle hanging sway, ending at the illustrated couple in the center.
+- The 30 pictures are chat-created kawaii interpretations of the supplied couple reference photos, packaged in a compact local WebP atlas at `assets/love-polaroid-atlas.webp`. The clean matching scenery and the final couple are separate local WebP assets.
+- Clicking or tapping a revealed Polaroid opens a larger photo; Escape or the close button dismisses it.
+- The illustrated **Love** title remains centered, the Back arrow returns to the flying-note garden, and there are **no top-right navigation icons**.
+- The page is built with plain HTML/CSS/JavaScript and loads **no remote images, libraries, emoji packs, or fonts**. Mobile uses a vertical two-column memory trail, while reduced-motion visitors see the completed arrangement immediately.
+- The homepage, Baby quiz, and the other three love-letter destinations are unchanged.
+
 ## Deployment
 
 No packages, build tools, external fonts, or remote image services are required. The site works as static files. For GitHub Pages, use **Settings → Pages → Deploy from a branch → `main` / `(root)`**. Open `index.html` to preview locally.
