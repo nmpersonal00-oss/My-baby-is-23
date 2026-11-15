@@ -44,7 +44,7 @@
     '<label for="ws-drive-link">Google Drive music folder</label>',
     '<div class="ws-drive-drop" id="ws-drive-drop">',
     '<span>Drop a Google Drive folder link here</span>',
-    '<input id="ws-drive-link" type="url" inputmode="url" placeholder="Or paste the folder link" autocomplete="off">',
+    '<input id="ws-drive-link" type="url" inputmode="url" value="https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5" placeholder="Or paste the folder link" autocomplete="off">',
     '</div>',
     '<button type="button" id="ws-drive-add">Use this Drive folder</button>',
     '<p class="ws-drive-feedback" id="ws-drive-feedback" role="status" aria-live="polite"></p>',
@@ -357,7 +357,7 @@
     if (name.includes('dark souls')) return 'souls';
     if (name.includes('lies of p')) return 'lies';
     if (name.includes('bloodborne')) return 'blood';
-    if (name.includes('star wars') || name.includes('mandalorian') || name.includes('jedi survivor') || name.includes('jedi- survivor')) return 'stars';
+    if (name.includes('star wars') || name.includes('mandalorian') || /jedi[\s:\-]*survivor/.test(name)) return 'stars';
     if (name.includes('terraria')) return 'terraria';
     if (name.includes('kawaii') || name.includes('lofi')) return 'princess';
     if (name.includes('hollow knight') || name.includes('silksong')) return 'hollow';
