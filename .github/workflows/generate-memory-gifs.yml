@@ -1,0 +1,142 @@
+name: Generate cinematic memory GIFs
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Category to render; all produces 350 title-specific GIFs
+        required: true
+        type: choice
+        default: sanrio
+        options:
+          - sanrio
+          - silksong
+          - colossus
+          - lies-of-p
+          - terraria
+          - dark-souls
+          - bloodborne
+          - all
+      accept_paid_api_charges:
+        description: I authorize paid OpenAI API image generation and visual checks
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: cinematic-memory-gifs
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    if: ${{ inputs.accept_paid_api_charges }}
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - name: Prepare 10-GIF batches using exact answer inventory
+        id: plan
+        env:
+          SCOPE: ${{ inputs.scope }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,os
+          category=os.environ['SCOPE']
+          choices=['sanrio','silksong','colossus','lies-of-p','terraria','dark-souls','bloodborne']
+          if category not in ['all']+choices:
+              raise SystemExit('Invalid category')
+          selected=choices if category=='all' else [category]
+          matrix={'include':[{'category':c,'start':i} for c in selected for i in range(0,50,10)]}
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('matrix='+json.dumps(matrix,separators=(',',':'))+'\n')
+          print('Batch count:',len(matrix['include']))
+          PY
+
+  render:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'openai>=2.0' 'Pillow>=11.0'
+      - name: Render and visually audit exact-title GIFs
+        id: render
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          test -n "$OPENAI_API_KEY" || { echo 'Missing OPENAI_API_KEY repository secret'; exit 1; }
+          python scripts/generate-memory-gifs.py \
+            --category "${{ matrix.category }}" --start ${{ matrix.start }} \
+            --limit 10 --attempts 2 --generate
+      - name: Archive verified GIFs for review
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p memory-gif-upload
+          find "assets/${{ matrix.category }}" -maxdepth 1 -type f -name '*.gif' -print0 |
+            tar -czf memory-gif-upload/gifs.tar.gz --null -T -
+          if test -f memory-gif-generation-report.json; then
+            cp memory-gif-generation-report.json memory-gif-upload/report.json
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: memory-gif-${{ matrix.category }}-${{ matrix.start }}
+          path: memory-gif-upload/
+          if-no-files-found: error
+          retention-days: 14
+
+  propose:
+    needs: render
+    if: ${{ always() && needs.render.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'Pillow>=11.0'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: memory-gif-*
+          path: memory-gif-uploads/
+      - name: Extract candidate GIFs and link exact names
+        shell: bash
+        run: |
+          find memory-gif-uploads -name gifs.tar.gz -type f -print0 |
+            while IFS= read -r -d '' bundle; do tar -xzf "$bundle"; done
+          python scripts/install-memory-gifs.py
+      - name: Open review PR; do NOT publish without approval
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          if test -z "$(git status --porcelain assets memory-matching-data.js chapters/memory-game.html)"; then
+            echo "No new verified GIFs from this run."
+            exit 0
+          fi
+          branch="generated-memory-gifs-${{ github.run_id }}"
+          git checkout -b "$branch"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets memory-matching-data.js chapters/memory-game.html
+          git commit -m "Stage unique cinematic GIF clues with exact matching and visual audit"
+          git push --set-upstream origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "Review generated cinematic memory GIFs (${{ inputs.scope }})" \
+            --body "AI-generated 480×210 GIF clues were independently visually checked; any uncertain results were omitted. Please inspect every image before merging. Original Hollow Knight remains unchanged. Merging activates the exact-name mappings."
