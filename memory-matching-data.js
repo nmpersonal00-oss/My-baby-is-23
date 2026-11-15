@@ -1,11 +1,11 @@
 /*
  * Matching Memory content.
  *
- * Lies of P now has 50 unique user-chosen names, spread across 5 rounds
- * of 10 in a repeatable, randomized order. All GIFs are intentionally blank.
+ * Lies of P and Terraria each have 50 user-chosen names, spread across
+ * 5 rounds of 10 in a repeatable, randomized order. GIFs are blank for now.
  *
- * To add a Lies of P GIF later, give the exact keyword a file path below,
- * e.g. add a key/value pair to liesOfPGifs such as:
+ * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs
+ * or terrariaGifs. For example, inside liesOfPGifs:
  *   'Pinocchio': '../assets/pinocchio.gif'
  * Each GIF will then match its keyword wherever that keyword appears.
  *
@@ -71,6 +71,63 @@
   // Empty until we select each keyword's GIF together.
   const liesOfPGifs = {};
 
+  // Terraria: the 15 people, 15 bosses, and 20 important things supplied.
+  // These are deliberately shuffled together across all five rounds.
+  const terrariaKeywords = [
+    "Guide",
+    "Merchant",
+    "Demolitionist",
+    "Dye Trader",
+    "Angler",
+    "Arms Dealer",
+    "Goblin Tinkerer",
+    "Witch Doctor",
+    "Clothier",
+    "Painter",
+    "Party Skeleton (Skeleton Merchant)",
+    "Pirate",
+    "Truffle",
+    "Wizard",
+    "Tax Collector",
+    "King Slime",
+    "Eye of Cthulhu",
+    "Eater of Worlds",
+    "Brain of Cthulhu",
+    "Skeletron",
+    "Deerclops",
+    "Wall of Flesh",
+    "The Destroyer",
+    "The Twins",
+    "Skeletron Prime",
+    "Plantera",
+    "Golem",
+    "Duke Fishron",
+    "Lunatic Cultist",
+    "Moon Lord",
+    "Life Crystal",
+    "Mana Crystal",
+    "Life Fruit",
+    "Magic Mirror",
+    "Recall Potion",
+    "Grappling Hook",
+    "Hermes Boots",
+    "Obsidian Shield",
+    "Pylon",
+    "Demon Altar",
+    "Shadow Orb",
+    "Crimson Heart",
+    "Guide Voodoo Doll",
+    "Pwnhammer",
+    "Hardmode",
+    "The Hallow",
+    "Chlorophyte Ore",
+    "Terra Blade",
+    "Celestial Sigil",
+    "Zenith"
+  ];
+  const terrariaGifs = {}; // Add GIFs by exact keyword later.
+
+
   // Deterministic shuffle: the 50 names are genuinely mixed across rounds,
   // but each round keeps its own ten names after a refresh. The actual order
   // of the ten name tiles is shuffled again whenever a round is opened.
@@ -90,6 +147,15 @@
       .map(name => ({name, gif: liesOfPGifs[name] || ''}))
   }));
 
+  // The groups remain stable so each eventual GIF can match its keyword.
+  // The game itself reshuffles each round's visible name tiles on replay.
+  const mixedTerrariaKeywords = shuffledForLevels(terrariaKeywords, 20261115);
+  const terrariaRounds = Array.from({length:5}, (_, round) => ({
+    pairs: mixedTerrariaKeywords
+      .slice(round * 10, (round + 1) * 10)
+      .map(name => ({name, gif: terrariaGifs[name] || ''}))
+  }));
+
   const categories = [
     ['hollow-knight', 'Hollow Knight', 'Where little lights are never forgotten', 'forest-04.png'],
     ['silksong', 'Hollow Knight: Silksong', 'Silken threads beneath the moon', 'forest-03.png'],
@@ -105,6 +171,8 @@
     id, title, tagline, artwork,
     rounds: id === 'lies-of-p'
       ? liesOfPRounds
-      : Array.from({length:5}, () => ({pairs: []}))
+      : id === 'terraria'
+        ? terrariaRounds
+        : Array.from({length:5}, () => ({pairs: []}))
   }));
 })();
