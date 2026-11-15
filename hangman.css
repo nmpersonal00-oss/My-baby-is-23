@@ -1,0 +1,235 @@
+/* Rayan's Dark Forest — approved Gothic Hangman layout.
+   This is genuine responsive HTML/CSS; the clean approved AI artwork is the
+   PAGE BACKGROUND only, never a screenshot of the UI. */
+:root{
+  color-scheme:dark;
+  --hm-gold:#ffdb9c;
+  --hm-gold-strong:#ffe4af;
+  --hm-gold-dark:#b9733c;
+  --hm-purple:#f6b1ff;
+  --hm-magenta:#ea48fd;
+  --hm-night:#0b0620;
+  --hm-text:#fff0d7;
+}
+*{box-sizing:border-box}
+html{min-width:320px;scroll-behavior:smooth}
+body{margin:0;min-height:100svh;background:#0a0520;color:var(--hm-text);font-family:'Cormorant Garamond',Georgia,serif;-webkit-font-smoothing:antialiased}
+button,a{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:3px solid #f9d8ff;outline-offset:4px}
+.hangman-scene{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:#100720 url('assets/hangman-approved-forest.avif') center center/cover no-repeat}
+.hangman-scene::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(4,2,17,.26),transparent 35%,rgba(6,3,19,.14)),linear-gradient(180deg,#10061a21,#1605221c 75%,#0d041c3b)}
+.hangman-layout{display:grid;grid-template-columns:clamp(225px,15.55vw,260px) minmax(0,1fr);min-height:100svh;max-width:1920px;margin:auto}
+/* Actual site navigation; no icon screenshots or emoji fonts. */
+.hangman-sidebar{isolation:isolate;position:relative;display:flex;flex-direction:column;min-height:100svh;
+  border:6px double #ce9e5b;border-radius:20px 20px 8px 8px;
+  background:linear-gradient(90deg,#0a0619ec,#0e071dbd 60%,#0a0516ee);
+  box-shadow:inset 0 0 20px #efae6c4b,4px 0 22px #040113c9,0 0 11px #c9875269;
+  padding:69px 7px 60px;overflow:hidden}
+.hangman-sidebar::before{content:"";position:absolute;inset:9px;z-index:-1;border:1px solid #bb905abd;border-radius:20px;pointer-events:none}
+.hangman-sidebar::after{content:"";position:absolute;bottom:24px;left:50%;width:95px;height:50px;transform:translateX(-50%);
+  border-bottom:3px solid #ffd28a;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 6px #efb77a);opacity:.85}
+.hangman-sidebar-ornate{pointer-events:none;position:absolute;left:50%;transform:translateX(-50%) rotate(45deg);
+  border:2px solid #f7cd8e;background:#2c1432;width:35px;height:35px;box-shadow:0 0 10px #d29b64}
+.hangman-sidebar-ornate::before,.hangman-sidebar-ornate::after{content:"";position:absolute;inset:7px;border:2px solid #e5b774;border-radius:50%}
+.hangman-sidebar-ornate.top{top:-17px}
+.hangman-sidebar-ornate.bottom{bottom:11px}
+.hangman-sidebar-vines{position:absolute;top:48%;left:2px;right:2px;bottom:60px;pointer-events:none;
+  opacity:.75;background:
+    radial-gradient(ellipse at 7% 31%,#a746d4 0 1.5%,transparent 4%),
+    radial-gradient(ellipse at 87% 67%,#a54de6 0 1.6%,transparent 5%),
+    radial-gradient(ellipse at 15% 74%,#ac68ed 0 1.6%,transparent 5%),
+    linear-gradient(145deg,transparent 18%,#45205240 45%,transparent 64%);}
+.hangman-sidebar-vines span{position:absolute;width:40px;height:40px;border:2px solid #b964d2;border-radius:60% 0 60% 0;transform:rotate(39deg);
+  box-shadow:0 0 11px #b75cf466,inset 0 0 7px #9d37cd55;background:#49255d63}
+.hangman-sidebar-vines span:nth-child(1){left:8px;top:14%}
+.hangman-sidebar-vines span:nth-child(2){right:12px;top:45%;width:25px;height:25px}
+.hangman-sidebar-vines span:nth-child(3){left:30px;top:67%;width:32px;height:32px}
+.hangman-navigation{position:relative;z-index:1;display:grid;gap:15px;width:100%;margin:0 auto}
+.hangman-nav-button{width:100%;min-height:69px;display:flex;align-items:center;justify-content:center;gap:12px;
+  border:2px solid #f8cd85;border-radius:19px;
+  background:linear-gradient(140deg,#100c22e8,#07091bdf);
+  color:#ffe4ae;box-shadow:0 0 8px #ffc46d9e,inset 0 0 10px #fab56336;
+  text-shadow:0 0 5px #f1ad72;font:600 clamp(17px,1.45vw,24px)/1.12 'Cinzel',Georgia,serif;
+  transition:transform .2s,box-shadow .2s,border-color .2s}
+.hangman-nav-button:hover{transform:translateY(-2px);box-shadow:0 0 18px #ffd39ec4,inset 0 0 15px #eab16d58}
+.hangman-nav-button.is-active{border-color:#f9b2fe;color:#ffe2cc;background:linear-gradient(140deg,#18082eec,#281040e5);
+  box-shadow:0 0 7px 2px #f76aff,0 0 20px 3px #c42cf9a9,inset 0 0 15px #d64af38c}
+.hangman-nav-icon{width:35px;height:35px;flex:none;filter:drop-shadow(0 0 6px #ffc57e7c)}
+.hangman-nav-matching{gap:9px;font-size:clamp(13px,1.2vw,20px)}
+.hangman-nav-matching .hangman-nav-icon{width:37px;height:37px}
+/* Header and gold ornamental flourishes */
+.hangman-main{min-width:0;padding:0 26px 25px}
+.hangman-header{height:195px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:38px}
+.hangman-header h1{z-index:1;margin:6px 0 -2px;font:500 clamp(65px,6.3vw,105px)/1.07 'Cinzel',Georgia,serif;
+  letter-spacing:.07em;color:#ffe4bd;text-shadow:0 0 3px #fff4cc,0 0 12px #fca4b3,0 1px #9d493a,0 0 31px #f0b06387}
+.hangman-top-flourish,.hangman-title-flourish{position:relative;width:min(520px,80%);height:20px}
+.hangman-top-flourish::before,.hangman-top-flourish::after,.hangman-title-flourish::before,.hangman-title-flourish::after{
+  content:"";position:absolute;top:50%;width:45%;height:2px;background:linear-gradient(90deg,transparent,#efb96e,#ffe3a0);
+  box-shadow:0 0 10px #ffc684a3}
+.hangman-top-flourish::before,.hangman-title-flourish::before{left:0}
+.hangman-top-flourish::after,.hangman-title-flourish::after{right:0;transform:rotate(180deg)}
+.hangman-top-flourish span,.hangman-title-flourish span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);
+  width:13px;height:13px;border:2px solid #ffe6ae;background:#8e4d70;box-shadow:0 0 11px #fcd48b}
+.hangman-title-flourish{width:min(640px,92%);height:31px}
+.hangman-title-flourish::before,.hangman-title-flourish::after{width:44%}
+.hangman-title-flourish span{width:19px;height:19px;border-radius:2px}
+/* Two-column composition from the owner-approved concept */
+.hangman-play-grid{width:100%;max-width:1250px;margin:0 auto;
+  display:grid;grid-template-columns:minmax(320px,400px) minmax(0,1fr);
+  align-items:start;gap:36px}
+.hangman-illustration-frame{position:relative;isolation:isolate;height:584px;margin-top:7px;overflow:hidden;
+  border:3px solid #f7c985;border-radius:39px 39px 48px 48px;
+  background:linear-gradient(145deg,#1d0b3e90,#120c30a3 53%,#070618bb),linear-gradient(180deg,#743cb453,#11051a9c);
+  box-shadow:inset 0 0 0 5px #d8a76e53,inset 0 0 26px #f5b56a51,0 0 19px #f8b96f88}
+.hangman-illustration-frame::before{content:"";position:absolute;z-index:1;inset:8px;pointer-events:none;
+  border:1px solid #fcd796b8;border-radius:34px 34px 43px 43px}
+.hangman-illustration-frame::after{content:"";position:absolute;z-index:2;left:30%;right:30%;top:-2px;
+  height:22px;border-radius:0 0 50% 50%;border-bottom:3px solid #ffc57f;box-shadow:0 5px 9px #f8b45f78}
+.hangman-frame-corner{position:absolute;z-index:3;width:60px;height:60px;pointer-events:none;
+  border-color:#f9d49a;filter:drop-shadow(0 0 4px #f7ad76)}
+.hangman-frame-corner.top-left{top:6px;left:6px;border-top:3px double;border-left:3px double;border-radius:27px 0 0 0}
+.hangman-frame-corner.top-right{top:6px;right:6px;border-top:3px double;border-right:3px double;border-radius:0 27px 0 0}
+.hangman-frame-corner.bottom-left{bottom:6px;left:6px;border-bottom:3px double;border-left:3px double;border-radius:0 0 0 33px}
+.hangman-frame-corner.bottom-right{bottom:6px;right:6px;border-bottom:3px double;border-right:3px double;border-radius:0 0 33px 0}
+.hangman-art{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hangman-drawing-stage{opacity:0;transition:opacity .25s ease}
+.hangman-drawing-stage.is-visible{opacity:1}
+.hangman-art-rose{position:absolute;left:50%;top:-9px;width:27px;height:27px;transform:translateX(-50%) rotate(45deg);
+  background:radial-gradient(circle at center,#f7dca0 0 12%,#973684 17% 44%,#290d2c 67%);
+  border:2px solid #ffd5a0;border-radius:35% 58%;box-shadow:0 0 10px #ffba73}
+.hangman-art-bottom-flourish{position:absolute;left:50%;bottom:-10px;width:32px;height:32px;transform:translateX(-50%) rotate(45deg);
+  border:3px double #ffe2a2;background:#381b42;border-radius:4px;box-shadow:0 0 15px #efbd8d}
+.hangman-board{min-width:0;padding-top:12px}
+.hangman-category-group{height:98px;text-align:center;display:flex;align-items:center;flex-direction:column;gap:12px}
+.hangman-category-title{margin:0;display:flex;align-items:center;justify-content:center;gap:25px;
+  font:600 clamp(20px,2vw,28px)/1 'Cinzel',Georgia,serif;letter-spacing:.025em;
+  color:#ffe3b7;text-shadow:0 0 8px #edb889,0 2px 6px #08041d}
+.hangman-category-title::before,.hangman-category-title::after{content:"";width:125px;max-width:12vw;height:2px;
+  background:linear-gradient(90deg,transparent,#e9b874);box-shadow:0 0 7px #ebb371}
+.hangman-category-title::after{transform:rotate(180deg)}
+.hangman-category-select{display:grid;grid-template-columns:51px minmax(0,1fr) 51px;align-items:center;
+  width:min(370px,100%);height:47px;border:2px solid #f0c680;border-radius:30px;
+  background:linear-gradient(140deg,#0b071edb,#100a23e8);box-shadow:0 0 12px #f9b77aa3,inset 0 0 11px #f6a35d4d}
+#hangman-category-name{min-width:0;padding:0 2px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font:600 23px/1 'Cormorant Garamond',Georgia,serif;color:#fce6be}
+.hangman-category-arrow{display:flex;align-items:center;justify-content:center;height:100%;border:0;background:transparent;
+  color:#ffe0a1;filter:drop-shadow(0 0 6px #f2a768);transition:transform .2s}
+.hangman-category-arrow:hover{transform:scale(1.16)}
+.hangman-category-arrow svg{width:20px;height:20px;fill:currentColor}
+.hangman-answer-frame{position:relative;display:flex;align-items:center;justify-content:center;
+  min-height:126px;padding:20px 17px 18px;margin:0 0 8px;
+  border:3px double #ffc981;border-radius:46px;
+  background:linear-gradient(130deg,#100923f2,#0c061ddf 70%,#10071bf2);
+  box-shadow:inset 0 0 24px #b974685a,0 0 14px #f8b56c95}
+.hangman-answer-frame::after{content:"";position:absolute;inset:6px;border:1px solid #ecb9787c;border-radius:40px;pointer-events:none}
+.hangman-frame-ornament{position:absolute;z-index:2;top:-8px;left:50%;width:24px;height:14px;
+  transform:translateX(-50%);background:radial-gradient(ellipse,#ffdf9f 10%,#885170 65%,transparent 70%);
+  filter:drop-shadow(0 0 4px #ffcc8c)}
+.hangman-word{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;align-content:center;
+  width:100%;max-width:100%;min-height:55px;gap:clamp(5px,1.2vw,16px);flex-wrap:wrap}
+.hangman-letter{display:flex;justify-content:center;align-items:center;min-width:clamp(25px,2.95vw,52px);height:56px;padding:0 2px;
+  border-bottom:4px solid #f8a6ff;border-radius:2px;color:#ffe9cf;text-shadow:0 0 8px #edb5ff;
+  font:600 clamp(21px,3vw,42px)/1 'Cinzel',Georgia,serif;box-shadow:0 8px 10px -10px #f96bff}
+.hangman-letter.is-space{min-width:21px;border:0;box-shadow:none}
+.hangman-letter.is-punctuation{min-width:15px;border:0;box-shadow:none}
+.hangman-errors{display:flex;justify-content:center;align-items:center;min-height:56px;gap:22px;margin-bottom:18px}
+.hangman-errors-label{font:600 clamp(18px,2vw,24px)/1.12 'Cormorant Garamond',Georgia,serif;color:#ffdfbf;
+  white-space:nowrap;text-shadow:0 0 6px #dbaa86}
+.hangman-wrong-track{display:flex;gap:17px;align-items:center;min-height:40px}
+.hangman-diamond{width:24px;height:24px;border:1.5px solid #ffd7ac;transform:rotate(45deg);
+  box-shadow:0 0 8px #f6b5848a,inset 0 0 6px #eeafba38;transition:background .2s,box-shadow .2s}
+.hangman-diamond.is-lost{background:#b43cbb;box-shadow:0 0 12px #f45aebd4,inset 0 0 5px #ffe8ff}
+.hangman-keyboard-frame{position:relative;border:3px double #f5c282;border-radius:33px;
+  padding:24px 30px 19px;background:linear-gradient(160deg,#0e0928e8,#0b0821df 50%,#0f0824eb);
+  box-shadow:inset 0 0 24px #e39e643d,0 0 19px #e8b5739c}
+.hangman-keyboard-frame::before{content:"";position:absolute;inset:7px;pointer-events:none;border:1px solid #d8ab7069;border-radius:27px}
+.hangman-keyboard{position:relative;z-index:1;display:grid;gap:9px}
+.hangman-key-row{display:flex;justify-content:center;gap:9px}
+.hangman-key{height:57px;flex:1 1 0;min-width:0;max-width:70px;
+  border:2px solid #f3c182;border-radius:13px;background:linear-gradient(140deg,#161027,#100b21);
+  color:#ffebcf;text-shadow:0 0 9px #f3bc84;
+  font:500 clamp(22px,2.4vw,37px)/1 'Cinzel',Georgia,serif;
+  box-shadow:0 0 7px #e9ab7399,inset 0 0 11px #f1bd7666;transition:transform .16s,box-shadow .16s,border-color .16s}
+.hangman-key:hover:not(:disabled){transform:translateY(-3px);border-color:#ffe5b3;box-shadow:0 0 17px #ffc78dcc,inset 0 0 13px #ffcd7659}
+.hangman-key.is-correct{color:#fff8dc;border-color:#c9ffdb;background:#17472eab}
+.hangman-key.is-wrong{color:#deb6c6;border-color:#e575a8;background:#442038ba}
+.hangman-key:disabled{cursor:default;opacity:.65}
+.hangman-actions{display:flex;justify-content:center;gap:35px;margin-top:19px}
+.hangman-action-button{position:relative;display:flex;align-items:center;justify-content:center;gap:15px;
+  min-height:65px;width:min(255px,50%);padding:7px 20px;border:2px solid #edabf3;border-radius:38px;
+  color:#ffe7c3;background:linear-gradient(120deg,#5a246bc4,#27123ece 65%,#672b73bd);
+  box-shadow:0 0 14px #f47ef5bf,inset 0 0 14px #e7a1f280;transition:transform .2s,box-shadow .2s;
+  font:600 clamp(16px,1.8vw,23px)/1.1 'Cinzel',Georgia,serif;text-shadow:0 0 10px #edc295}
+.hangman-action-button::before{content:"";position:absolute;inset:5px;border:1px solid #ffd39f65;border-radius:35px;pointer-events:none}
+.hangman-action-button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 20px #ef87f6,inset 0 0 20px #ef9bf2a8}
+.hangman-action-button:disabled{opacity:.5;cursor:default}
+.hangman-action-button svg{width:33px;height:33px;flex:none;color:#ffe0a0;filter:drop-shadow(0 0 5px #dfbc6f)}
+.hangman-status{min-height:25px;margin:14px 0 0;text-align:center;font:italic 500 17px/1.2 'Cormorant Garamond',Georgia,serif;
+  color:#e7c7ef;text-shadow:0 1px 6px #060319}
+
+/* Tablet: preserve full-sized interactive keys and readable category names. */
+@media(max-width:1340px){
+  .hangman-play-grid{gap:25px;grid-template-columns:minmax(305px,35%) minmax(0,1fr)}
+  .hangman-main{padding:0 18px 24px}
+  .hangman-keyboard-frame{padding:21px 18px}
+  .hangman-key-row{gap:6px}
+  .hangman-key{height:53px;font-size:clamp(19px,2.4vw,30px)}
+  .hangman-actions{gap:15px}
+}
+@media(max-width:1130px){
+  .hangman-play-grid{max-width:825px;grid-template-columns:minmax(0,1fr);gap:20px}
+  .hangman-illustration-frame{width:min(430px,100%);height:540px;margin:0 auto}
+  .hangman-board{padding-top:0}
+  .hangman-header{height:166px;padding-top:26px}
+  .hangman-header h1{font-size:clamp(54px,7vw,85px)}
+  .hangman-category-title::before,.hangman-category-title::after{max-width:11vw}
+  .hangman-keyboard-frame{padding:23px 25px}
+  .hangman-key-row{gap:9px}
+  .hangman-key{font-size:clamp(23px,3vw,34px);height:56px}
+}
+@media(max-width:760px){
+  .hangman-layout{display:block}
+  .hangman-sidebar{position:relative;min-height:0;display:block;padding:10px 8px;border-width:0 0 3px;
+    border-radius:0;background:#0c071edb;overflow:visible}
+  .hangman-sidebar::before,.hangman-sidebar::after,.hangman-sidebar-ornate,.hangman-sidebar-vines{display:none}
+  .hangman-navigation{display:flex;justify-content:center;gap:9px;max-width:660px}
+  .hangman-nav-button{flex:1;min-height:52px;border-radius:13px;gap:5px;padding:5px 3px;
+    font-size:clamp(10px,2.4vw,15px)}
+  .hangman-nav-icon,.hangman-nav-matching .hangman-nav-icon{width:25px;height:25px}
+  .hangman-main{padding:0 10px 22px}
+  .hangman-header{height:130px;padding-top:13px}
+  .hangman-header h1{font-size:clamp(38px,10vw,72px);letter-spacing:.045em}
+  .hangman-top-flourish{height:10px}.hangman-title-flourish{height:20px}
+  .hangman-illustration-frame{height:460px;width:min(360px,100%);border-radius:30px}
+  .hangman-board{width:100%;max-width:710px;margin:auto}
+  .hangman-category-group{height:94px;gap:10px}
+  .hangman-answer-frame{min-height:101px;padding:13px 9px;border-radius:28px}
+  .hangman-answer-frame::after{border-radius:22px}
+  .hangman-word{min-height:49px;gap:7px}
+  .hangman-letter{height:47px;border-bottom-width:3px;min-width:clamp(23px,6vw,41px)}
+  .hangman-errors{gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .hangman-wrong-track{gap:12px}
+  .hangman-diamond{width:19px;height:19px}
+  .hangman-keyboard-frame{padding:15px 10px;border-radius:22px}
+  .hangman-keyboard{gap:8px}
+  .hangman-key-row{gap:5px}
+  .hangman-key{height:44px;border-radius:9px;font-size:clamp(15px,4.6vw,27px)}
+  .hangman-action-button{width:min(220px,50%);min-height:54px;gap:7px;padding:5px;font-size:clamp(13px,3.1vw,20px)}
+  .hangman-action-button svg{width:24px;height:24px}
+  .hangman-actions{margin-top:16px;gap:12px}
+}
+@media(max-width:390px){
+  .hangman-main{padding-left:6px;padding-right:6px}
+  .hangman-nav-button{font-size:10px}.hangman-nav-icon{width:21px;height:21px}
+  .hangman-category-title{font-size:19px}
+  .hangman-keyboard-frame{padding:13px 5px}
+  .hangman-key-row{gap:3px}.hangman-key{height:39px;border-width:1px;font-size:15px}
+  .hangman-action-button{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
