@@ -57,8 +57,11 @@
   let wantsMusic = false, userPaused = false, generation = 0, notice = '';
   const objectUrls = new Map();
   try {
-    const value = Number(localStorage.getItem('rayans-wordsearch-music-volume'));
-    if (Number.isFinite(value) && value >= 0 && value <= 1) player.volume = value;
+    const savedVolume = localStorage.getItem('rayans-wordsearch-music-volume');
+    if (savedVolume !== null) {
+      const value = Number(savedVolume);
+      if (Number.isFinite(value) && value >= 0 && value <= 1) player.volume = value;
+    }
   } catch {}
   volume.value = String(Math.round(player.volume * 100));
 
