@@ -1,11 +1,11 @@
 /*
  * Matching Memory content.
  *
- * Lies of P, Terraria, and Shadow of the Colossus each have 50 user-chosen
- * names over 5 rounds of 10. GIFs are blank until we add them.
+ * Lies of P, Terraria, Shadow of the Colossus, and Bloodborne each have
+ * 50 user-chosen names over 5 rounds of 10. GIFs stay blank until added.
  *
  * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs,
- * terrariaGifs, or colossusGifs. For example, inside liesOfPGifs:
+ * terrariaGifs, colossusGifs, or bloodborneGifs. For example, inside liesOfPGifs:
  *   'Pinocchio': '../assets/pinocchio.gif'
  * Each GIF will then match its keyword wherever that keyword appears.
  *
@@ -127,6 +127,67 @@
   ];
   const terrariaGifs = {}; // Add GIFs by exact keyword later.
 
+  // Bloodborne: exactly 15 people, 15 bosses and 20 important things.
+  // Every round will have 3 people, 3 bosses and 4 important things.
+  const bloodbornePeople = [
+    "The Hunter",
+    "Gilbert",
+    "Alfred",
+    "Djura",
+    "Valtr",
+    "Master Willem",
+    "Provost Laurence",
+    "Brador",
+    "Simon the Harrowed",
+    "Younger Madaras Twin",
+    "Henryk",
+    "Suspicious Beggar",
+    "Oedon Chapel Dweller",
+    "Retired Hunter Djura’s Ally",
+    "Blood Minister"
+  ];
+  const bloodborneBosses = [
+    "Cleric Beast",
+    "Father Gascoigne",
+    "Darkbeast Paarl",
+    "Shadows of Yharnam",
+    "The One Reborn",
+    "Micolash, Host of the Nightmare",
+    "Gehrman, the First Hunter",
+    "Martyr Logarius",
+    "Ludwig, the Holy Blade",
+    "Orphan of Kos",
+    "Beast-possessed Soul",
+    "Watchdog of the Old Lords",
+    "Undead Giant",
+    "Merciless Watchers",
+    "Pthumerian Descendant"
+  ];
+  const bloodborneThings = [
+    "Yharnam",
+    "Hunter’s Dream",
+    "Hunter’s Nightmare",
+    "Fishing Hamlet",
+    "Healing Church",
+    "Byrgenwerth",
+    "School of Mensis",
+    "The Choir",
+    "Great Ones",
+    "Old Blood",
+    "Beast Scourge",
+    "Blood Echoes",
+    "Insight",
+    "Blood Vial",
+    "Quicksilver Bullets",
+    "Saw Cleaver",
+    "Hunter Axe",
+    "Trick Weapons",
+    "Caryll Runes",
+    "Chalice Dungeons"
+  ];
+  // Add an exact-name GIF path later (example: 'The Hunter': '../assets/the-hunter.gif').
+  const bloodborneGifs = {};
+
   // Shadow of the Colossus: five agreed sets of ten unique names.
   // The group membership is fixed; the board shuffles positions on each play.
   const colossusRoundNames = [
@@ -234,6 +295,21 @@
     }))
   }));
 
+  // Seeded shuffles keep the 5 groups stable while the game independently
+  // randomizes visible tile order whenever a round starts or Shuffle is clicked.
+  const bloodbornePeopleMixed = shuffledForLevels(bloodbornePeople, 20261118);
+  const bloodborneBossesMixed = shuffledForLevels(bloodborneBosses, 20261119);
+  const bloodborneThingsMixed = shuffledForLevels(bloodborneThings, 20261120);
+  const bloodborneRounds = Array.from({length:5}, (_, round) => ({
+    pairs: shuffledForLevels([
+      ...bloodbornePeopleMixed.slice(round * 3, round * 3 + 3),
+      ...bloodborneBossesMixed.slice(round * 3, round * 3 + 3),
+      ...bloodborneThingsMixed.slice(round * 4, round * 4 + 4)
+    ], 20261210 + round).map(name => ({
+      name, gif: bloodborneGifs[name] || ''
+    }))
+  }));
+
   const categories = [
     ['hollow-knight', 'Hollow Knight', 'Where little lights are never forgotten', 'forest-04.png'],
     ['silksong', 'Hollow Knight: Silksong', 'Silken threads beneath the moon', 'forest-03.png'],
@@ -253,6 +329,8 @@
         ? terrariaRounds
         : id === 'colossus'
           ? colossusRounds
-          : Array.from({length:5}, () => ({pairs: []}))
+          : id === 'bloodborne'
+            ? bloodborneRounds
+            : Array.from({length:5}, () => ({pairs: []}))
   }));
 })();

@@ -111,3 +111,17 @@ To attach a GIF later, add the matching name/path to `colossusGifs` in
 `memory-matching-data.js` (for example,
 `'Wander': '../assets/wander.gif'`). Lies of P, Terraria, and all
 other categories remain unchanged.
+
+### Bloodborne: name-only content
+
+Bloodborne now includes the exact 50 supplied keywords: 15 people, 15 bosses,
+and 20 important things. Five distinct rounds contain ten unique names each,
+balanced at 3 people, 3 bosses, and 4 important things per round. Assignments
+are randomly mixed but stable between visits; the displayed order reshuffles
+on entry and when Shuffle is clicked.
+
+All Bloodborne GIF spaces remain blank for now. To add an animation later,
+assign its path to the corresponding exact name in `bloodborneGifs` inside
+`memory-matching-data.js`, for example
+`'The Hunter': '../assets/the-hunter.gif'`. Existing Lies of P, Terraria,
+Shadow of the Colossus, and other categories are unchanged.
