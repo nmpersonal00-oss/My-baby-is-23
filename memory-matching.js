@@ -17,7 +17,22 @@
   const shuffleButton=$('memory-shuffle'),soundButton=$('memory-sound');
   if(!worldNav||!roundNav||!gifs||!names||!center||!connections||!feedback||!worlds.length)return;
 
-  const characters=['♘','✧','♜','♟','♣','♨','☾','♡'];
+  // Approved AI-painted sprite order from the eight-icon approval sheet.
+  // This replaces the old cropped screenshot icons and Unicode category symbols.
+  const iconIndexByWorld=Object.freeze({
+    'lies-of-p':0,
+    'terraria':1,
+    'colossus':2,
+    'bloodborne':3,
+    'dark-souls':4,
+    'hollow-knight':5,
+    'silksong':6,
+    'sanrio':7
+  });
+  const iconPosition=world=>{
+    const index=iconIndexByWorld[world.id];
+    return typeof index==='number'?((index*100)/7).toFixed(6)+'%':'0%';
+  };
   const htmlEscape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const saved={completed:{}};
   try {
@@ -99,15 +114,12 @@
     }catch{}
   }
   function stopTimers(){clearTimeout(mismatchTimer);clearTimeout(winTimer);mismatchTimer=null;winTimer=null;}
-  function categoryArt(world){
-    return '../assets/'+String(world.artwork||'forest-04.png').replace(/[^a-zA-Z0-9._-]/g,'');
-  }
   function renderCategories(){
     worldNav.innerHTML=worlds.slice(0,8).map((world,i)=>
       `<button type="button" class="memory-category${i===selectedWorld&&chosenByClick?' is-chosen':''}"
         data-world="${i}" aria-pressed="${i===selectedWorld}" aria-label="${htmlEscape(world.title)}, category ${i+1}"
-        style="--category-art:url('${categoryArt(world)}')">
-        <span class="memory-category-icon" aria-hidden="true" style="--icon-y:-${i*58}px;--icon-y-mobile:-${i*44}px"></span>
+        style="--ai-pos:${iconPosition(world)}">
+        <span class="memory-category-icon" aria-hidden="true"></span>
         <span class="memory-category-name">${htmlEscape(world.title)}</span>
       </button>`).join('');
   }
@@ -186,7 +198,8 @@
     if(right.length>1&&right.length===left.length&&right.every((pair,i)=>pair.id===left[i].id))right.push(right.shift());
     game={world,round:selectedRound,pairs,left,right,selected:null,matched:new Set(),locked:false,done:false};
     title.textContent=world.title;
-    emblem.textContent=characters[selectedWorld]||'✧';
+    emblem.textContent='';
+    emblem.style.setProperty('--ai-pos',iconPosition(world));
     roundText.textContent=`Round ${selectedRound} of 5`;
     renderCategories();renderRounds();
     gifs.innerHTML=Array.from({length:MAX},(_,i)=>slot('gif',left[i],i)).join('');
