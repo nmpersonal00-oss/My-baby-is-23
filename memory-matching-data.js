@@ -71,7 +71,9 @@
   ];
 
   // Empty until we select each keyword's GIF together.
-  const liesOfPGifs = {};
+  const liesOfPGifs = {
+    "Pinocchio": '../assets/lies-of-p/pinocchio.gif?v=4d9c23e550'
+  };
 
   // Terraria: the 15 people, 15 bosses, and 20 important things supplied.
   // These are deliberately shuffled together across all five rounds.
@@ -686,7 +688,18 @@
     "Sanrio Character Ranking"
   ];
   // Round 1: custom animated GIF artwork lives in assets/sanrio/round-1.
-  const sanrioGifs = {}; // Awaiting faithful, visually verified animation artwork.
+  const sanrioGifs = {
+    "Badtz-Maru": '../assets/sanrio/badtz-maru.gif?v=60eadd6939',
+    "Jimmy": '../assets/sanrio/jimmy.gif?v=26313fe526',
+    "Pekkle": '../assets/sanrio/pekkle.gif?v=30efc28619',
+    "Kirimichan": '../assets/sanrio/kirimichan.gif?v=3df3e664a3',
+    "My Melody": '../assets/sanrio/my-melody.gif?v=83a7c62fda',
+    "Sanrio Puroland": '../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817',
+    "Pompompurin": '../assets/sanrio/pompompurin.gif?v=571cf2332c',
+    "Cinnamoroll": '../assets/sanrio/cinnamoroll.gif?v=0d43011b74',
+    "Pochacco": '../assets/sanrio/pochacco.gif?v=2d5f45865c',
+    "Sugarbunnies": '../assets/sanrio/sugarbunnies.gif?v=7b4e62125f'
+  };
 
   // Fixed mixed groups, freshly randomized board positions each time.
   // Rounds 2 and 4 include one workplace boss each; every round includes
