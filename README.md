@@ -97,3 +97,17 @@ that item's exact name to `terrariaGifs` in `memory-matching-data.js`,
 for example `'Guide': '../assets/guide.gif'`. The correct name-to-GIF
 relationship will work without changing the game mechanics. Lies of P and
 the other six categories retain their existing data and styles.
+
+### Shadow of the Colossus: name-only content
+
+Shadow of the Colossus now has all 50 names supplied by the owner, in the
+five explicitly agreed sets of 10. The lists include people, colossi, places,
+items, and gameplay elements, with exact punctuation such as “Emon’s soldiers”
+and “Queen’s Sword”. Every term appears once, and each round's names are
+reshuffled visually when the round starts or Shuffle is pressed.
+
+Its ten GIF spaces remain empty in every round until images are selected.
+To attach a GIF later, add the matching name/path to `colossusGifs` in
+`memory-matching-data.js` (for example,
+`'Wander': '../assets/wander.gif'`). Lies of P, Terraria, and all
+other categories remain unchanged.
