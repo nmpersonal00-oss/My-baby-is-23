@@ -43,7 +43,7 @@
   let pointerStart = null;
   let seed = 261123;
   const rng = () => ((seed = seed * 16807 % 2147483647) - 1) / 2147483646;
-  const localAssets = scenes.map((_,i)=>originalHref+(i+1)+'.webp');
+  const localAssets = scenes.map((_,i)=>originalHref+(i+1)+'.webp'+(i>=4?'?v=sharp-20261115':''));
   localAssets.forEach(src=>{const img=new Image();img.src=src;});
 
   // All floating artwork is drawn in local CSS: zero emoji/remote assets.
