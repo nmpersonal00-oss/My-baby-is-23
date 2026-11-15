@@ -345,6 +345,11 @@
     driveFeedback.textContent = 'Connected. Paste or drop a Google Drive music link.';
   }
   driveConnect.addEventListener('click',() => {
+    if (!window.forestDrive?.configured) {
+      // Use Drive's own playback page as the no-download fallback.
+      window.open('https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5', '_blank', 'noopener,noreferrer');
+      return;
+    }
     connectDrive().then(() => {
       if (savedFile?.driveId && !userPaused) tryPlay();
     }).catch(error => { driveFeedback.textContent = error.message; });
@@ -352,6 +357,7 @@
   async function chooseDriveLink() {
     const drive = window.forestDrive;
     if (!drive) throw Error('Google Drive integration did not load. Refresh the page.');
+    if (!drive.configured) throw Error('In-app music needs Google Drive setup first. Use Open music in Google Drive instead; no download is needed.');
     const fileId = drive.fileId(driveInput.value);
     const folderId = drive.folderId(driveInput.value);
     if (!fileId && !folderId) throw Error('Paste a Google Drive folder or audio file link.');
@@ -406,8 +412,15 @@
     }
   });
   if (!window.forestDrive?.configured) {
-    driveFeedback.textContent = 'Google Drive requires one-time setup by the gift creator.';
-    driveConnect.disabled = true;
+    // Never display an inert "Connect" button when no OAuth client ID exists.
+    driveConnect.textContent = 'Open music in Google Drive';
+    driveFeedback.textContent = 'In-app Google Drive playback needs one-time setup. Meanwhile, tap the button above to play in Google Drive without downloading albums.';
+    const help = document.createElement('a');
+    help.href = 'https://github.com/nmpersonal00-oss/My-baby-is-23/blob/main/GOOGLE-DRIVE-MUSIC.md';
+    help.target = '_blank';
+    help.rel = 'noopener noreferrer';
+    help.textContent = 'How to enable in-app Google Drive music';
+    driveFeedback.append(document.createTextNode(' '), help);
   } else if (window.forestDrive.hasAccess()) {
     driveConnect.textContent = 'Google Drive connected';
   }
