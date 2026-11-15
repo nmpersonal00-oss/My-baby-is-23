@@ -69,8 +69,6 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   background:linear-gradient(150deg,#090619ed,#160920e9 53%,#060514ec);
   box-shadow:0 0 25px #f3b76594,inset 0 0 24px #ce954f5c}
 .memory-categories::before{content:"";position:absolute;inset:6px;border:1px solid #f3cd8aa6;border-radius:35px;pointer-events:none}
-.memory-categories::after{content:"❧ ✦ ❧";position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
-  padding:0 14px;color:#ffe1a3;background:#130a20;font:26px Georgia,serif;text-shadow:0 0 9px #f6b75b}
 .memory-categories-crown{position:absolute;top:-27px;left:50%;transform:translateX(-50%);
   font:44px Georgia,serif;color:#ffd28d;text-shadow:0 0 10px #f6c17c;pointer-events:none}
 .memory-categories h2{position:relative;z-index:1;margin:0;text-align:center;
@@ -114,7 +112,6 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
 }
 .memory-category-name{flex:1;min-width:0;max-width:222px;font:600 clamp(17px,1.6vw,22px)/.99 'Cormorant Garamond',Georgia,serif;
   text-shadow:0 1px 3px #000,0 0 7px #000;overflow-wrap:normal}
-.memory-categories-bottom{height:16px;text-align:center;color:#eebd77;font:20px Georgia,serif}
 /* Game header is real text/buttons; center is open so the waterfall remains visible. */
 .memory-game{min-width:0;position:relative;padding:3px 0 0}
 .memory-game-top{display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.6vw,20px);min-height:65px}
@@ -249,7 +246,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   .memory-heading p{font-size:17px}.memory-content{display:block}
   .memory-categories{width:100%;max-width:100%;margin:8px auto 16px;padding:9px 10px 12px;border-radius:20px}
   .memory-categories::before{inset:4px;border-radius:16px}.memory-categories-crown{font-size:25px;top:-18px}
-  .memory-categories h2{font-size:15px}.memory-categories-decoration,.memory-categories-bottom,.memory-categories::after{display:none}
+  .memory-categories h2{font-size:15px}.memory-categories-decoration{display:none}
   .memory-world-list{display:flex;gap:7px;overflow-x:auto;padding:8px 3px 11px;scrollbar-color:#c89466 #0b0a17;scrollbar-width:thin;overscroll-behavior-x:contain}
   .memory-category{flex:0 0 137px;min-height:88px;padding:5px;flex-direction:column;justify-content:center;gap:4px}
   .memory-category::after{display:none}
