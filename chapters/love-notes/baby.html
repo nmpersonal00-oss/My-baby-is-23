@@ -2,18 +2,70 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0c1824">
-  <title>Baby · Secret Love Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#361326">
+  <meta name="description" content="A little enchanted guessing game made for my sweet boy.">
+  <title>Baby · Secret Love Notes · Rayan's Dark Forest</title>
   <link rel="icon" href="../../assets/heart.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../../love-notes.css">
+  <link rel="preload" href="../../assets/baby-quiz-blank-scene.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="../../love-notes-baby.css">
+  <script defer src="../../love-notes-baby.js"></script>
 </head>
-<body class="empty-love-note">
-  <main class="empty-scene" aria-label="Baby — empty love note page">
-    <div class="love-scenery" aria-hidden="true"></div>
-    <a class="return-to-letters" href="../love-notes.html" aria-label="Back to flying letters">
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 5-7 7 7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+<body class="baby-world">
+  <main class="baby-viewport" aria-label="Baby's little guessing game">
+    <div class="baby-stage" id="baby-stage">
+      <img class="baby-art" src="../../assets/baby-quiz-blank-scene.webp" width="1672" height="941" draggable="false" alt="" aria-hidden="true">
+      <div class="baby-magical-lights" id="baby-magical-lights" aria-hidden="true"></div>
+      <a class="baby-back" href="../love-notes.html" aria-label="Back to the flying love letters">
+        <span class="baby-back-arrow" aria-hidden="true">←</span><span class="baby-back-text">Back to the letters</span>
+      </a>
+      <h1 class="baby-mobile-title">Baby</h1>
+      <div class="baby-questions" aria-label="Four questions about me">
+        <section class="baby-question baby-question--animal" data-question="animal" aria-labelledby="baby-animal-question">
+          <h2 id="baby-animal-question">What's my favorite<br>animal?</h2>
+          <div class="baby-answers" role="group" aria-label="Choose my favorite animal">
+            <button type="button" data-answer="Cat">Cat</button>
+            <button type="button" data-answer="Dog">Dog</button>
+            <button type="button" data-answer="Bunny">Bunny</button>
+            <button type="button" data-answer="Duck">Duck</button>
+          </div>
+        </section>
+        <section class="baby-question baby-question--color" data-question="color" aria-labelledby="baby-color-question">
+          <h2 id="baby-color-question">What's my favorite<br>color?</h2>
+          <div class="baby-answers" role="group" aria-label="Choose my favorite color">
+            <button type="button" data-answer="Blue">Blue</button>
+            <button type="button" data-answer="Purple">Purple</button>
+            <button type="button" data-answer="Black">Black</button>
+            <button type="button" data-answer="Pink">Pink</button>
+          </div>
+        </section>
+        <section class="baby-question baby-question--drink" data-question="drink" aria-labelledby="baby-drink-question">
+          <h2 id="baby-drink-question">What's my favorite<br>drink?</h2>
+          <div class="baby-answers" role="group" aria-label="Choose my favorite drink">
+            <button type="button" data-answer="Starbucks">Starbucks</button>
+            <button type="button" data-answer="Red Bull">Red Bull</button>
+            <button type="button" data-answer="Dunkin">Dunkin'</button>
+            <button type="button" data-answer="Monster">Monster</button>
+          </div>
+        </section>
+        <section class="baby-question baby-question--game" data-question="game" aria-labelledby="baby-game-question">
+          <h2 id="baby-game-question">What's my favorite<br>game?</h2>
+          <div class="baby-answers" role="group" aria-label="Choose my favorite game">
+            <button type="button" data-answer="Minecraft">Minecraft</button>
+            <button type="button" data-answer="Valorant">Valorant</button>
+            <button type="button" data-answer="Doom">Doom</button>
+            <button type="button" data-answer="Fortnite">Fortnite</button>
+          </div>
+        </section>
+      </div>
+      <article class="baby-letter" id="baby-letter" aria-label="A secret letter waiting to be revealed">
+        <div class="baby-letter-words" id="baby-letter-words" hidden>
+          <p>I love you so much, my sweet boy. You are my everything, my heart, my soul, my body, my life. You are everything and more to me. And I want this dunya and the akhira with you and only you. I am for you and you are for me, forever and always, my sweet boy, my protector, my man</p>
+        </div>
+      </article>
+      <div class="baby-celebration" id="baby-celebration" aria-hidden="true"></div>
+      <p class="baby-screenreader-message" id="baby-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+    </div>
   </main>
 </body>
 </html>
