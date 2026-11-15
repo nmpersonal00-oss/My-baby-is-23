@@ -1,12 +1,12 @@
-/* Gift mode — use music files from this same website, at /audio/.
- * Works on GitHub Pages and alternate static-site hosts, without R2 or any
- * payment information. The gift creator uploads 8 MP3s to the audio folder.
+/* The gift uses Cozy Library globally and all 497 Word Search tracks.
+ * Audio hosting must be configured once by the gift creator; recipients never upload music.
+ * Leave baseUrl empty until the complete library has been hosted and verified.
+ * Do not put passwords, private Drive tokens, or secret API keys here.
  */
-(() => {
-  const file = document.currentScript?.src;
-  const origin = file || location.href;
-  const baseUrl = new URL('audio/', origin).href.replace(/\/+$/, '');
-  window.FOREST_AUDIO_CONFIG = Object.freeze({ baseUrl });
-  window.forestMusicUrl = key => baseUrl + '/' +
+window.FOREST_AUDIO_CONFIG = Object.freeze({baseUrl: ''});
+window.forestMusicUrl = function (key) {
+  const base = (window.FOREST_AUDIO_CONFIG?.baseUrl || '').trim();
+  if (!/^https:\/\//i.test(base)) return null;
+  return base.replace(/\/+$/, '') + '/' +
     String(key).split('/').map(encodeURIComponent).join('/');
-})();
+};
