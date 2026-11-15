@@ -348,7 +348,17 @@
     "Mothwing Cloak": '../assets/hollow-knight/round-2/r02-07-mothwing-cloak.gif?v=1',
     "Essence": '../assets/hollow-knight/round-2/r02-08-essence.gif?v=1',
     "Forgotten Crossroads": '../assets/hollow-knight/round-2/r02-09-forgotten-crossroads.gif?v=1',
-    "Greenpath": '../assets/hollow-knight/round-2/r02-10-greenpath.gif?v=1'
+    "Greenpath": '../assets/hollow-knight/round-2/r02-10-greenpath.gif?v=1',
+    "Tiso": '../assets/hollow-knight/round-3/r03-01-tiso.gif?v=1',
+    "Nailsmith": '../assets/hollow-knight/round-3/r03-02-nailsmith.gif?v=1',
+    "Nailmaster Oro": '../assets/hollow-knight/round-3/r03-03-nailmaster-oro.gif?v=1',
+    "Dung Defender": '../assets/hollow-knight/round-3/r03-04-dung-defender.gif?v=1',
+    "White Defender": '../assets/hollow-knight/round-3/r03-05-white-defender.gif?v=1',
+    "Uumuu": '../assets/hollow-knight/round-3/r03-06-uumuu.gif?v=1',
+    "Mantis Claw": '../assets/hollow-knight/round-3/r03-07-mantis-claw.gif?v=1',
+    "Pale Ore": '../assets/hollow-knight/round-3/r03-08-pale-ore.gif?v=1',
+    "Fungal Wastes": '../assets/hollow-knight/round-3/r03-09-fungal-wastes.gif?v=1',
+    "City of Tears": '../assets/hollow-knight/round-3/r03-10-city-of-tears.gif?v=1'
   };
   const hollowKnightRounds = hollowKnightRoundNames.map(names => ({
     pairs: names.map(name => ({name, gif: hollowKnightGifs[name] || ''}))
