@@ -233,3 +233,35 @@ button:focus-visible,a:focus-visible{outline:3px solid #f9d8ff;outline-offset:4p
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+
+/* Islamic Hangman levels: slim progress/clue row without changing the artwork. */
+.hangman-level-meta{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px 18px;
+  margin:-4px 0 11px;min-height:24px;text-align:center;
+  color:#ffe0af;text-shadow:0 0 7px #efb585}
+.hangman-level-number{font:700 clamp(13px,1.2vw,17px)/1.15 'Cinzel',Georgia,serif}
+.hangman-level-topic{font:italic 600 clamp(15px,1.4vw,20px)/1.15 'Cormorant Garamond',Georgia,serif;
+  color:#f1b9ff}
+.hangman-word{row-gap:9px}
+.hangman-word-unit{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;white-space:nowrap;gap:clamp(2px,.45vw,7px)}
+.hangman-word-gap{display:block;flex:0 0 clamp(6px,.7vw,12px);height:3px}
+.hangman-word-unit .hangman-letter{flex:0 0 auto}
+.hangman-word.is-long .hangman-letter{min-width:clamp(16px,1.9vw,31px);height:43px;padding:0 1px;
+  font-size:clamp(16px,2.15vw,29px)}
+.hangman-word.is-very-long .hangman-letter{min-width:clamp(13px,1.55vw,24px);height:36px;
+  font-size:clamp(14px,1.8vw,23px);border-bottom-width:3px}
+.hangman-word.is-very-long .hangman-word-unit{gap:2px}
+.hangman-next-level:not([hidden]){display:block;margin:9px auto 0;padding:8px 28px;
+  border:2px solid #ffd79a;border-radius:30px;
+  background:linear-gradient(125deg,#290c3df5,#0e092bdc);
+  color:#fff0c7;box-shadow:0 0 12px #eec07c92,inset 0 0 13px #eac07b44;
+  font:700 clamp(15px,1.8vw,20px)/1.2 'Cinzel',Georgia,serif}
+.hangman-next-level:hover{box-shadow:0 0 21px #ffd79ac9,inset 0 0 18px #f4aa7a66}
+.hangman-next-level[hidden]{display:none!important}
+@media(max-width:700px){
+  .hangman-level-meta{margin:-5px 0 10px;gap:6px 11px}
+  .hangman-word.is-long .hangman-letter{min-width:18px;height:35px;font-size:17px}
+  .hangman-word.is-very-long .hangman-letter{min-width:13px;height:32px;font-size:14px}
+  .hangman-word.is-long .hangman-word-unit{gap:2px}
+  .hangman-word-gap{flex-basis:7px}
+}
