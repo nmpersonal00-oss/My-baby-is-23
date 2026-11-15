@@ -136,7 +136,7 @@
     const label=empty?`Empty ${isGif?'GIF':'name'} space ${row+1}`:
       isGif?`GIF clue ${row+1}; choose its name`:`${pair.name}; select matching GIF`;
     const body=empty?(isGif?'':'<span class="memory-empty-name" aria-hidden="true"></span>'):
-      isGif?`<img src="${htmlEscape(pair.gif)}" alt="" loading="lazy" decoding="async" draggable="false">`:
+      isGif?`<img src="${htmlEscape(pair.gif)}" alt="" loading="eager" decoding="async" draggable="false">`:
       `<span>${htmlEscape(pair.name)}</span>`;
     return `<li class="memory-match-row">
       <button type="button" class="memory-match-slot ${empty?'is-empty':'is-filled'}" data-side="${side}" data-row="${row}"
@@ -369,6 +369,12 @@
       else if(!event.shiftKey&&document.activeElement===buttons.at(-1)){event.preventDefault();buttons[0].focus();}
     }
   });
+  const boardViewport=$('memory-board-viewport');
+  boardViewport?.addEventListener('scroll',drawLinks,{passive:true});
+  if(window.ResizeObserver){
+    const boardObserver=new ResizeObserver(()=>drawLinks());
+    boardObserver.observe(center);
+  }
   window.addEventListener('resize',drawLinks,{passive:true});
   window.addEventListener('scroll',drawLinks,{passive:true});
   sparkles();resetRound();
