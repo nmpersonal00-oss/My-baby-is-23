@@ -167,3 +167,21 @@ inside the `silksongGifs` map in `memory-matching-data.js`, for example
 
 The matching mechanics, approved Gothic background, other six categories and
 Word Search/home pages are unchanged.
+
+### Sanrio: name-only content
+
+Sanrio now contains all 50 exact names supplied by the owner: 36 characters,
+2 workplace bosses from Aggretsuko and 12 places/groups/important things.
+Five rounds each have 10 unique entries; 2 rounds include one workplace boss
+each, and all rounds mix characters with other Sanrio names. Seeded shuffling
+keeps the membership of each round consistent across page loads, while the
+matching game shuffles the visible name positions on round start and Shuffle.
+
+Sanrio GIF slots remain blank for now. To add an animation later, provide a
+path keyed by the exact corresponding term inside `sanrioGifs` in
+`memory-matching-data.js`, such as
+`'Hello Kitty': '../assets/hello-kitty.gif'`.
+
+All eight worlds now have name-only content: 400 names in 40 rounds, with no
+GIFs configured. Existing category data, Gothic forest visuals, matching game
+logic, homepage, and Word Search are untouched.
