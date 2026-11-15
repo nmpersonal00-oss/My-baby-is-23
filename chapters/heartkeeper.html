@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15061c">
+<meta name="description" content="The Last Heartkeeper — a secret enchanted adventure inside Rayan's Dark Forest.">
+<title>The Last Heartkeeper · Rayan's Dark Forest</title><link rel="preload" href="../assets/heartkeeper/kingdom.webp" as="image" type="image/webp">
+<link rel="stylesheet" href="../heartkeeper.css">
+<script defer src="../heartkeeper.js"></script>
+</head>
+<script>try{if(sessionStorage.getItem('heartkeeper-code-unlocked')!=='yes')window.location.replace('treasure-trail.html')}catch{}</script>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<symbol id="ic-heart" viewBox="0 0 64 64"><path d="M32 54C22 47 6 35 6 21 6 9 20 5 32 20 44 5 58 9 58 21c0 14-16 26-26 33Z"/><path d="M32 22v21M22 32l10 11 10-11" opacity=".55"/></symbol>
+<symbol id="ic-moon" viewBox="0 0 64 64"><path d="M47 7A28 28 0 1 0 57 51 29 29 0 0 1 47 7Z"/><path d="m46 22 3-6 3 6 6 3-6 3-3 6-3-6-6-3Z"/></symbol>
+<symbol id="ic-star" viewBox="0 0 64 64"><path d="m32 5 8.1 17.3L59 25l-13.5 13 3.3 19L32 47.8 15.2 57l3.3-19L5 25l18.9-2.7Z"/><path d="M32 13v22m-10-8h20" opacity=".5"/></symbol>
+<symbol id="ic-rose" viewBox="0 0 64 64"><path d="M33 50C15 47 9 38 15 26c4-9 15-15 25-10 9 4 11 15 5 23-5 6-14 8-20 4-8-6-5-19 4-20 9-1 12 10 5 13"/><path d="M33 50v12m0-5-12-6m12 4 12-9"/></symbol>
+<symbol id="ic-hourglass" viewBox="0 0 64 64"><path d="M13 6h38M13 58h38M17 7v8c0 11 15 15 15 17S17 38 17 49v8M47 7v8c0 11-15 15-15 17s15 6 15 17v8"/><path d="m21 16 11 12 11-12M21 51l11-12 11 12" opacity=".65"/></symbol>
+<symbol id="ic-key" viewBox="0 0 64 64"><path d="M24 22C7 11 8 3 20 6c5 1 7 6 12 12 5-6 7-11 12-12 12-3 13 5-4 16-3 3-8 5-8 5s-5-2-8-5Z"/><path d="M32 27v31m0-8h12v-7h-7v-7h7"/></symbol>
+<symbol id="ic-crown" viewBox="0 0 64 64"><path d="m8 45-4-32 17 15 11-22 11 22 17-15-4 32Z"/><path d="M8 49h48v9H8Zm24-33v15M16 40h32"/></symbol>
+<symbol id="ic-shield" viewBox="0 0 64 64"><path d="m32 5 23 9v17c0 14-11 22-23 28C20 53 9 45 9 31V14Z"/><path d="M32 17v30M20 31h24"/></symbol>
+<symbol id="ic-butterfly" viewBox="0 0 64 64"><path d="M32 31C18 8 5 12 7 26c1 8 9 12 19 9C12 40 9 52 20 55c8 2 12-10 12-19 0 9 4 21 12 19 11-3 8-15-6-20 10 3 18-1 19-9 2-14-11-18-25 5Z"/><path d="M32 24v25m-2-25-7-11m11 11 7-11"/></symbol>
+<symbol id="ic-wing" viewBox="0 0 64 64"><path d="M51 6C35 8 16 12 11 31c-4 15 8 25 21 17C46 39 41 19 51 6Z"/><path d="M15 42 46 14M24 36l-8-14M31 29l-5-16"/></symbol>
+<symbol id="ic-back" viewBox="0 0 64 64"><path d="m35 12-21 20 21 20M15 32h35"/></symbol>
+<symbol id="ic-book" viewBox="0 0 64 64"><path d="M32 14C20 7 9 9 5 12v36c11-5 20-2 27 5 7-7 16-10 27-5V12c-4-3-15-5-27 2Zm0 0v39M12 21c7-2 11-1 15 1m-15 8c7-2 11-1 15 1m10-9c5-2 11-3 15-1m-15 10c5-2 11-3 15-1"/></symbol>
+<symbol id="ic-sound" viewBox="0 0 64 64"><path d="M11 25h11l15-13v40L22 39H11Zm35-7c9 7 9 21 0 28m5-37c15 11 15 35 0 46"/></symbol>
+<symbol id="ic-mute" viewBox="0 0 64 64"><path d="M11 25h11l15-13v40L22 39H11Zm34-8 15 30m0-30L45 47"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 64 64"><path d="M32 3 39 25l22 7-22 7-7 22-7-22-22-7 22-7Z"/><path d="M50 7v10m-5-5h10M8 50v10m-5-5h10"/></symbol>
+<symbol id="ic-check" viewBox="0 0 64 64"><path d="m9 32 15 15L55 15"/></symbol>
+<symbol id="ic-next" viewBox="0 0 64 64"><path d="m25 12 20 20-20 20M16 32h29"/></symbol>
+<symbol id="ic-left" viewBox="0 0 64 64"><path d="M51 31H12m0 0 18-18M12 31l18 18"/></symbol>
+<symbol id="ic-right" viewBox="0 0 64 64"><path d="M13 31h39m0 0L34 13m18 18L34 49"/></symbol>
+<symbol id="ic-help" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26"/><path d="M23 22c2-10 19-12 20 1 1 7-10 9-10 16"/><circle cx="32" cy="47" r="2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="ic-compass" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27"/><path d="m23 23 23-6-6 23-23 6Z"/><path d="m23 23 17 17"/></symbol>
+<symbol id="ic-petal" viewBox="0 0 64 64"><path d="M32 54C11 44 5 24 19 10c12-12 31-7 35 10C57 34 47 47 32 54Z"/><path d="M32 54c4-20 10-29 19-34"/></symbol>
+</svg>
+<main id="app" class="app scene-kingdom">
+  <div class="world-scroll" id="world-scroll" tabindex="0" aria-label="Enchanted world; swipe sideways on narrow screens to explore">
+    <div class="world" id="world">
+      <img class="scene-art" id="scene-art" src="../assets/heartkeeper/kingdom.webp" alt="A moonlit kingdom, with a chained crystal heart, gilded hourglass, and swirling portal" draggable="false">
+      <img class="depth-near" id="depth-near" src="../assets/heartkeeper/kingdom.webp" alt="" aria-hidden="true" draggable="false"><div class="depth-light" id="depth-light" aria-hidden="true"></div><div class="depth-petals" id="depth-petals" aria-hidden="true"></div>
+      <div class="art-dim" id="art-dim"></div><div class="magic-fog"></div><div class="magic-aurora"></div>
+      <div class="spark-field" id="spark-field" aria-hidden="true"></div>
+      <div class="world-hotspots" id="world-hotspots"></div>
+      <div class="world-glow" id="world-glow"></div>
+    </div>
+  </div>
+  <div class="vignette" aria-hidden="true"></div>
+  <header class="hud" aria-label="Adventure controls">
+    <button class="hud-crest" id="home-btn" aria-label="Return to the enchanted kingdom"><svg><use href="#ic-heart"/></svg></button>
+    <div class="hud-title"><small>RAYAN'S DARK FOREST</small><strong>THE LAST HEARTKEEPER</strong></div>
+    <div class="hud-actions">
+      <button id="help-btn" class="hud-button hud-square" title="How to play" aria-label="How to play"><svg><use href="#ic-help"/></svg></button>
+      <a id="forest-link" class="hud-button" href="../index.html" aria-label="Return to Rayan’s Dark Forest"><svg><use href="#ic-back"/></svg><span>FOREST</span></a>
+      <button id="journal-btn" class="hud-button" title="Open journal" aria-label="Open quest journal"><svg><use href="#ic-book"/></svg><span>JOURNAL</span></button>
+      <button id="sound-btn" class="hud-button hud-square" title="Toggle magical sound" aria-label="Toggle magical sound"><svg id="sound-icon"><use href="#ic-mute"/></svg></button>
+    </div>
+  </header>
+  <aside class="chapter-meter" id="chapter-meter" aria-label="Collected relics">
+    <div class="relic" data-relic="moon" title="Crescent of Remembrance"><svg><use href="#ic-moon"/></svg></div>
+    <div class="relic" data-relic="hourglass" title="Hourglass of Tomorrow"><svg><use href="#ic-hourglass"/></svg></div>
+    <div class="relic" data-relic="key" title="Key of the Heart"><svg><use href="#ic-key"/></svg></div>
+  </aside>
+  <div class="chapter-stamp" id="chapter-stamp" aria-hidden="true"></div>
+  <div class="battle-impact" id="battle-impact" aria-hidden="true"></div>
+  <section class="battle-console" id="battle-console" aria-label="The Eclipse Warden battle" hidden><div id="battle-ui"></div></section>
+  <section class="story-card" id="story-card" aria-live="polite">
+    <div class="story-ornament"><span></span><svg><use href="#ic-spark"/></svg><span></span></div>
+    <p class="story-eyebrow" id="story-eyebrow">THE FORGOTTEN KINGDOM</p>
+    <h1 id="story-title">The Last Heartkeeper</h1>
+    <p class="story-copy" id="story-copy">Beyond the final door lies the kingdom that has been waiting for you. Its heart is chained. Its magic is fading. Only one Heartkeeper can set it free.</p>
+    <div class="story-actions" id="story-actions"></div>
+  </section>
+  <div class="quest-ribbon" id="quest-ribbon" hidden><svg><use href="#ic-compass"/></svg><span id="quest-text"></span><button id="quest-help" type="button" aria-label="How to complete this objective"><svg><use href="#ic-help"/></svg></button></div>
+  <div class="mobile-swipe" id="mobile-swipe" aria-hidden="true">DRAG THE PAINTING TO EXPLORE</div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div class="curtain" id="curtain"></div>
+  <div class="popback" id="popback" hidden></div>
+  <section class="dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" hidden>
+    <div class="dialog-inner">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Close"><span>×</span></button>
+      <div class="dialog-rule"><svg><use href="#ic-spark"/></svg></div>
+      <p class="dialog-eyebrow" id="dialog-eyebrow"></p>
+      <h2 id="dialog-title"></h2>
+      <p id="dialog-lead" class="dialog-lead"></p>
+      <div id="dialog-body" class="dialog-body"></div>
+      <div class="dialog-footer" id="dialog-footer"></div>
+    </div>
+  </section>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+</main></body>
+</html>
