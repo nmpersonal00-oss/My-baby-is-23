@@ -2,18 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0c1824">
-  <title>Cutie · Secret Love Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#672856">
+  <meta name="description" content="Four enchanted mystery jigsaws: 100, 200, 300 and 400 pieces. Complete each one to reveal a special memory.">
+  <title>Cutie · Mystery Puzzles · Rayan's Dark Forest</title>
   <link rel="icon" href="../../assets/heart.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../../love-notes.css">
+  <link rel="preload" href="../../assets/cutie-mystery-menu.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="../../cutie-puzzles.css">
+  <script defer src="../../cutie-puzzles.js"></script>
 </head>
-<body class="empty-love-note">
-  <main class="empty-scene" aria-label="Cutie — empty love note page">
-    <div class="love-scenery" aria-hidden="true"></div>
-    <a class="return-to-letters" href="../love-notes.html" aria-label="Back to flying letters">
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 5-7 7 7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+<body class="cutie-body">
+  <main class="cutie-world" id="cutie-world">
+    <section class="cutie-menu" id="cutie-menu" aria-label="Choose a secret Cutie puzzle">
+      <img class="cutie-menu-painting" src="../../assets/cutie-mystery-menu.webp" alt="" draggable="false" aria-hidden="true" width="1672" height="941">
+      <a class="cutie-desktop-back" id="cutie-desktop-back" href="../love-notes.html" aria-label="Back to the flying love letters"></a>
+      <div class="cutie-desktop-choices" id="cutie-desktop-choices" aria-label="Four puzzle challenges">
+        <button type="button" data-puzzle="0" aria-label="Start the 100-piece mystery puzzle"></button>
+        <button type="button" data-puzzle="1" aria-label="Start the 200-piece mystery puzzle"></button>
+        <button type="button" data-puzzle="2" aria-label="Start the 300-piece mystery puzzle"></button>
+        <button type="button" data-puzzle="3" aria-label="Start the bonus 400-piece mystery puzzle"></button>
+      </div>
+      <div class="cutie-mobile-menu">
+        <a href="../love-notes.html" class="cutie-mobile-back" aria-label="Back to flying letters">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 5-7 7 7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg> Back
+        </a>
+        <h1>Cutie</h1>
+        <div class="cutie-mobile-cards">
+          <button type="button" data-puzzle="0" aria-label="Start the 100-piece mystery puzzle"><img src="../../assets/cutie-card-1.webp" alt="A glowing mystery heart with a question mark"><span>100 pieces</span></button>
+          <button type="button" data-puzzle="1" aria-label="Start the 200-piece mystery puzzle"><img src="../../assets/cutie-card-2.webp" alt="A sealed pink love letter hiding a picture"><span>200 pieces</span></button>
+          <button type="button" data-puzzle="2" aria-label="Start the 300-piece mystery puzzle"><img src="../../assets/cutie-card-3.webp" alt="A mysterious enchanted glass dome"><span>300 pieces</span></button>
+          <button type="button" data-puzzle="3" aria-label="Start the 400-piece mystery puzzle"><img src="../../assets/cutie-card-4.webp" alt="A locked winged heart hiding the bonus"><span>Bonus · 400 pieces</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cutie-game" id="cutie-game" aria-label="Cutie jigsaw puzzle" hidden>
+      <div class="cutie-game-glow" aria-hidden="true"></div>
+      <header class="cutie-game-topbar">
+        <button class="cutie-back-game" id="cutie-back-game" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 5-7 7 7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg><span>All puzzles</span></button>
+        <div class="cutie-game-title"><span>Cutie</span><strong id="cutie-game-level">100-piece mystery</strong></div>
+        <div class="cutie-progress-badge" aria-live="off"><span id="cutie-progress-label">0 / 100</span><div class="cutie-progress-track"><i id="cutie-progress-fill"></i></div></div>
+      </header>
+      <div class="cutie-play-layout">
+        <div class="cutie-board-panel">
+          <div class="cutie-board-heading"><span>Our little mystery</span><div class="cutie-zoom-controls"><button type="button" id="cutie-zoom-out" aria-label="Zoom out">−</button><span id="cutie-zoom-label">100%</span><button type="button" id="cutie-zoom-in" aria-label="Zoom in">+</button></div></div>
+          <div class="cutie-board-scroll" id="cutie-board-scroll" role="region" aria-label="Puzzle board; scroll when zoomed" tabindex="0"><div class="cutie-board" id="cutie-board"></div></div>
+          <div class="cutie-board-bottom"><span class="cutie-small-heart" aria-hidden="true"></span><p id="cutie-feedback" role="status" aria-live="polite">Pick a piece, then find where it belongs.</p></div>
+        </div>
+        <aside class="cutie-pieces-panel" aria-label="Shuffled puzzle pieces">
+          <div class="cutie-pieces-heading"><div><h2>Little pieces</h2><p>Drag a piece onto its spot, or tap a piece and then its place.</p></div></div>
+          <div class="cutie-pieces-tools"><button type="button" id="cutie-hint" class="cutie-action">Find my spot</button><button type="button" id="cutie-shuffle" class="cutie-action">Shuffle</button><button type="button" id="cutie-reset" class="cutie-action cutie-reset">Restart</button></div>
+          <div class="cutie-tray-scroll" id="cutie-tray-scroll" role="region" aria-label="Scrollable tray of unsolved jigsaw pieces" tabindex="0"><div class="cutie-tray" id="cutie-tray"></div></div>
+          <p class="cutie-pieces-footer">Every piece brings us a little closer.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="cutie-win" id="cutie-win" role="dialog" aria-modal="true" aria-labelledby="cutie-win-heading" hidden>
+      <div class="cutie-win-card"><div class="cutie-win-spark" aria-hidden="true"></div><p class="cutie-win-eyebrow">A LITTLE MEMORY, UNLOCKED</p><h2 id="cutie-win-heading">You did it!</h2><div class="cutie-win-photo"><img id="cutie-win-image" src="" alt="A memory revealed by completing the puzzle"></div><div class="cutie-win-actions"><button type="button" id="cutie-win-again">Play again</button><button type="button" id="cutie-win-menu">All puzzles</button></div></div>
+    </section>
   </main>
 </body>
 </html>

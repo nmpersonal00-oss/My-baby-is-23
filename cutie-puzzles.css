@@ -1,0 +1,119 @@
+/* Cutie — four enchanted mystery jigsaws. Original local artwork; no remote assets. */
+:root {color-scheme:dark;--cutie-cream:#fff2da;--cutie-pink:#ffb4d2;--cutie-rose:#ea76a8;--cutie-gold:#fce1ae;--cutie-ink:#542645}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#4a275a}
+body.cutie-body{font-family:Georgia,"Palatino Linotype",Palatino,serif;color:var(--cutie-cream);overflow-x:hidden}
+button{font:inherit;-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible{outline:3px solid #fff5c1!important;outline-offset:3px}
+.cutie-world{width:100%;min-height:100svh}
+.cutie-menu{position:relative;width:100%;height:100svh;overflow:hidden;isolation:isolate;background:#643b73}
+.cutie-menu-painting{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+.cutie-desktop-back,.cutie-desktop-choices button{position:absolute;z-index:3;display:block;appearance:none;background:transparent;border:0;cursor:pointer;padding:0;touch-action:manipulation;border-radius:32px}
+.cutie-desktop-back:hover,.cutie-desktop-choices button:hover{outline:2px solid #ffe5bc8c;outline-offset:2px;box-shadow:inset 0 0 24px #fff0d246,0 0 23px #fff4d677}
+.cutie-desktop-choices button:active{transform:scale(.99)}
+.cutie-mobile-menu{display:none}
+.cutie-game[hidden],.cutie-menu[hidden],.cutie-win[hidden]{display:none!important}
+.cutie-game{position:relative;isolation:isolate;width:100%;min-height:100svh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:#321d48}
+.cutie-game::before{content:"";position:absolute;inset:0;z-index:-2;background:url('assets/cutie-mystery-menu.webp') center / cover no-repeat;filter:blur(8px) brightness(.71) saturate(1.02);transform:scale(1.06)}
+.cutie-game::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(145deg,#451f48bf,#4024487d 53%,#342039ba);pointer-events:none}
+.cutie-game-glow{position:absolute;z-index:0;inset:0;pointer-events:none;background:radial-gradient(ellipse at 52% 38%,#f6b3ce23,transparent 57%);animation:cutie-glow 6s ease-in-out infinite alternate}
+.cutie-game-topbar{position:relative;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:14px clamp(16px,2vw,36px);border-bottom:1px solid #f6cdbe70;background:linear-gradient(100deg,#6a2d58d1,#8f5277b0,#54244fd4);box-shadow:0 2px 25px #1c0b2999}
+.cutie-back-game{display:flex;align-items:center;justify-self:start;gap:8px;border:1px solid #f3b5b8;border-radius:999px;padding:10px 17px;background:linear-gradient(180deg,#b53f7b,#6d285a);color:#fff5e8;box-shadow:0 0 12px #e48ba679,inset 0 2px 4px #ffebd94a;cursor:pointer}
+.cutie-back-game svg{width:18px;height:18px}
+.cutie-game-title{display:flex;flex-direction:column;align-items:center;line-height:1.07;gap:2px}
+.cutie-game-title span{font-size:clamp(28px,3.2vw,47px);font-style:italic;font-weight:normal;letter-spacing:-.04em;text-shadow:0 0 9px #ffacb7,0 0 25px #ff7eb9}
+.cutie-game-title strong{font-size:clamp(10px,1vw,13px);letter-spacing:.13em;font-weight:normal;text-transform:uppercase;color:#fce8ce}
+.cutie-progress-badge{justify-self:end;min-width:125px;display:grid;gap:7px;color:#fff2e0;text-align:right;font-size:15px}
+.cutie-progress-track{width:clamp(110px,12vw,195px);height:8px;border-radius:99px;background:#280e36bc;border:1px solid #ecc0ae8c;overflow:hidden;justify-self:end}
+.cutie-progress-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffa6c6,#fff4bf);border-radius:99px;box-shadow:0 0 12px #ffc3bb;transition:width .3s ease}
+.cutie-play-layout{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(275px,330px);gap:clamp(14px,2vw,28px);padding:clamp(12px,2vw,27px);min-height:0;flex:1}
+.cutie-board-panel,.cutie-pieces-panel{min-height:0;display:flex;flex-direction:column;background:linear-gradient(135deg,#5f335ca6,#513253bc 54%,#37213ed4);border:2px solid #f2bdac95;box-shadow:inset 0 1px 0 #ffead97d,0 10px 45px #1c0d2c8a,0 0 25px #f7acc538;border-radius:28px;overflow:hidden}
+.cutie-board-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 20px 9px;color:#fff1db;font-size:clamp(18px,1.8vw,25px);font-style:italic;text-shadow:0 0 12px #ff9cb8}
+.cutie-zoom-controls{display:flex;align-items:center;justify-content:center;gap:7px;font-style:normal;font-size:13px}
+.cutie-zoom-controls button{width:31px;height:31px;display:grid;place-items:center;background:#7d315c;border:1px solid #f9c5bd;border-radius:50%;color:white;cursor:pointer;font-size:20px;line-height:1}
+.cutie-zoom-controls button:disabled{opacity:.42;cursor:default}
+#cutie-zoom-label{min-width:48px;text-align:center;color:#fce2d2}
+.cutie-board-scroll{position:relative;flex:1;min-height:0;margin:7px 18px;padding:20px;overflow:auto;overscroll-behavior:contain;display:block;border:1px solid #ffc6d58e;border-radius:20px;background:radial-gradient(ellipse,#fff1e660,#fad7dc27 65%,transparent 95%),repeating-linear-gradient(45deg,#fff3dd15 0 9px,#cf8b9d16 9px 18px);box-shadow:inset 0 0 22px #381a3788,inset 0 0 0 4px #fff9e21b;scrollbar-color:#f1a8cc #412348}
+.cutie-board{position:relative;margin:auto;display:grid;flex:none;max-width:none;background:linear-gradient(150deg,#fde9deb3,#f9ccd2a4);border:1.5px solid #fff4cd;box-shadow:0 0 0 4px #c6729675,0 0 19px #ffb8c4aa,0 8px 29px #3c204992;touch-action:manipulation;overflow:visible}
+.cutie-slot{position:relative;min-width:0;min-height:0;border:1px solid #af6b8980;background:linear-gradient(160deg,#ffe9e89c,#dba7bea6);padding:0;outline:0;cursor:crosshair;appearance:none;overflow:visible}
+.cutie-slot:nth-child(2n){background:linear-gradient(140deg,#fff2ed91,#dcb4ca9b)}
+.cutie-slot:hover:not(.is-filled),.cutie-slot:focus-visible:not(.is-filled){background:#fff1c2bb;z-index:3}
+.cutie-slot.is-filled{border-color:transparent;background:transparent;cursor:default;z-index:2}
+.cutie-slot img{display:block;position:absolute;left:-23%;top:-23%;width:146%;height:146%;pointer-events:none;max-width:none;filter:drop-shadow(0 0 1px #7b3652c4)}
+.cutie-slot.is-hinted{z-index:5;background:#ffe1a7e8!important;outline:2px solid #fff7c2!important;box-shadow:0 0 20px 6px #ffedaa,0 0 34px #ff77b5;animation:cutie-hint-pulse .75s ease-in-out infinite alternate}
+.cutie-slot.is-wrong{animation:cutie-wrong .3s ease-out}
+.cutie-board-bottom{display:flex;align-items:center;justify-content:center;gap:10px;min-height:39px;padding:0 16px 8px}
+.cutie-board-bottom p{margin:0;font-size:clamp(12px,.95vw,14px);line-height:1.4;color:#ffe8df;text-align:center;font-style:italic}
+.cutie-small-heart{width:10px;height:10px;transform:rotate(45deg);background:#ffa6c4;position:relative;flex:none}
+.cutie-small-heart::before,.cutie-small-heart::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:inherit}
+.cutie-small-heart::before{left:-5px;top:0}.cutie-small-heart::after{left:0;top:-5px}
+.cutie-pieces-panel{padding:13px;gap:12px}
+.cutie-pieces-heading{text-align:center;padding:1px 5px 0}
+.cutie-pieces-heading h2{font-size:clamp(20px,2vw,27px);font-style:italic;font-weight:normal;margin:0 0 5px;color:#fff1d9;text-shadow:0 0 12px #ffa3bf}
+.cutie-pieces-heading p{margin:0;font-size:12px;line-height:1.45;color:#ffe2db}
+.cutie-pieces-tools{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.cutie-action{padding:9px 10px;flex:1 1 auto;border-radius:14px;border:1px solid #ffd7c9;background:linear-gradient(150deg,#e478a4,#a43b79);color:#fff6e9;font-size:12px;white-space:nowrap;box-shadow:inset 0 1px 2px #fff5e44a,0 2px 8px #340c3788;cursor:pointer}
+.cutie-action:hover{filter:brightness(1.11)}
+.cutie-action.cutie-reset{background:linear-gradient(150deg,#76446b,#65335b)}
+.cutie-tray-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:11px 7px;border-radius:16px;border:1px solid #f6c1d58a;background:linear-gradient(150deg,#341b3ab4,#6f395a88);scrollbar-color:#ee9abb #3c2445}
+.cutie-tray{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;justify-items:center;align-content:start}
+.cutie-piece{display:grid;place-items:center;appearance:none;position:relative;border:1px solid #ffcfba6c;border-radius:14px;width:100%;aspect-ratio:1;background:linear-gradient(145deg,#f5cfe352,#694361b0);box-shadow:0 3px 8px #2d14377f;cursor:grab;touch-action:none;user-select:none;overflow:visible;padding:4px}
+.cutie-piece:hover,.cutie-piece:focus-visible{z-index:4;box-shadow:0 0 16px #ffc2e9;transform:translateY(-2px)}
+.cutie-piece.is-selected{z-index:5;border:2px solid #fff7d7;background:#fbbcd488;box-shadow:0 0 20px #ffd9c6,0 0 25px #ffc3dc}
+.cutie-piece canvas{width:100%;max-height:100%;height:auto;pointer-events:none;user-select:none;object-fit:contain;filter:drop-shadow(0 1px 2px #531d43a6)}
+.cutie-pieces-footer{text-align:center;color:#f7cfcc;font-size:12px;font-style:italic;margin:0 0 3px}
+.cutie-drag-ghost{position:fixed;pointer-events:none!important;z-index:9999;width:86px;height:86px;border:2px solid #ffeccd;border-radius:16px;background:#bd75a2b3;box-shadow:0 0 22px #ffe3cd;display:grid;place-items:center;opacity:.94;transform:translate(-50%,-50%)}
+.cutie-drag-ghost canvas{width:100%;height:100%;object-fit:contain}
+.cutie-win{position:fixed;z-index:40;inset:0;display:grid;place-items:center;background:#2d1539c9;backdrop-filter:blur(14px);padding:22px;overflow:auto}
+.cutie-win-card{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:11px;width:min(780px,95vw);max-height:min(94dvh,960px);padding:clamp(16px,2vw,28px);border:3px solid #ffe3b9;border-radius:30px;background:linear-gradient(155deg,#fae2e3,#f9c9d4 60%,#e5b0cf);box-shadow:0 0 0 8px #fa97bb46,0 25px 110px #140a288c,0 0 68px #ffcdd7a2;color:#76365b;animation:cutie-win-pop .65s cubic-bezier(.2,1.3,.4,1) both;overflow:auto}
+.cutie-win-card::before{content:"";position:absolute;inset:11px;pointer-events:none;border:1px solid #b668878a;border-radius:23px}
+.cutie-win-eyebrow{margin:0;color:#a34f6a;font-size:11px;letter-spacing:.26em;font-weight:bold}
+.cutie-win-card h2{margin:0;color:#9b3a69;font-style:italic;font-weight:normal;font-size:clamp(35px,5vw,60px);text-shadow:0 1px 0 #fff,0 0 15px #f6a5d0}
+.cutie-win-photo{display:grid;place-items:center;flex:1;min-height:0;max-height:65dvh;border:9px solid #fff6ee;box-shadow:0 2px 25px #80384d85,0 0 35px #fff3dfaa;border-radius:5px;background:#fffaf3;overflow:hidden}
+.cutie-win-photo img{display:block;width:auto;height:auto;max-width:100%;max-height:62dvh;object-fit:contain}
+.cutie-win-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding-top:3px}
+.cutie-win-actions button{padding:12px 23px;border-radius:999px;border:1px solid #fff4d9;background:linear-gradient(150deg,#eb7baf,#a63772);color:#fff7e9;box-shadow:0 4px 18px #a0477666;cursor:pointer}
+@keyframes cutie-glow{from{opacity:.55}to{opacity:1}}
+@keyframes cutie-hint-pulse{from{transform:scale(.99);opacity:.72}to{transform:scale(1.055);opacity:1}}
+@keyframes cutie-wrong{0%,100%{transform:translateX(0)}30%{transform:translateX(-3px)}60%{transform:translateX(3px)}}
+@keyframes cutie-win-pop{from{opacity:0;transform:translateY(25px) scale(.93)}to{opacity:1;transform:none}}
+@media (max-width:960px){.cutie-play-layout{grid-template-columns:minmax(0,1fr) minmax(210px,265px);gap:12px;padding:12px}.cutie-tray{grid-template-columns:repeat(2,minmax(0,1fr))}.cutie-game-topbar{padding:10px 15px}.cutie-board-scroll{margin:6px 10px}}
+@media (max-width:780px),(orientation:portrait){
+  .cutie-menu{min-height:100svh;height:auto;overflow:visible;background:#5d3472}
+  .cutie-menu-painting{position:fixed;inset:0;height:100svh;filter:blur(8px) brightness(.67);transform:scale(1.08)}
+  .cutie-desktop-back,.cutie-desktop-choices{display:none}
+  .cutie-mobile-menu{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;padding:18px 12px 50px;min-height:100svh}
+  .cutie-mobile-back{align-self:flex-start;display:flex;align-items:center;gap:7px;text-decoration:none;border:1px solid #ffe4d1;border-radius:999px;background:linear-gradient(140deg,#bd4c82,#683153);padding:10px 16px;color:#fff1de;box-shadow:0 0 18px #fdb1b876}
+  .cutie-mobile-back svg{width:18px;height:18px}
+  .cutie-mobile-menu h1{margin:4px 0 16px;font-size:clamp(50px,9.5vw,80px);font-style:italic;font-weight:normal;text-shadow:0 0 20px #ffb6d5,0 0 34px #ffb3bf}
+  .cutie-mobile-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:min(660px,100%);gap:15px}
+  .cutie-mobile-cards button{display:flex;flex-direction:column;align-items:center;padding:0 0 10px;border:2px solid #ffe4c5;border-radius:20px;background:linear-gradient(140deg,#b55b91aa,#723a85d9);color:#fff4dc;box-shadow:0 0 23px #f6a7d64a;overflow:hidden;cursor:pointer}
+  .cutie-mobile-cards button img{display:block;width:100%;height:auto;aspect-ratio:1.47;object-fit:cover}
+  .cutie-mobile-cards button span{padding:5px 6px;font-size:clamp(13px,3vw,20px);font-weight:bold;text-shadow:0 0 9px #ffe2cb}
+  .cutie-game{height:auto;min-height:100dvh;overflow:visible}
+  .cutie-game::before{position:fixed;inset:0;filter:blur(13px) brightness(.43)}
+  .cutie-game-glow{position:fixed}
+  .cutie-game-topbar{position:sticky;top:0;z-index:8;grid-template-columns:auto 1fr auto;padding:10px;gap:8px}
+  .cutie-back-game{padding:9px 10px;font-size:11px}
+  .cutie-back-game svg{width:15px;height:15px}
+  .cutie-game-title span{font-size:29px}
+  .cutie-game-title strong{font-size:9px;letter-spacing:.02em}
+  .cutie-progress-badge{min-width:55px;font-size:11px}
+  .cutie-progress-track{width:65px;height:6px}
+  .cutie-play-layout{display:flex;flex-direction:column;gap:12px;padding:10px;min-height:auto}
+  .cutie-board-panel{min-height:410px;max-height:none}
+  .cutie-board-scroll{height:min(58svh,620px);flex:none;padding:18px;min-height:260px;margin:7px 10px 4px}
+  .cutie-board-heading{padding:12px 13px 5px;font-size:17px}
+  .cutie-pieces-panel{min-height:260px;max-height:none;padding:10px}
+  .cutie-pieces-heading h2{font-size:21px}
+  .cutie-pieces-heading p{font-size:12px}
+  .cutie-tray-scroll{height:min(42svh,370px);flex:none;padding:7px}
+  .cutie-tray{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+  .cutie-piece{border-radius:8px;padding:2px}
+  .cutie-pieces-footer{margin:0;padding-bottom:1px}
+}
+@media(max-width:390px){.cutie-mobile-cards{gap:9px}.cutie-board-heading{font-size:15px}.cutie-game-title strong{font-size:8px}.cutie-tray{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+.cutie-slot canvas{display:block;position:absolute;left:-23%;top:-23%;width:146%;height:146%;max-width:none;pointer-events:none;filter:drop-shadow(0 0 1px #743451c7)}
+.cutie-piece.is-dragging{opacity:.35}
+
+@media(max-width:780px),(orientation:portrait){.cutie-mobile-cards button{padding:0}.cutie-mobile-cards button span{display:none}}
