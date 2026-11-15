@@ -97,3 +97,27 @@
 }
 #forest-music-entrance button:focus-visible {outline:3px solid #fff;outline-offset:4px}
 #forest-music-entrance .forest-entrance-hint {font-size:12px;color:#dec69a}
+
+/* Compact music star: one tap to expand; all player controls live inside. */
+#forest-cozy-music { width:auto; z-index:1100; }
+#forest-cozy-music.is-open { width:min(298px,calc(100vw - 20px)); }
+#forest-cozy-music .forest-music-body[hidden] { display:none!important; }
+#forest-cozy-music .forest-music-toggle {
+  display:grid;place-items:center;width:46px;height:46px;min-width:46px;
+  padding:0;border:1px solid #f0d39b;border-radius:50%;
+  color:#ffe8ad;font:700 29px/1 Georgia,serif;cursor:pointer;
+  background:radial-gradient(circle at 32% 28%,#6c5588,#162134 75%);
+  box-shadow:0 0 22px #f8d99877,0 5px 22px #000a;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+#forest-cozy-music .forest-music-toggle:hover {
+  transform:scale(1.06);box-shadow:0 0 28px #f8d998ab,0 5px 22px #000a;
+}
+#forest-cozy-music.is-open .forest-music-toggle{margin-bottom:6px}
+#forest-cozy-music .forest-music-body { width:100%; }
+#forest-cozy-music:not(.is-open) .forest-music-body{display:none!important}
+@media(max-width:480px){
+ #forest-cozy-music{width:auto}
+ #forest-cozy-music.is-open{width:min(245px,calc(100vw - 16px))}
+ #forest-cozy-music .forest-music-toggle{width:44px;height:44px;min-width:44px}
+}
