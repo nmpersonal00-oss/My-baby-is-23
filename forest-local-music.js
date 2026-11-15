@@ -126,7 +126,8 @@
   const isFrame = (() => { try { return window !== window.parent && !!window.parent.forestMusicShell; } catch { return false; } })();
   if (!isFrame) {
     controls.innerHTML = '<button type="button" class="forest-local-folder-button">♫ Add music folder</button>' +
-      '<p class="forest-local-folder-status" role="status" aria-live="polite">Drag a music folder anywhere onto this page.</p>';
+      '<button type="button" class="forest-local-folder-basic">Use standard folder chooser</button>' +
+      '<p class="forest-local-folder-status" role="status" aria-live="polite">Or drag an extracted music folder anywhere onto this page.</p>';
     document.body.appendChild(controls);
   }
   const overlay = document.createElement('div');
@@ -164,14 +165,18 @@
         return;
       } catch (error) {
         if (error?.name === 'AbortError') { feedback('Folder selection canceled.'); return; }
-        feedback('Could not open that folder. Trying the standard chooser…');
+        feedback('That folder chooser was blocked. Click Use standard folder chooser instead.');
+        return;
       }
     }
     // Opera GX and other desktop browsers can use webkitdirectory.
+    openStandardFolder();
+  }
+  const folderInput = document.createElement('input');
+  function openStandardFolder() {
     folderInput.value = '';
     folderInput.click();
   }
-  const folderInput = document.createElement('input');
   folderInput.type='file';
   folderInput.setAttribute('webkitdirectory','');
   folderInput.setAttribute('directory','');
@@ -185,6 +190,7 @@
     accept(records);
   });
   controls.querySelector('.forest-local-folder-button')?.addEventListener('click',openFolder);
+  controls.querySelector('.forest-local-folder-basic')?.addEventListener('click',openStandardFolder);
   if (!isFrame) hub.chooseFolder = openFolder;
 
   let dragDepth = 0;
