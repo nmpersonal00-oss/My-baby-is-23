@@ -1,0 +1,29 @@
+name: Verify exact memory GIF matching
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'memory-matching-data.js'
+      - 'assets/memory-gif-inventory.json'
+      - 'scripts/verify-memory-gif-links.cjs'
+  pull_request:
+    paths:
+      - 'memory-matching-data.js'
+      - 'assets/memory-gif-inventory.json'
+      - 'assets/**/*.gif'
+      - 'scripts/verify-memory-gif-links.cjs'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-exact-matching:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check 350 exact answers, 480x210 GIF frames, and Hollow Knight isolation
+        run: node scripts/verify-memory-gif-links.cjs
