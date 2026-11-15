@@ -396,6 +396,12 @@
     driveFeedback.textContent = 'Connected. Drop or paste your music folder link below.';
   }
   driveConnect.addEventListener('click',() => {
+    if (!window.forestDrive?.configured) {
+      // A working, no-download fallback until the gift creator sets up OAuth.
+      // The user can play music in Google Drive; do not claim it is connected in-app.
+      window.open('https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5', '_blank', 'noopener,noreferrer');
+      return;
+    }
     // Begin Google's popup directly from the click event.
     connectGoogleDrive().then(() => {
       if (realm && lists[realm].length && wantsMusic) start();
@@ -405,6 +411,7 @@
   async function addDriveFolder() {
     const drive = window.forestDrive;
     if (!drive) throw Error('Google Drive integration could not load. Refresh the page.');
+    if (!drive.configured) throw Error('In-app music needs Google Drive setup first. Use Open music in Google Drive instead; no download is needed.');
     const folderId = drive.folderId(driveInput.value);
     if (!folderId) throw Error('Copy a Google Drive folder link, then paste it here.');
     if (!drive.hasAccess()) await drive.connect();
@@ -455,8 +462,15 @@
     }
   });
   if (!window.forestDrive?.configured) {
-    driveFeedback.textContent = 'Google Drive requires one-time setup by the gift creator.';
-    driveConnect.disabled = true;
+    // Never display an inert "Connect" button when no OAuth client ID exists.
+    driveConnect.textContent = 'Open music in Google Drive';
+    driveFeedback.textContent = 'In-app Google Drive playback needs one-time setup. Meanwhile, tap the button above to play in Google Drive without downloading albums.';
+    const help = document.createElement('a');
+    help.href = 'https://github.com/nmpersonal00-oss/My-baby-is-23/blob/main/GOOGLE-DRIVE-MUSIC.md';
+    help.target = '_blank';
+    help.rel = 'noopener noreferrer';
+    help.textContent = 'How to enable in-app Google Drive music';
+    driveFeedback.append(document.createTextNode(' '), help);
   } else if (window.forestDrive.hasAccess()) {
     driveConnect.textContent = 'Google Drive connected';
   }
