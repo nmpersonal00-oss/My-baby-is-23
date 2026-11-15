@@ -26,6 +26,8 @@
   dock.hidden = true;
   dock.setAttribute('aria-label','Word Search soundtrack');
   dock.innerHTML = [
+    '<button type="button" class="ws-music-toggle" id="ws-music-toggle" aria-label="Expand world music controls" aria-expanded="false" aria-controls="ws-music-body" title="World music">✦</button>',
+    '<div class="ws-music-body" id="ws-music-body" hidden>',
     '<div class="ws-music-main">',
     '<button type="button" id="ws-play" aria-label="Play music">▶ Play</button>',
     '<button type="button" id="ws-next" aria-label="Next song" title="Next song">⇥</button>',
@@ -43,10 +45,19 @@
     '<p>Download the songs from <a href="https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5" target="_blank" rel="noopener noreferrer">your Google Drive music folder</a> first.</p>',
     '<div class="ws-source-folders" id="ws-sources"></div>',
     '<button type="button" id="ws-delete">Remove this world’s saved songs</button>',
+    '</div>',
     '</div>'
   ].join('');
   document.body.appendChild(dock);
   const node = id => dock.querySelector('#' + id);
+  const musicToggle = node('ws-music-toggle'), musicBody = node('ws-music-body');
+  musicToggle.addEventListener('click', () => {
+    musicBody.hidden = !musicBody.hidden;
+    const open = !musicBody.hidden;
+    dock.classList.toggle('is-open', open);
+    musicToggle.setAttribute('aria-expanded', String(open));
+    musicToggle.setAttribute('aria-label', open ? 'Minimize world music controls' : 'Expand world music controls');
+  });
   const play = node('ws-play'), next = node('ws-next'), options = node('ws-options');
   const details = node('ws-details'), status = node('ws-status');
   const selection = node('ws-select'), category = node('ws-category');
@@ -192,6 +203,17 @@
     userPaused = false;
     wantsMusic = Boolean(world);
     dock.hidden = !world;
+    musicBody.hidden = true;
+    dock.classList.remove('is-open');
+    musicToggle.setAttribute('aria-expanded', 'false');
+    musicToggle.setAttribute('aria-label', 'Expand world music controls');
+    // The parent shell owns the Cozy Library track while chapters are framed.
+    // Tell it to pause/resume whenever a Word Search category is entered/left.
+    try {
+      if (window !== window.parent && window.parent.forestMusicShell) {
+        window.parent.postMessage({ type: 'forest:word-search-world', active: Boolean(world) }, location.origin);
+      }
+    } catch {}
     details.hidden = true;
     options.setAttribute('aria-expanded','false');
     if (world) { show(); start(); }
