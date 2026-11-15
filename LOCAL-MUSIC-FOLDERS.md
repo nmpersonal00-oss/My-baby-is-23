@@ -5,7 +5,7 @@ No Google Drive connection is required. Downloaded music stays on the laptop and
 1. Extract any ZIP archives so the actual album folders contain MP3/music files.
 2. Open **Rayan's Dark Forest** on the laptop, ideally from the homepage.
 3. Drag the **extracted music folder from Windows File Explorer onto any part of the app**, including one of the game pages. A large **Drop your music folder here** overlay should appear.
-4. Or press **♫ Add music folder** at the bottom right of the app, choose the extracted folder and approve read access. **Use standard folder chooser** is always visible as an alternative in Opera GX.
+4. Or click the existing **✦ music icon**, open **⚙ Music settings** (or **♫** in Word Search), then choose **Choose music folder**. The **Use standard folder chooser (Opera GX)** option is in the same settings menu.
 5. The app shows **Ready! N music files added from the laptop**. Cozy Library (when named that way) becomes the background soundtrack outside Word Search; named album subfolders are automatically assigned to their matching Word Search worlds.
 6. If the song is silent, enter the relevant game or tap the **Play** button in the music controls. Browsers can block audio until the first click.
 
