@@ -2,20 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0c1824">
-  <title>Habibi · Secret Love Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6d376d">
+  <meta name="description" content="Eight adorable little things I love about my Habibi, told through an animated chibi love story.">
+  <title>Habibi · Everything I Love About You · Rayan's Dark Forest</title>
   <link rel="icon" href="../../assets/heart.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../../love-notes.css">
-  <link rel="stylesheet" href="../../forest-music.css?v=1">
-  <script defer src="../../forest-music.js?v=1"></script>
+  <link rel="preload" href="../../assets/habibi-garden.webp" as="image" type="image/webp">
+  <link rel="preload" href="../../assets/habibi-scene-1.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="../../habibi.css">
+  <script defer src="../../habibi.js"></script>
 </head>
-<body class="empty-love-note">
-  <main class="empty-scene" aria-label="Habibi — empty love note page">
-    <div class="love-scenery" aria-hidden="true"></div>
-    <a class="return-to-letters" href="../love-notes.html" aria-label="Back to flying letters">
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 5-7 7 7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+<body class="habibi-body">
+  <main class="habibi-app" id="habibi-app">
+    <div class="habibi-backdrop" aria-hidden="true"></div>
+    <div class="habibi-haze" aria-hidden="true"></div>
+    <div class="habibi-glimmer" id="habibi-glimmer" aria-hidden="true"></div>
+
+    <header class="habibi-header">
+      <a href="../love-notes.html" class="habibi-back" aria-label="Back to the flying love letters">
+        <svg aria-hidden="true" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 4.5-9 8.5 9 8.5M6.5 13h17"/></svg>
+        <span>Back</span>
+      </a>
+      <div class="habibi-header-name" aria-label="Habibi">
+        <svg viewBox="0 0 105 42" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 30q30-36 51 1Q72 10 103 28"/><path d="M53 33C42 22 42 12 52 12q6 0 8 7c4-9 17-6 14 5q-3 8-21 17"/></svg>
+        <h1>Habibi</h1>
+        <svg viewBox="0 0 105 42" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 30q30-36 51 1Q72 10 103 28"/><path d="M53 33C42 22 42 12 52 12q6 0 8 7c4-9 17-6 14 5q-3 8-21 17"/></svg>
+      </div>
+      <div class="habibi-header-space" aria-hidden="true"></div>
+    </header>
+
+    <section class="habibi-journey" id="habibi-journey" aria-label="A slideshow of eight little things I love about you">
+      <div class="habibi-deck" id="habibi-deck">
+        <div class="habibi-picture-wrap">
+          <div class="habibi-scene-frame" id="habibi-scene-frame">
+            <span class="habibi-frame-spark habibi-frame-spark-a" aria-hidden="true"></span>
+            <span class="habibi-frame-spark habibi-frame-spark-b" aria-hidden="true"></span>
+            <button type="button" class="habibi-scene-picture" id="habibi-scene-picture" aria-label="Play this little moment">
+              <img id="habibi-scene-image" src="../../assets/habibi-scene-1.webp" width="760" height="760" alt="A tiny chibi girl affectionately points near a glasses-wearing boy's eyes" draggable="false">
+              <span class="habibi-picture-gloss" aria-hidden="true"></span>
+            </button>
+            <div class="habibi-scene-medallion" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M24 40C17 34 7 27 7 18 7 7 20 7 24 16 28 7 41 7 41 18c0 9-10 16-17 22Z"/></svg>
+            </div>
+          </div>
+          <button type="button" class="habibi-action" id="habibi-action">
+            <span class="habibi-action-star" aria-hidden="true"></span>
+            <span id="habibi-action-text">Boop his glasses!</span>
+            <span class="habibi-action-star" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <article class="habibi-story" aria-labelledby="habibi-scene-title">
+          <div class="habibi-paper-border" aria-hidden="true"></div>
+          <div class="habibi-story-top">
+            <div class="habibi-story-heart" aria-hidden="true"><svg viewBox="0 0 36 32" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 29C11 23 2 16 2 10 2 1 14 1 18 9c4-8 16-8 16 1 0 6-9 13-16 19Z"/></svg></div>
+            <p class="habibi-story-overline">THE LITTLE THINGS I ADORE</p>
+            <p class="habibi-story-count" id="habibi-count">01 / 08</p>
+          </div>
+          <div class="habibi-story-body" id="habibi-story-body">
+            <p class="habibi-dear">My sweet boy,</p>
+            <h2 id="habibi-scene-title" tabindex="-1">Your Eyes</h2>
+            <div class="habibi-divide" aria-hidden="true"><i></i><span></span><i></i></div>
+            <p class="habibi-story-message" id="habibi-scene-message">I love those beautiful eyes. Especially when you look at me and make my whole heart melt.</p>
+            <p class="habibi-story-reaction" id="habibi-reaction" role="status" aria-live="polite">Tap the picture for a little surprise.</p>
+          </div>
+          <div class="habibi-story-flowers" aria-hidden="true"><span></span><span></span><span></span></div>
+        </article>
+      </div>
+
+      <section class="habibi-finale" id="habibi-finale" aria-labelledby="habibi-finale-title" hidden>
+        <div class="habibi-final-photo">
+          <img src="../../assets/habibi-scene-8.webp" alt="The two tiny chibi sweethearts hugging closely together" width="760" height="760">
+          <div class="habibi-final-photo-shine" aria-hidden="true"></div>
+        </div>
+        <div class="habibi-final-note">
+          <div class="habibi-final-tiny">MY ONE AND ONLY</div>
+          <h2 id="habibi-finale-title" tabindex="-1">Every part of you.</h2>
+          <p>I love every part of you.</p>
+          <p>My body is for you,<br>and your body is for me.</p>
+          <p class="habibi-final-forever">Forever and always.</p>
+          <div class="habibi-final-divider" aria-hidden="true"><span></span><svg viewBox="0 0 32 30" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 27C10 22 2 16 2 9 2 2 12 1 16 8c4-7 14-6 14 1 0 7-8 13-14 18Z"/></svg><span></span></div>
+          <button type="button" class="habibi-magic" id="habibi-magic">More love and sparkles</button>
+          <button type="button" class="habibi-replay" id="habibi-replay">See all our little moments again</button>
+        </div>
+      </section>
+
+      <nav class="habibi-controls" id="habibi-controls" aria-label="Slideshow controls">
+        <button type="button" id="habibi-prev" class="habibi-arrow" aria-label="Previous little moment">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m14.5 4-8 8 8 8M6.5 12h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="habibi-dots" id="habibi-dots" aria-label="Choose a little moment"></div>
+        <button type="button" id="habibi-next" class="habibi-arrow habibi-next" aria-label="Next little moment">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9.5 4 8 8-8 8m8-8h-14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </nav>
+    </section>
+    <span class="habibi-sr-only" id="habibi-slide-announcer" aria-live="polite" aria-atomic="true"></span>
   </main>
 </body>
 </html>
