@@ -141,3 +141,29 @@ To link an animation later, add an exact-name key and path in
 `darkSoulsGifs` in `memory-matching-data.js`, for example:
 `'Solaire of Astora': '../assets/solaire.gif'`.
 The other seven categories and all visuals are unchanged.
+
+### Hollow Knight: name-only content
+
+Hollow Knight now has the exact 50 names supplied: 14 characters,
+16 bosses, 6 items, 4 resources and 10 places. Names are distributed
+across the previously proposed five rounds of ten with no duplication.
+The set of names assigned to each round remains stable, while the game
+reshuffles their visible positions when a round starts or Shuffle is pressed.
+
+All Hollow Knight GIF spaces remain blank. Later, match animations by exact
+keyword in `hollowKnightGifs` inside `memory-matching-data.js`.
+
+### Hollow Knight: Silksong: name-only content
+
+Silksong now contains all 50 names from the supplied table: 8 characters,
+14 bosses, 14 equipment/ability names and 14 places. Each of its five rounds
+contains ten uniquely selected names, with a seeded shuffle that balances
+characters, bosses, abilities and places across rounds. The names are shuffled
+into fresh visual positions whenever a round is opened or Shuffle is pressed.
+
+All Silksong GIF spaces remain empty. Future GIFs can be added by exact name
+inside the `silksongGifs` map in `memory-matching-data.js`, for example
+`'Sherma': '../assets/sherma.gif'`.
+
+The matching mechanics, approved Gothic background, other six categories and
+Word Search/home pages are unchanged.
