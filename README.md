@@ -58,11 +58,18 @@ finished game UI.
 - The center is clear by default: a purple SVG line only appears between
   an actual, correctly matched GIF/name pair, and stays attached to that pair.
   Incorrect guesses never create a line.
-- The matching data stays intentionally empty in
-  `memory-matching-data.js`, as requested. To fill a round later, add up to
-  ten `{ name: 'Character', gif: '../assets/character.gif' }` entries to
-  its `pairs` array. The two sides shuffle separately, and progress for
-  completed rounds is saved in localStorage.
+- **Lies of P** now contains the 50 supplied keywords: exactly 10 unique names
+  in each of its 5 rounds. They are distributed using a seeded shuffle, so
+  the assignments are mixed but stable across reloads; the display order of
+  the 10 names reshuffles each round start or press of Shuffle.
+- The 10 GIF spaces in all Lies of P rounds are **still blank**. Only name
+  plaques are populated. No fake GIFs, and no connecting lines before actual
+  matches. Clicking a name gives feedback that its GIF is not yet supplied.
+- Later, assign a matching GIF file to a keyword in the `liesOfPGifs` map in
+  `memory-matching-data.js` — there is no need to rearrange words or change
+  any game's matching logic. Other seven categories remain empty.
+- When every one of a round's 10 keywords has a GIF, matching all ten pairs
+  completes that round and saves progress locally.
 - Fully interactive category and round buttons, Shuffle, optional original
   synthesized sound, animated fireflies, match feedback, victory dialog,
   and keyboard/focus support.
@@ -70,3 +77,10 @@ finished game UI.
   while all game controls are actual HTML/CSS/JavaScript.
 
 The homepage and Word Search files are unchanged.
+
+### Lies of P: name-only content
+
+The provided keyword list is preserved verbatim, including “King’s Flame, Fuoco”.
+The 50 words are mixed across the five rounds without duplication, and the five
+sets stay consistent so future GIFs can be linked to their keywords. Until GIFs
+are supplied, the names display and shuffle but cannot produce correct matches.
