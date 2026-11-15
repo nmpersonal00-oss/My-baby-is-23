@@ -1,17 +1,14 @@
 # Rayan's Dark Forest
 
-## Downloaded music folder support
+## Music folders from a laptop (whole app)
 
-The Word Search music player can now play **local MP3/music folders directly from the laptop**. Open a Word Search world, tap the star and music settings, then choose **Choose music folder** or drop a downloaded folder into the dashed area. The app reads all subfolders, assigns recognizable albums to their worlds, and makes music playable for the current visit without uploading anything or filling browser storage. A clear success/error message is shown. Optional browser storage is available for smaller collections; large libraries may exceed quotas. See [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md).
+The Forest now has **♫ Add music folder** visible across the homepage and games, plus **Use standard folder chooser** for Opera GX. Drag an extracted downloaded album folder onto *any game page* or the homepage: the shared in-memory music library detects Cozy Library and routes recognizable album folders to their Word Search worlds. Songs play directly from laptop file handles without server uploads, Google sign-in, or IndexedDB quota requirements. The music library persists as long as the homepage stays open and the user navigates through its game frames. Reloading the whole site requires choosing the folder again. See [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md).
 
-
-## Google Drive music without downloading albums
-
-The Word Search and Cozy Library music controls now support **drop or paste a Google Drive folder link**, Google sign-in, and play-on-demand audio from Drive. Folder links and song selections are remembered in the browser; audio files are not copied into GitHub or the device's Downloads folder. This requires a one-time Google OAuth web client setup by the gift creator and Google Drive Viewer access for the listener. See [GOOGLE-DRIVE-MUSIC.md](GOOGLE-DRIVE-MUSIC.md). The original local import option still works. A browser cannot reliably transfer a Google Drive folder by dragging it as files; use **Copy link** if dragging does not provide the folder URL.
+The inactive Google Drive interface and sign-in scripts have been removed from the website.
 
 ## Complete music plan (497 Word Search tracks plus Cozy Library)
 
-See [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the correct scope: **all 497 tracks** mapped to the seven Word Search worlds, with the supplied Cozy Library music as the shared soundtrack across the rest of the app. The eight-song ZIP and eight-file GitHub instructions were incorrect and must not be used. The music files have **not** been hosted. For completely hands-off playback with no Google sign-in, an administrator still needs to host the recordings. Alternatively, the new Google Drive folder-link option streams private music after Google sign-in.
+The metadata for 497 Word Search tracks and the shared Cozy Library recording is in the repository; audio bytes are **not hosted**. The folder import reads tracks from the recipient's laptop. Hosting would still be needed for hands-off music on an unprepared device. See [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md).
 
 ## Continuous music and compact star controls
 
