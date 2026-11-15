@@ -49,12 +49,12 @@
     '<button type="button" id="ws-drive-add">Use this Drive folder</button>',
     '<p class="ws-drive-feedback" id="ws-drive-feedback" role="status" aria-live="polite"></p>',
     '</div>',
-    '<p>Or add local songs. Local files stay in this browser, never in the public GitHub repository.</p>',
+    '<p id="ws-local-help">Or add local songs. Local files stay in this browser, never in the public GitHub repository.</p>',
     '<button type="button" id="ws-add">Add songs to this world</button>',
     '<button type="button" id="ws-add-folders">Import downloaded album folders</button>',
     '<input id="ws-file-input" type="file" accept="audio/*,.mp3,.m4a,.mp4,.ogg,.wav" multiple hidden>',
     '<input id="ws-folder-input" type="file" webkitdirectory directory multiple hidden>',
-    '<p>Only if you prefer local import: download songs from <a href="https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5" target="_blank" rel="noopener noreferrer">your Google Drive music folder</a>. The Drive option above needs no download.</p>',
+    '<p id="ws-local-download-note">Only if you prefer local import: download songs from <a href="https://drive.google.com/drive/folders/1S38pJPgosGG6fcqvf70Gvw7U2NmgZ0s5" target="_blank" rel="noopener noreferrer">your Google Drive music folder</a>. The Drive option above needs no download.</p>',
     '<div class="ws-source-folders" id="ws-sources"></div>',
     '<button type="button" id="ws-delete">Remove this world’s saved songs</button>',
     '</div>',
@@ -517,10 +517,9 @@
     remove.hidden = true;
     sources.hidden = true;
     driveArea.hidden = true;
-    const help = details.querySelector('p');
+    const help = node('ws-local-help');
     if (help) help.textContent = 'These songs are built into the Forest soundtrack library. No uploads needed.';
-    const drive = details.querySelectorAll('p');
-    if (drive[1]) drive[1].hidden = true;
+    node('ws-local-download-note').hidden = true;
   }
   route();
   if (HOSTED) {
