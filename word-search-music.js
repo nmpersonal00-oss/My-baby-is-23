@@ -7,15 +7,6 @@
     stars:'Star Wars', terraria:'Terraria', princess:'Princess World',
     hollow:'Hollow Knight & Silksong'
   };
-  const FOLDERS = {
-    souls:[['Dark Souls I','17lQLfBUWAMITXcOv9LXST50_oN5KA1JJ'],['Dark Souls II','1EL40uxl9ZEjKA1Zh8bHWaIlxWTwqUfGq']],
-    lies:[['Lies of P','1vufn3n6qk7eVAi0xbiTeioEI5ptnQBiO']],
-    blood:[['Bloodborne','1FfVP6nmqG3g72lMKO4MIG56NvoLCCGaT']],
-    stars:[['The Mandalorian','1bd-DElKmz10eUewagyrT8-w5wW8MTxOT'],['Jedi: Survivor','1fMMfqzcy90MOwOSvXJH2BRcuk4gLgMiJ']],
-    terraria:[['Terraria','1yz7ekvmvINQEpMdNIynIFvu5AIy3dIOK']],
-    princess:[['Kawaii Lofi','13MCVjqlRbap-3hhNz8kIsE3UhTK2b4zl']],
-    hollow:[['Hollow Knight','1sSXqhfyeiIyT1Az0fJ6NS7r35zruwNXt'],['Silksong','1EqLTy8BvCu4dQNBiIXN1YARb-iIxNgFH']]
-  };
   const player = document.createElement('audio');
   player.preload = 'auto';
   player.volume = 0.55;
@@ -48,7 +39,6 @@
     '<p class="ws-local-feedback" id="ws-local-feedback" role="status" aria-live="polite">Music stays on the laptop. Reselect the folder after closing the site.</p>',
     '</div>',
     '<input id="ws-file-input" type="file" accept="audio/*,.mp3,.m4a,.mp4,.ogg,.wav,.aac,.flac" multiple hidden>',
-    '<input id="ws-folder-input" type="file" webkitdirectory directory multiple hidden>',
     '<button type="button" id="ws-delete">Remove this world’s saved songs</button>',
     '</div>',
     '</div>'
@@ -74,8 +64,7 @@
   const groups = () => Object.fromEntries(Object.keys(LABELS).map(id => [id,[]]));
   let lists = groups(), db = null, ready = false, realm = null, index = 0;
   let wantsMusic = false, userPaused = false, generation = 0, notice = '';
-  // File objects are references to selected laptop files, not uploaded copies.
-  // Avoid IndexedDB quota failures for the full ~3 GB music collection.
+  // The shared library holds read-only laptop files across game navigation.
   const objectUrls = new Map();
   try {
     const savedVolume = localStorage.getItem('rayans-wordsearch-music-volume');
@@ -334,7 +323,8 @@
       localFeedback.textContent = 'Could not refresh songs: ' + (error?.message || 'Try again.');
     });
   }
-  hub?.subscribe(showLibraryUpdate);
+  const unsubscribeLibrary = hub?.subscribe(showLibraryUpdate);
+  window.addEventListener('pagehide',() => unsubscribeLibrary?.());
   node('ws-add-folders').addEventListener('click',() => {
     if (hub?.chooseFolder) hub.chooseFolder();
     else localFeedback.textContent = 'Folder chooser unavailable. Refresh and try again.';
@@ -390,7 +380,6 @@
     node('ws-add').hidden = true;
     node('ws-add-folders').hidden = true;
     remove.hidden = true;
-    node('ws-add').hidden = true;
     const help = node('ws-local-help');
     if (help) help.textContent = 'These songs are built into the Forest soundtrack library. No uploads needed.';
 
