@@ -1,0 +1,1446 @@
+{
+  "specification": {
+    "width": 480,
+    "height": 210,
+    "format": "GIF",
+    "min_frames": 2
+  },
+  "excluded_category": "hollow-knight",
+  "categories": {
+    "sanrio": {
+      "map": "sanrioGifs",
+      "answers": [
+        {
+          "name": "Hello Kitty",
+          "path": "assets/sanrio/hello-kitty.gif"
+        },
+        {
+          "name": "Dear Daniel",
+          "path": "assets/sanrio/dear-daniel.gif"
+        },
+        {
+          "name": "My Melody",
+          "path": "assets/sanrio/my-melody.gif"
+        },
+        {
+          "name": "Kuromi",
+          "path": "assets/sanrio/kuromi.gif"
+        },
+        {
+          "name": "Cinnamoroll",
+          "path": "assets/sanrio/cinnamoroll.gif"
+        },
+        {
+          "name": "Pompompurin",
+          "path": "assets/sanrio/pompompurin.gif"
+        },
+        {
+          "name": "Pochacco",
+          "path": "assets/sanrio/pochacco.gif"
+        },
+        {
+          "name": "Keroppi",
+          "path": "assets/sanrio/keroppi.gif"
+        },
+        {
+          "name": "Chococat",
+          "path": "assets/sanrio/chococat.gif"
+        },
+        {
+          "name": "Badtz-Maru",
+          "path": "assets/sanrio/badtz-maru.gif"
+        },
+        {
+          "name": "Kiki",
+          "path": "assets/sanrio/kiki.gif"
+        },
+        {
+          "name": "Lala",
+          "path": "assets/sanrio/lala.gif"
+        },
+        {
+          "name": "Tuxedosam",
+          "path": "assets/sanrio/tuxedosam.gif"
+        },
+        {
+          "name": "Hangyodon",
+          "path": "assets/sanrio/hangyodon.gif"
+        },
+        {
+          "name": "Mimmy",
+          "path": "assets/sanrio/mimmy.gif"
+        },
+        {
+          "name": "Charmmy Kitty",
+          "path": "assets/sanrio/charmmy-kitty.gif"
+        },
+        {
+          "name": "My Sweet Piano",
+          "path": "assets/sanrio/my-sweet-piano.gif"
+        },
+        {
+          "name": "Wish Me Mell",
+          "path": "assets/sanrio/wish-me-mell.gif"
+        },
+        {
+          "name": "Gudetama",
+          "path": "assets/sanrio/gudetama.gif"
+        },
+        {
+          "name": "Cogimyun",
+          "path": "assets/sanrio/cogimyun.gif"
+        },
+        {
+          "name": "Pekkle",
+          "path": "assets/sanrio/pekkle.gif"
+        },
+        {
+          "name": "Monkichi",
+          "path": "assets/sanrio/monkichi.gif"
+        },
+        {
+          "name": "Marroncream",
+          "path": "assets/sanrio/marroncream.gif"
+        },
+        {
+          "name": "Bonbonribbon",
+          "path": "assets/sanrio/bonbonribbon.gif"
+        },
+        {
+          "name": "Usahana",
+          "path": "assets/sanrio/usahana.gif"
+        },
+        {
+          "name": "Corocorokuririn",
+          "path": "assets/sanrio/corocorokuririn.gif"
+        },
+        {
+          "name": "Kirimichan",
+          "path": "assets/sanrio/kirimichan.gif"
+        },
+        {
+          "name": "Tiny Chum",
+          "path": "assets/sanrio/tiny-chum.gif"
+        },
+        {
+          "name": "Patty",
+          "path": "assets/sanrio/patty.gif"
+        },
+        {
+          "name": "Jimmy",
+          "path": "assets/sanrio/jimmy.gif"
+        },
+        {
+          "name": "Littleforestfellow",
+          "path": "assets/sanrio/littleforestfellow.gif"
+        },
+        {
+          "name": "Strawberry King",
+          "path": "assets/sanrio/strawberry-king.gif"
+        },
+        {
+          "name": "Gaopowerroo",
+          "path": "assets/sanrio/gaopowerroo.gif"
+        },
+        {
+          "name": "Hanamaruobake",
+          "path": "assets/sanrio/hanamaruobake.gif"
+        },
+        {
+          "name": "Retsuko",
+          "path": "assets/sanrio/retsuko.gif"
+        },
+        {
+          "name": "Fenneko",
+          "path": "assets/sanrio/fenneko.gif"
+        },
+        {
+          "name": "Director Ton",
+          "path": "assets/sanrio/director-ton.gif"
+        },
+        {
+          "name": "Director Gori",
+          "path": "assets/sanrio/director-gori.gif"
+        },
+        {
+          "name": "Sanrio Puroland",
+          "path": "assets/sanrio/sanrio-puroland.gif"
+        },
+        {
+          "name": "Harmonyland",
+          "path": "assets/sanrio/harmonyland.gif"
+        },
+        {
+          "name": "Little Twin Stars",
+          "path": "assets/sanrio/little-twin-stars.gif"
+        },
+        {
+          "name": "Sugarbunnies",
+          "path": "assets/sanrio/sugarbunnies.gif"
+        },
+        {
+          "name": "Lloromannic",
+          "path": "assets/sanrio/lloromannic.gif"
+        },
+        {
+          "name": "Jewelpet",
+          "path": "assets/sanrio/jewelpet.gif"
+        },
+        {
+          "name": "Aggretsuko",
+          "path": "assets/sanrio/aggretsuko.gif"
+        },
+        {
+          "name": "Show By Rock!!",
+          "path": "assets/sanrio/show-by-rock.gif"
+        },
+        {
+          "name": "Hello Kitty’s red bow",
+          "path": "assets/sanrio/hello-kittys-red-bow.gif"
+        },
+        {
+          "name": "Café Cinnamon",
+          "path": "assets/sanrio/cafe-cinnamon.gif"
+        },
+        {
+          "name": "Hello Kitty Island Adventure",
+          "path": "assets/sanrio/hello-kitty-island-adventure.gif"
+        },
+        {
+          "name": "Sanrio Character Ranking",
+          "path": "assets/sanrio/sanrio-character-ranking.gif"
+        }
+      ]
+    },
+    "silksong": {
+      "map": "silksongGifs",
+      "answers": [
+        {
+          "name": "Sherma",
+          "path": "assets/silksong/sherma.gif"
+        },
+        {
+          "name": "Garmond",
+          "path": "assets/silksong/garmond.gif"
+        },
+        {
+          "name": "Green Prince",
+          "path": "assets/silksong/green-prince.gif"
+        },
+        {
+          "name": "Grindle",
+          "path": "assets/silksong/grindle.gif"
+        },
+        {
+          "name": "Fleamaster Mooshka",
+          "path": "assets/silksong/fleamaster-mooshka.gif"
+        },
+        {
+          "name": "Mister Mushroom",
+          "path": "assets/silksong/mister-mushroom.gif"
+        },
+        {
+          "name": "Lumble the Lucky",
+          "path": "assets/silksong/lumble-the-lucky.gif"
+        },
+        {
+          "name": "Vaultkeeper Cardinius",
+          "path": "assets/silksong/vaultkeeper-cardinius.gif"
+        },
+        {
+          "name": "Fourth Chorus",
+          "path": "assets/silksong/fourth-chorus.gif"
+        },
+        {
+          "name": "Moorwing",
+          "path": "assets/silksong/moorwing.gif"
+        },
+        {
+          "name": "Skull Tyrant",
+          "path": "assets/silksong/skull-tyrant.gif"
+        },
+        {
+          "name": "Great Conchflies",
+          "path": "assets/silksong/great-conchflies.gif"
+        },
+        {
+          "name": "Trobbio",
+          "path": "assets/silksong/trobbio.gif"
+        },
+        {
+          "name": "Father of the Flame",
+          "path": "assets/silksong/father-of-the-flame.gif"
+        },
+        {
+          "name": "Voltvyrm",
+          "path": "assets/silksong/voltvyrm.gif"
+        },
+        {
+          "name": "Groal the Great",
+          "path": "assets/silksong/groal-the-great.gif"
+        },
+        {
+          "name": "Forebrothers Signis & Gron",
+          "path": "assets/silksong/forebrothers-signis-gron.gif"
+        },
+        {
+          "name": "Crawfather",
+          "path": "assets/silksong/crawfather.gif"
+        },
+        {
+          "name": "Crust King Khann",
+          "path": "assets/silksong/crust-king-khann.gif"
+        },
+        {
+          "name": "Gurr the Outcast",
+          "path": "assets/silksong/gurr-the-outcast.gif"
+        },
+        {
+          "name": "Shrine Guardian Seth",
+          "path": "assets/silksong/shrine-guardian-seth.gif"
+        },
+        {
+          "name": "Raging Conchfly",
+          "path": "assets/silksong/raging-conchfly.gif"
+        },
+        {
+          "name": "Needolin",
+          "path": "assets/silksong/needolin.gif"
+        },
+        {
+          "name": "Silkspear",
+          "path": "assets/silksong/silkspear.gif"
+        },
+        {
+          "name": "Swift Step",
+          "path": "assets/silksong/swift-step.gif"
+        },
+        {
+          "name": "Cling Grip",
+          "path": "assets/silksong/cling-grip.gif"
+        },
+        {
+          "name": "Drifter’s Cloak",
+          "path": "assets/silksong/drifters-cloak.gif"
+        },
+        {
+          "name": "Faydown Cloak",
+          "path": "assets/silksong/faydown-cloak.gif"
+        },
+        {
+          "name": "Clawline",
+          "path": "assets/silksong/clawline.gif"
+        },
+        {
+          "name": "Silk Soar",
+          "path": "assets/silksong/silk-soar.gif"
+        },
+        {
+          "name": "Thread Storm",
+          "path": "assets/silksong/thread-storm.gif"
+        },
+        {
+          "name": "Cross Stitch",
+          "path": "assets/silksong/cross-stitch.gif"
+        },
+        {
+          "name": "Sharpdart",
+          "path": "assets/silksong/sharpdart.gif"
+        },
+        {
+          "name": "Rune Rage",
+          "path": "assets/silksong/rune-rage.gif"
+        },
+        {
+          "name": "Pale Nails",
+          "path": "assets/silksong/pale-nails.gif"
+        },
+        {
+          "name": "Needle Strike",
+          "path": "assets/silksong/needle-strike.gif"
+        },
+        {
+          "name": "Pharloom",
+          "path": "assets/silksong/pharloom.gif"
+        },
+        {
+          "name": "Bonebottom",
+          "path": "assets/silksong/bonebottom.gif"
+        },
+        {
+          "name": "Moss Grotto",
+          "path": "assets/silksong/moss-grotto.gif"
+        },
+        {
+          "name": "The Marrow",
+          "path": "assets/silksong/the-marrow.gif"
+        },
+        {
+          "name": "Deep Docks",
+          "path": "assets/silksong/deep-docks.gif"
+        },
+        {
+          "name": "Far Fields",
+          "path": "assets/silksong/far-fields.gif"
+        },
+        {
+          "name": "Greymoor",
+          "path": "assets/silksong/greymoor.gif"
+        },
+        {
+          "name": "Shellwood",
+          "path": "assets/silksong/shellwood.gif"
+        },
+        {
+          "name": "Bellhart",
+          "path": "assets/silksong/bellhart.gif"
+        },
+        {
+          "name": "Blasted Steps",
+          "path": "assets/silksong/blasted-steps.gif"
+        },
+        {
+          "name": "The Citadel",
+          "path": "assets/silksong/the-citadel.gif"
+        },
+        {
+          "name": "Underworks",
+          "path": "assets/silksong/underworks.gif"
+        },
+        {
+          "name": "Mount Fay",
+          "path": "assets/silksong/mount-fay.gif"
+        },
+        {
+          "name": "The Slab",
+          "path": "assets/silksong/the-slab.gif"
+        }
+      ]
+    },
+    "colossus": {
+      "map": "colossusGifs",
+      "answers": [
+        {
+          "name": "Wander",
+          "path": "assets/colossus/wander.gif"
+        },
+        {
+          "name": "Valus",
+          "path": "assets/colossus/valus.gif"
+        },
+        {
+          "name": "Quadratus",
+          "path": "assets/colossus/quadratus.gif"
+        },
+        {
+          "name": "Gaius",
+          "path": "assets/colossus/gaius.gif"
+        },
+        {
+          "name": "Forbidden Lands",
+          "path": "assets/colossus/forbidden-lands.gif"
+        },
+        {
+          "name": "Shrine of Worship",
+          "path": "assets/colossus/shrine-of-worship.gif"
+        },
+        {
+          "name": "Ancient Sword",
+          "path": "assets/colossus/ancient-sword.gif"
+        },
+        {
+          "name": "Great Bridge",
+          "path": "assets/colossus/great-bridge.gif"
+        },
+        {
+          "name": "Weak-point sigils",
+          "path": "assets/colossus/weak-point-sigils.gif"
+        },
+        {
+          "name": "Grip meter",
+          "path": "assets/colossus/grip-meter.gif"
+        },
+        {
+          "name": "Emon",
+          "path": "assets/colossus/emon.gif"
+        },
+        {
+          "name": "Phaedra",
+          "path": "assets/colossus/phaedra.gif"
+        },
+        {
+          "name": "Avion",
+          "path": "assets/colossus/avion.gif"
+        },
+        {
+          "name": "Barba",
+          "path": "assets/colossus/barba.gif"
+        },
+        {
+          "name": "Bow and arrows",
+          "path": "assets/colossus/bow-and-arrows.gif"
+        },
+        {
+          "name": "Save shrines",
+          "path": "assets/colossus/save-shrines.gif"
+        },
+        {
+          "name": "Secret Garden",
+          "path": "assets/colossus/secret-garden.gif"
+        },
+        {
+          "name": "Stone idols",
+          "path": "assets/colossus/stone-idols.gif"
+        },
+        {
+          "name": "Reflected sunlight",
+          "path": "assets/colossus/reflected-sunlight.gif"
+        },
+        {
+          "name": "Sword stab",
+          "path": "assets/colossus/sword-stab.gif"
+        },
+        {
+          "name": "Dormin",
+          "path": "assets/colossus/dormin.gif"
+        },
+        {
+          "name": "Hydrus",
+          "path": "assets/colossus/hydrus.gif"
+        },
+        {
+          "name": "Kuromori",
+          "path": "assets/colossus/kuromori.gif"
+        },
+        {
+          "name": "Basaran",
+          "path": "assets/colossus/basaran.gif"
+        },
+        {
+          "name": "Colossus fur",
+          "path": "assets/colossus/colossus-fur.gif"
+        },
+        {
+          "name": "White-tailed lizards",
+          "path": "assets/colossus/white-tailed-lizards.gif"
+        },
+        {
+          "name": "Fruit trees",
+          "path": "assets/colossus/fruit-trees.gif"
+        },
+        {
+          "name": "Time Attack",
+          "path": "assets/colossus/time-attack.gif"
+        },
+        {
+          "name": "Whistling Arrow",
+          "path": "assets/colossus/whistling-arrow.gif"
+        },
+        {
+          "name": "Ancient Harpoon",
+          "path": "assets/colossus/ancient-harpoon.gif"
+        },
+        {
+          "name": "Agro",
+          "path": "assets/colossus/agro.gif"
+        },
+        {
+          "name": "Dirge",
+          "path": "assets/colossus/dirge.gif"
+        },
+        {
+          "name": "Celosia",
+          "path": "assets/colossus/celosia.gif"
+        },
+        {
+          "name": "Pelagia",
+          "path": "assets/colossus/pelagia.gif"
+        },
+        {
+          "name": "Sword of the Sun",
+          "path": "assets/colossus/sword-of-the-sun.gif"
+        },
+        {
+          "name": "Queen’s Sword",
+          "path": "assets/colossus/queens-sword.gif"
+        },
+        {
+          "name": "Cloak of Invisibility",
+          "path": "assets/colossus/cloak-of-invisibility.gif"
+        },
+        {
+          "name": "Cloak of Deception",
+          "path": "assets/colossus/cloak-of-deception.gif"
+        },
+        {
+          "name": "Mask of Strength",
+          "path": "assets/colossus/mask-of-strength.gif"
+        },
+        {
+          "name": "Mask of Power",
+          "path": "assets/colossus/mask-of-power.gif"
+        },
+        {
+          "name": "Emon’s soldiers",
+          "path": "assets/colossus/emons-soldiers.gif"
+        },
+        {
+          "name": "Phalanx",
+          "path": "assets/colossus/phalanx.gif"
+        },
+        {
+          "name": "Cenobia",
+          "path": "assets/colossus/cenobia.gif"
+        },
+        {
+          "name": "Argus",
+          "path": "assets/colossus/argus.gif"
+        },
+        {
+          "name": "Malus",
+          "path": "assets/colossus/malus.gif"
+        },
+        {
+          "name": "Mask of the Shaman",
+          "path": "assets/colossus/mask-of-the-shaman.gif"
+        },
+        {
+          "name": "Cloak of Force",
+          "path": "assets/colossus/cloak-of-force.gif"
+        },
+        {
+          "name": "Flash Arrow",
+          "path": "assets/colossus/flash-arrow.gif"
+        },
+        {
+          "name": "Fruit Tree Map",
+          "path": "assets/colossus/fruit-tree-map.gif"
+        },
+        {
+          "name": "Lizard Detection Stone",
+          "path": "assets/colossus/lizard-detection-stone.gif"
+        }
+      ]
+    },
+    "lies-of-p": {
+      "map": "liesOfPGifs",
+      "answers": [
+        {
+          "name": "Lies of P",
+          "path": "assets/lies-of-p/lies-of-p.gif"
+        },
+        {
+          "name": "Pinocchio",
+          "path": "assets/lies-of-p/pinocchio.gif"
+        },
+        {
+          "name": "Krat",
+          "path": "assets/lies-of-p/krat.gif"
+        },
+        {
+          "name": "Hotel Krat",
+          "path": "assets/lies-of-p/hotel-krat.gif"
+        },
+        {
+          "name": "Krat Central Station",
+          "path": "assets/lies-of-p/krat-central-station.gif"
+        },
+        {
+          "name": "Elysion Boulevard",
+          "path": "assets/lies-of-p/elysion-boulevard.gif"
+        },
+        {
+          "name": "Venigni Works",
+          "path": "assets/lies-of-p/venigni-works.gif"
+        },
+        {
+          "name": "St. Frangelico Cathedral",
+          "path": "assets/lies-of-p/st-frangelico-cathedral.gif"
+        },
+        {
+          "name": "Malum District",
+          "path": "assets/lies-of-p/malum-district.gif"
+        },
+        {
+          "name": "Grand Exhibition",
+          "path": "assets/lies-of-p/grand-exhibition.gif"
+        },
+        {
+          "name": "Barren Swamp",
+          "path": "assets/lies-of-p/barren-swamp.gif"
+        },
+        {
+          "name": "Relic of Trismegistus",
+          "path": "assets/lies-of-p/relic-of-trismegistus.gif"
+        },
+        {
+          "name": "Arche Abbey",
+          "path": "assets/lies-of-p/arche-abbey.gif"
+        },
+        {
+          "name": "Geppetto",
+          "path": "assets/lies-of-p/geppetto.gif"
+        },
+        {
+          "name": "Venigni",
+          "path": "assets/lies-of-p/venigni.gif"
+        },
+        {
+          "name": "Gemini",
+          "path": "assets/lies-of-p/gemini.gif"
+        },
+        {
+          "name": "Simon Manus",
+          "path": "assets/lies-of-p/simon-manus.gif"
+        },
+        {
+          "name": "Alidoro",
+          "path": "assets/lies-of-p/alidoro.gif"
+        },
+        {
+          "name": "Puppet Frenzy",
+          "path": "assets/lies-of-p/puppet-frenzy.gif"
+        },
+        {
+          "name": "Grand Covenant",
+          "path": "assets/lies-of-p/grand-covenant.gif"
+        },
+        {
+          "name": "Petrification Disease",
+          "path": "assets/lies-of-p/petrification-disease.gif"
+        },
+        {
+          "name": "Ergo",
+          "path": "assets/lies-of-p/ergo.gif"
+        },
+        {
+          "name": "Stargazer",
+          "path": "assets/lies-of-p/stargazer.gif"
+        },
+        {
+          "name": "P-Organ",
+          "path": "assets/lies-of-p/p-organ.gif"
+        },
+        {
+          "name": "Legion Arm",
+          "path": "assets/lies-of-p/legion-arm.gif"
+        },
+        {
+          "name": "Puppet String",
+          "path": "assets/lies-of-p/puppet-string.gif"
+        },
+        {
+          "name": "Fulminis",
+          "path": "assets/lies-of-p/fulminis.gif"
+        },
+        {
+          "name": "Flamberge",
+          "path": "assets/lies-of-p/flamberge.gif"
+        },
+        {
+          "name": "Aegis",
+          "path": "assets/lies-of-p/aegis.gif"
+        },
+        {
+          "name": "Falcon Eyes",
+          "path": "assets/lies-of-p/falcon-eyes.gif"
+        },
+        {
+          "name": "Pandemonium",
+          "path": "assets/lies-of-p/pandemonium.gif"
+        },
+        {
+          "name": "Deus Ex Machina",
+          "path": "assets/lies-of-p/deus-ex-machina.gif"
+        },
+        {
+          "name": "Fable Arts",
+          "path": "assets/lies-of-p/fable-arts.gif"
+        },
+        {
+          "name": "Perfect Guard",
+          "path": "assets/lies-of-p/perfect-guard.gif"
+        },
+        {
+          "name": "Guard Regain",
+          "path": "assets/lies-of-p/guard-regain.gif"
+        },
+        {
+          "name": "Fatal Attack",
+          "path": "assets/lies-of-p/fatal-attack.gif"
+        },
+        {
+          "name": "Pulse Cell",
+          "path": "assets/lies-of-p/pulse-cell.gif"
+        },
+        {
+          "name": "Wishstone",
+          "path": "assets/lies-of-p/wishstone.gif"
+        },
+        {
+          "name": "Gold Coin Fruit",
+          "path": "assets/lies-of-p/gold-coin-fruit.gif"
+        },
+        {
+          "name": "Black Rabbit Brotherhood",
+          "path": "assets/lies-of-p/black-rabbit-brotherhood.gif"
+        },
+        {
+          "name": "Parade Master",
+          "path": "assets/lies-of-p/parade-master.gif"
+        },
+        {
+          "name": "Scrapped Watchman",
+          "path": "assets/lies-of-p/scrapped-watchman.gif"
+        },
+        {
+          "name": "King’s Flame, Fuoco",
+          "path": "assets/lies-of-p/kings-flame-fuoco.gif"
+        },
+        {
+          "name": "Fallen Archbishop Andreus",
+          "path": "assets/lies-of-p/fallen-archbishop-andreus.gif"
+        },
+        {
+          "name": "King of Puppets",
+          "path": "assets/lies-of-p/king-of-puppets.gif"
+        },
+        {
+          "name": "Champion Victor",
+          "path": "assets/lies-of-p/champion-victor.gif"
+        },
+        {
+          "name": "Green Monster of the Swamp",
+          "path": "assets/lies-of-p/green-monster-of-the-swamp.gif"
+        },
+        {
+          "name": "Nameless Puppet",
+          "path": "assets/lies-of-p/nameless-puppet.gif"
+        },
+        {
+          "name": "Two Dragons Sword",
+          "path": "assets/lies-of-p/two-dragons-sword.gif"
+        },
+        {
+          "name": "Golden Lie",
+          "path": "assets/lies-of-p/golden-lie.gif"
+        }
+      ]
+    },
+    "terraria": {
+      "map": "terrariaGifs",
+      "answers": [
+        {
+          "name": "Guide",
+          "path": "assets/terraria/guide.gif"
+        },
+        {
+          "name": "Merchant",
+          "path": "assets/terraria/merchant.gif"
+        },
+        {
+          "name": "Demolitionist",
+          "path": "assets/terraria/demolitionist.gif"
+        },
+        {
+          "name": "Dye Trader",
+          "path": "assets/terraria/dye-trader.gif"
+        },
+        {
+          "name": "Angler",
+          "path": "assets/terraria/angler.gif"
+        },
+        {
+          "name": "Arms Dealer",
+          "path": "assets/terraria/arms-dealer.gif"
+        },
+        {
+          "name": "Goblin Tinkerer",
+          "path": "assets/terraria/goblin-tinkerer.gif"
+        },
+        {
+          "name": "Witch Doctor",
+          "path": "assets/terraria/witch-doctor.gif"
+        },
+        {
+          "name": "Clothier",
+          "path": "assets/terraria/clothier.gif"
+        },
+        {
+          "name": "Painter",
+          "path": "assets/terraria/painter.gif"
+        },
+        {
+          "name": "Party Skeleton (Skeleton Merchant)",
+          "path": "assets/terraria/party-skeleton-skeleton-merchant.gif"
+        },
+        {
+          "name": "Pirate",
+          "path": "assets/terraria/pirate.gif"
+        },
+        {
+          "name": "Truffle",
+          "path": "assets/terraria/truffle.gif"
+        },
+        {
+          "name": "Wizard",
+          "path": "assets/terraria/wizard.gif"
+        },
+        {
+          "name": "Tax Collector",
+          "path": "assets/terraria/tax-collector.gif"
+        },
+        {
+          "name": "King Slime",
+          "path": "assets/terraria/king-slime.gif"
+        },
+        {
+          "name": "Eye of Cthulhu",
+          "path": "assets/terraria/eye-of-cthulhu.gif"
+        },
+        {
+          "name": "Eater of Worlds",
+          "path": "assets/terraria/eater-of-worlds.gif"
+        },
+        {
+          "name": "Brain of Cthulhu",
+          "path": "assets/terraria/brain-of-cthulhu.gif"
+        },
+        {
+          "name": "Skeletron",
+          "path": "assets/terraria/skeletron.gif"
+        },
+        {
+          "name": "Deerclops",
+          "path": "assets/terraria/deerclops.gif"
+        },
+        {
+          "name": "Wall of Flesh",
+          "path": "assets/terraria/wall-of-flesh.gif"
+        },
+        {
+          "name": "The Destroyer",
+          "path": "assets/terraria/the-destroyer.gif"
+        },
+        {
+          "name": "The Twins",
+          "path": "assets/terraria/the-twins.gif"
+        },
+        {
+          "name": "Skeletron Prime",
+          "path": "assets/terraria/skeletron-prime.gif"
+        },
+        {
+          "name": "Plantera",
+          "path": "assets/terraria/plantera.gif"
+        },
+        {
+          "name": "Golem",
+          "path": "assets/terraria/golem.gif"
+        },
+        {
+          "name": "Duke Fishron",
+          "path": "assets/terraria/duke-fishron.gif"
+        },
+        {
+          "name": "Lunatic Cultist",
+          "path": "assets/terraria/lunatic-cultist.gif"
+        },
+        {
+          "name": "Moon Lord",
+          "path": "assets/terraria/moon-lord.gif"
+        },
+        {
+          "name": "Life Crystal",
+          "path": "assets/terraria/life-crystal.gif"
+        },
+        {
+          "name": "Mana Crystal",
+          "path": "assets/terraria/mana-crystal.gif"
+        },
+        {
+          "name": "Life Fruit",
+          "path": "assets/terraria/life-fruit.gif"
+        },
+        {
+          "name": "Magic Mirror",
+          "path": "assets/terraria/magic-mirror.gif"
+        },
+        {
+          "name": "Recall Potion",
+          "path": "assets/terraria/recall-potion.gif"
+        },
+        {
+          "name": "Grappling Hook",
+          "path": "assets/terraria/grappling-hook.gif"
+        },
+        {
+          "name": "Hermes Boots",
+          "path": "assets/terraria/hermes-boots.gif"
+        },
+        {
+          "name": "Obsidian Shield",
+          "path": "assets/terraria/obsidian-shield.gif"
+        },
+        {
+          "name": "Pylon",
+          "path": "assets/terraria/pylon.gif"
+        },
+        {
+          "name": "Demon Altar",
+          "path": "assets/terraria/demon-altar.gif"
+        },
+        {
+          "name": "Shadow Orb",
+          "path": "assets/terraria/shadow-orb.gif"
+        },
+        {
+          "name": "Crimson Heart",
+          "path": "assets/terraria/crimson-heart.gif"
+        },
+        {
+          "name": "Guide Voodoo Doll",
+          "path": "assets/terraria/guide-voodoo-doll.gif"
+        },
+        {
+          "name": "Pwnhammer",
+          "path": "assets/terraria/pwnhammer.gif"
+        },
+        {
+          "name": "Hardmode",
+          "path": "assets/terraria/hardmode.gif"
+        },
+        {
+          "name": "The Hallow",
+          "path": "assets/terraria/the-hallow.gif"
+        },
+        {
+          "name": "Chlorophyte Ore",
+          "path": "assets/terraria/chlorophyte-ore.gif"
+        },
+        {
+          "name": "Terra Blade",
+          "path": "assets/terraria/terra-blade.gif"
+        },
+        {
+          "name": "Celestial Sigil",
+          "path": "assets/terraria/celestial-sigil.gif"
+        },
+        {
+          "name": "Zenith",
+          "path": "assets/terraria/zenith.gif"
+        }
+      ]
+    },
+    "dark-souls": {
+      "map": "darkSoulsGifs",
+      "answers": [
+        {
+          "name": "Solaire of Astora",
+          "path": "assets/dark-souls/solaire-of-astora.gif"
+        },
+        {
+          "name": "Siegmeyer of Catarina",
+          "path": "assets/dark-souls/siegmeyer-of-catarina.gif"
+        },
+        {
+          "name": "Siegmeyer’s friend, Laurentius of the Great Swamp",
+          "path": "assets/dark-souls/siegmeyers-friend-laurentius-of-the-great-swamp.gif"
+        },
+        {
+          "name": "Big Hat Logan",
+          "path": "assets/dark-souls/big-hat-logan.gif"
+        },
+        {
+          "name": "Griggs of Vinheim",
+          "path": "assets/dark-souls/griggs-of-vinheim.gif"
+        },
+        {
+          "name": "Andre of Astora",
+          "path": "assets/dark-souls/andre-of-astora.gif"
+        },
+        {
+          "name": "Hawkeye Gough",
+          "path": "assets/dark-souls/hawkeye-gough.gif"
+        },
+        {
+          "name": "Knight Lautrec of Carim",
+          "path": "assets/dark-souls/knight-lautrec-of-carim.gif"
+        },
+        {
+          "name": "Asylum Demon",
+          "path": "assets/dark-souls/asylum-demon.gif"
+        },
+        {
+          "name": "Taurus Demon",
+          "path": "assets/dark-souls/taurus-demon.gif"
+        },
+        {
+          "name": "Capra Demon",
+          "path": "assets/dark-souls/capra-demon.gif"
+        },
+        {
+          "name": "Iron Golem",
+          "path": "assets/dark-souls/iron-golem.gif"
+        },
+        {
+          "name": "Ornstein and Smough",
+          "path": "assets/dark-souls/ornstein-and-smough.gif"
+        },
+        {
+          "name": "Great Grey Wolf Sif",
+          "path": "assets/dark-souls/great-grey-wolf-sif.gif"
+        },
+        {
+          "name": "Gravelord Nito",
+          "path": "assets/dark-souls/gravelord-nito.gif"
+        },
+        {
+          "name": "Seath the Scaleless",
+          "path": "assets/dark-souls/seath-the-scaleless.gif"
+        },
+        {
+          "name": "Knight Artorias",
+          "path": "assets/dark-souls/knight-artorias.gif"
+        },
+        {
+          "name": "Gwyn",
+          "path": "assets/dark-souls/gwyn.gif"
+        },
+        {
+          "name": "Firelink Shrine",
+          "path": "assets/dark-souls/firelink-shrine.gif"
+        },
+        {
+          "name": "Anor Londo",
+          "path": "assets/dark-souls/anor-londo.gif"
+        },
+        {
+          "name": "Estus Flask",
+          "path": "assets/dark-souls/estus-flask.gif"
+        },
+        {
+          "name": "Humanity",
+          "path": "assets/dark-souls/humanity.gif"
+        },
+        {
+          "name": "Bells of Awakening",
+          "path": "assets/dark-souls/bells-of-awakening.gif"
+        },
+        {
+          "name": "Rite of Kindling",
+          "path": "assets/dark-souls/rite-of-kindling.gif"
+        },
+        {
+          "name": "First Flame",
+          "path": "assets/dark-souls/first-flame.gif"
+        },
+        {
+          "name": "Benhart of Jugo",
+          "path": "assets/dark-souls/benhart-of-jugo.gif"
+        },
+        {
+          "name": "Crestfallen Saulden",
+          "path": "assets/dark-souls/crestfallen-saulden.gif"
+        },
+        {
+          "name": "Merchant Hag Melentia’s bodyguard, Royal Sorcerer Navlaan",
+          "path": "assets/dark-souls/merchant-hag-melentias-bodyguard-royal-sorcerer-navlaan.gif"
+        },
+        {
+          "name": "Straid of Olaphis",
+          "path": "assets/dark-souls/straid-of-olaphis.gif"
+        },
+        {
+          "name": "Carhillion of the Fold",
+          "path": "assets/dark-souls/carhillion-of-the-fold.gif"
+        },
+        {
+          "name": "Blacksmith Lenigrast",
+          "path": "assets/dark-souls/blacksmith-lenigrast.gif"
+        },
+        {
+          "name": "Steady Hand McDuff",
+          "path": "assets/dark-souls/steady-hand-mcduff.gif"
+        },
+        {
+          "name": "Mild-Mannered Pate",
+          "path": "assets/dark-souls/mild-mannered-pate.gif"
+        },
+        {
+          "name": "The Last Giant",
+          "path": "assets/dark-souls/the-last-giant.gif"
+        },
+        {
+          "name": "The Pursuer",
+          "path": "assets/dark-souls/the-pursuer.gif"
+        },
+        {
+          "name": "Dragonrider",
+          "path": "assets/dark-souls/dragonrider.gif"
+        },
+        {
+          "name": "Old Dragonslayer",
+          "path": "assets/dark-souls/old-dragonslayer.gif"
+        },
+        {
+          "name": "Flexile Sentry",
+          "path": "assets/dark-souls/flexile-sentry.gif"
+        },
+        {
+          "name": "Executioner’s Chariot",
+          "path": "assets/dark-souls/executioners-chariot.gif"
+        },
+        {
+          "name": "Old Iron King",
+          "path": "assets/dark-souls/old-iron-king.gif"
+        },
+        {
+          "name": "Vendrick",
+          "path": "assets/dark-souls/vendrick.gif"
+        },
+        {
+          "name": "Fume Knight",
+          "path": "assets/dark-souls/fume-knight.gif"
+        },
+        {
+          "name": "Sir Alonne",
+          "path": "assets/dark-souls/sir-alonne.gif"
+        },
+        {
+          "name": "Majula",
+          "path": "assets/dark-souls/majula.gif"
+        },
+        {
+          "name": "Drangleic Castle",
+          "path": "assets/dark-souls/drangleic-castle.gif"
+        },
+        {
+          "name": "Estus Flask Shard",
+          "path": "assets/dark-souls/estus-flask-shard.gif"
+        },
+        {
+          "name": "Human Effigy",
+          "path": "assets/dark-souls/human-effigy.gif"
+        },
+        {
+          "name": "King’s Ring",
+          "path": "assets/dark-souls/kings-ring.gif"
+        },
+        {
+          "name": "Ashen Mist Heart",
+          "path": "assets/dark-souls/ashen-mist-heart.gif"
+        },
+        {
+          "name": "Throne of Want",
+          "path": "assets/dark-souls/throne-of-want.gif"
+        }
+      ]
+    },
+    "bloodborne": {
+      "map": "bloodborneGifs",
+      "answers": [
+        {
+          "name": "The Hunter",
+          "path": "assets/bloodborne/the-hunter.gif"
+        },
+        {
+          "name": "Gilbert",
+          "path": "assets/bloodborne/gilbert.gif"
+        },
+        {
+          "name": "Alfred",
+          "path": "assets/bloodborne/alfred.gif"
+        },
+        {
+          "name": "Djura",
+          "path": "assets/bloodborne/djura.gif"
+        },
+        {
+          "name": "Valtr",
+          "path": "assets/bloodborne/valtr.gif"
+        },
+        {
+          "name": "Master Willem",
+          "path": "assets/bloodborne/master-willem.gif"
+        },
+        {
+          "name": "Provost Laurence",
+          "path": "assets/bloodborne/provost-laurence.gif"
+        },
+        {
+          "name": "Brador",
+          "path": "assets/bloodborne/brador.gif"
+        },
+        {
+          "name": "Simon the Harrowed",
+          "path": "assets/bloodborne/simon-the-harrowed.gif"
+        },
+        {
+          "name": "Younger Madaras Twin",
+          "path": "assets/bloodborne/younger-madaras-twin.gif"
+        },
+        {
+          "name": "Henryk",
+          "path": "assets/bloodborne/henryk.gif"
+        },
+        {
+          "name": "Suspicious Beggar",
+          "path": "assets/bloodborne/suspicious-beggar.gif"
+        },
+        {
+          "name": "Oedon Chapel Dweller",
+          "path": "assets/bloodborne/oedon-chapel-dweller.gif"
+        },
+        {
+          "name": "Retired Hunter Djura’s Ally",
+          "path": "assets/bloodborne/retired-hunter-djuras-ally.gif"
+        },
+        {
+          "name": "Blood Minister",
+          "path": "assets/bloodborne/blood-minister.gif"
+        },
+        {
+          "name": "Cleric Beast",
+          "path": "assets/bloodborne/cleric-beast.gif"
+        },
+        {
+          "name": "Father Gascoigne",
+          "path": "assets/bloodborne/father-gascoigne.gif"
+        },
+        {
+          "name": "Darkbeast Paarl",
+          "path": "assets/bloodborne/darkbeast-paarl.gif"
+        },
+        {
+          "name": "Shadows of Yharnam",
+          "path": "assets/bloodborne/shadows-of-yharnam.gif"
+        },
+        {
+          "name": "The One Reborn",
+          "path": "assets/bloodborne/the-one-reborn.gif"
+        },
+        {
+          "name": "Micolash, Host of the Nightmare",
+          "path": "assets/bloodborne/micolash-host-of-the-nightmare.gif"
+        },
+        {
+          "name": "Gehrman, the First Hunter",
+          "path": "assets/bloodborne/gehrman-the-first-hunter.gif"
+        },
+        {
+          "name": "Martyr Logarius",
+          "path": "assets/bloodborne/martyr-logarius.gif"
+        },
+        {
+          "name": "Ludwig, the Holy Blade",
+          "path": "assets/bloodborne/ludwig-the-holy-blade.gif"
+        },
+        {
+          "name": "Orphan of Kos",
+          "path": "assets/bloodborne/orphan-of-kos.gif"
+        },
+        {
+          "name": "Beast-possessed Soul",
+          "path": "assets/bloodborne/beast-possessed-soul.gif"
+        },
+        {
+          "name": "Watchdog of the Old Lords",
+          "path": "assets/bloodborne/watchdog-of-the-old-lords.gif"
+        },
+        {
+          "name": "Undead Giant",
+          "path": "assets/bloodborne/undead-giant.gif"
+        },
+        {
+          "name": "Merciless Watchers",
+          "path": "assets/bloodborne/merciless-watchers.gif"
+        },
+        {
+          "name": "Pthumerian Descendant",
+          "path": "assets/bloodborne/pthumerian-descendant.gif"
+        },
+        {
+          "name": "Yharnam",
+          "path": "assets/bloodborne/yharnam.gif"
+        },
+        {
+          "name": "Hunter’s Dream",
+          "path": "assets/bloodborne/hunters-dream.gif"
+        },
+        {
+          "name": "Hunter’s Nightmare",
+          "path": "assets/bloodborne/hunters-nightmare.gif"
+        },
+        {
+          "name": "Fishing Hamlet",
+          "path": "assets/bloodborne/fishing-hamlet.gif"
+        },
+        {
+          "name": "Healing Church",
+          "path": "assets/bloodborne/healing-church.gif"
+        },
+        {
+          "name": "Byrgenwerth",
+          "path": "assets/bloodborne/byrgenwerth.gif"
+        },
+        {
+          "name": "School of Mensis",
+          "path": "assets/bloodborne/school-of-mensis.gif"
+        },
+        {
+          "name": "The Choir",
+          "path": "assets/bloodborne/the-choir.gif"
+        },
+        {
+          "name": "Great Ones",
+          "path": "assets/bloodborne/great-ones.gif"
+        },
+        {
+          "name": "Old Blood",
+          "path": "assets/bloodborne/old-blood.gif"
+        },
+        {
+          "name": "Beast Scourge",
+          "path": "assets/bloodborne/beast-scourge.gif"
+        },
+        {
+          "name": "Blood Echoes",
+          "path": "assets/bloodborne/blood-echoes.gif"
+        },
+        {
+          "name": "Insight",
+          "path": "assets/bloodborne/insight.gif"
+        },
+        {
+          "name": "Blood Vial",
+          "path": "assets/bloodborne/blood-vial.gif"
+        },
+        {
+          "name": "Quicksilver Bullets",
+          "path": "assets/bloodborne/quicksilver-bullets.gif"
+        },
+        {
+          "name": "Saw Cleaver",
+          "path": "assets/bloodborne/saw-cleaver.gif"
+        },
+        {
+          "name": "Hunter Axe",
+          "path": "assets/bloodborne/hunter-axe.gif"
+        },
+        {
+          "name": "Trick Weapons",
+          "path": "assets/bloodborne/trick-weapons.gif"
+        },
+        {
+          "name": "Caryll Runes",
+          "path": "assets/bloodborne/caryll-runes.gif"
+        },
+        {
+          "name": "Chalice Dungeons",
+          "path": "assets/bloodborne/chalice-dungeons.gif"
+        }
+      ]
+    }
+  }
+}
