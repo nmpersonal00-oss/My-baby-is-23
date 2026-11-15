@@ -1,7 +1,7 @@
 {
   "round": 4,
   "version": 2,
-  "status": "PENDING BINARY UPLOAD — DO NOT MERGE THIS DRAFT PR UNTIL GIFS REPLACED",
+  "status": "INSTALLED — ALL THREE CORRECTED GIFS VERIFIED IN GITHUB",
   "matches": [
     {
       "name": "Relic Seeker Lemm",
@@ -30,5 +30,6 @@
       "frames": 6,
       "bytes": 445820
     }
-  ]
+  ],
+  "installed_commit_note": "Round 4 card mappings preserved; only positions 3, 4 and 5 have new image data."
 }
