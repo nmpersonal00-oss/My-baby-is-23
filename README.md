@@ -28,6 +28,15 @@ The Secret Love Notes ornament opens `chapters/love-notes.html`: a full-screen, 
 - The interface includes pointer, touch, keyboard navigation, responsive layout, accessible descriptions for screen readers, and reduced-motion support.
 - The existing homepage and other games are unchanged.
 
+### Habibi · My little love story
+
+The **Habibi** envelope opens `chapters/love-notes/habibi.html`, a responsive illustrated chibi slideshow containing **eight original locally stored scenes** about the things I love: his eyes, hair, muscles, chest, arms, legs, toes and hugs. Each scene has its own tap/click reaction with a silly response, bouncing scene art, and locally rendered floating heart sparkles.
+
+- Move through the scenes with the previous/next controls, eight accessible dots, keyboard left/right arrows, or a horizontal swipe on the illustration on touch devices.
+- The final slide reveals the romantic message: “I love every part of you. My body is for you, and your body is for me. Forever and always.” Sparkles can be triggered again, and the slideshow can be replayed.
+- All imagery is local in `assets/habibi-garden.webp` and `assets/habibi-scene-{1..8}.webp`. No emoji artwork, remote fonts, image services, or JS frameworks are used.
+- Works on desktop, tablet, and mobile and respects reduced-motion settings; other Secret Love Notes chapters are unchanged.
+
 ### Love · Thirty Polaroids (November 2026)
 
 The **Love** envelope opens `chapters/love-notes/love.html`, a fully animated, original-art scrapbook created from the approved chibi-couple illustration.
