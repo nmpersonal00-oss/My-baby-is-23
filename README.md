@@ -18,16 +18,15 @@ A lovingly illustrated, interactive forest home screen built around the exact ap
 4. Secret Love Notes
 5. Mystery Treasure Trail
 
-## Secret Love Notes · The Moonlit Letter Garden
+## Secret Love Notes · The Flying Letter Garden
 
-The Secret Love Notes ornament opens `chapters/love-notes.html`, a romantic forest-and-rose-garden scene that uses **only original, local artwork and animations**. It never loads a remote image, font, icon pack, emoji sprite, tracking script, or library.
+The Secret Love Notes ornament opens `chapters/love-notes.html`: a full-screen, cinematic garden made with **original AI artwork created in this chat**, stored as local files in `assets/`. There are **no headlines, instructions, descriptions, counters, visible note tabs, or footer copy** layered over the scene—just five illustrated, labeled flying envelopes and an ornate return button.
 
-- The enchanted night garden is `assets/love-notes-night-garden.svg`; the five angel-winged envelope illustrations reuse the project-original `assets/love-notes-winged-letter.svg`.
-- Five moving letters are named **Baby**, **Habibi**, **Cutie**, **Love**, and **Kawaii**. On the first click/tap of an individual letter it darts away more than three times faster; on the **second click/tap of the same letter**, its reading tab opens.
-- Each letter has its own shareable hash destination: `#baby`, `#habibi`, `#cutie`, `#love`, and `#kawaii`. Open tabs directly by URL or switch between letters from the tab navigation.
-- To change the **starter love-note messages**, edit the `notes` entries near the top of `love-notes.js`. Every other part of the game can stay as-is.
-- Responsive layouts, readable parchment letters, keyboard focus and Escape support, labeled links, and a reduced-motion static selection layout are included.
-- The homepage art and its invisible lantern hotspots remain untouched.
+- The five letters—**Baby**, **Habibi**, **Cutie**, **Love**, **Kawaii**—are separate interactive images that fly and bounce throughout the **entire viewport**, not inside a limited circular arena. Their normal flight is brisk. The first click/tap of a particular letter makes it dart and fly at roughly 2.85x its speed temporarily; the second click/tap opens its own page.
+- Each letter links to a dedicated **intentionally empty** destination: `chapters/love-notes/{baby,habibi,cutie,love,kawaii}.html`. Only an unobtrusive back arrow is visible there until personal notes are provided.
+- The background, all five winged envelope assets, and the ornate back button are chat-created artwork and self-hosted; no emoji, external fonts, images, libraries, or remote services are used on these pages.
+- The interface includes pointer, touch, keyboard navigation, responsive layout, accessible descriptions for screen readers, and reduced-motion support.
+- The existing homepage and other games are unchanged.
 
 ## Deployment
 
