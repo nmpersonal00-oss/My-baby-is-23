@@ -89,3 +89,23 @@ body.memory-under-construction #memory-dialog-root{display:none}
 }
 /* The hidden attribute must win over the zone's display rule on portrait devices. */
 .memory-construction-zone[hidden]{display:none!important}
+
+/* Little magical recoil and a burst of hand-drawn CSS light particles when caught peeking. */
+.memory-construction.is-peeking .memory-construction-art{animation:construction-surprise .58s cubic-bezier(.2,.75,.2,1)}
+.memory-construction-pop{position:absolute;z-index:13;width:var(--size,7px);height:var(--size,7px);
+  left:var(--pop-x);top:var(--pop-y);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 32% 28%,#fffef1,#ffd1f4 45%,#df72e8 90%);
+  box-shadow:0 0 9px 3px #ffb4ea,0 0 20px 5px #ffe4ad;
+  animation:construction-pop .8s ease-out forwards}
+@keyframes construction-surprise{
+  0%,100%{transform:translateY(0) scale(1)}
+  22%{transform:translateY(-5px) scale(1.008)}
+  58%{transform:translateY(2px) scale(.998)}
+}
+@keyframes construction-pop{
+  from{opacity:1;transform:translate(-50%,-50%) scale(.3)}
+  to{opacity:0;transform:translate(calc(-50% + var(--pop-dx)),calc(-50% + var(--pop-dy))) scale(1.45)}
+}
+@media(prefers-reduced-motion:reduce){
+ .memory-construction.is-peeking .memory-construction-art,.memory-construction-pop{animation:none!important}
+}
