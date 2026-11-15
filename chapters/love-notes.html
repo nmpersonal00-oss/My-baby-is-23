@@ -3,94 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0a1524">
-  <meta name="description" content="Catch five enchanted winged love letters in Rayan's Dark Forest. Each little note has a secret inside.">
+  <meta name="theme-color" content="#0c1824">
+  <meta name="description" content="Five winged love letters flying around an enchanted midnight garden. Catch each letter twice to open its secret page.">
   <title>Secret Love Notes · Rayan's Dark Forest</title>
   <link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
-  <link rel="preload" as="image" href="../assets/love-notes-night-garden.svg" type="image/svg+xml">
-  <link rel="preload" as="image" href="../assets/love-notes-winged-letter.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/love-notes-romantic-garden.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="../love-notes.css">
   <script defer src="../love-notes.js"></script>
 </head>
 <body class="love-notes-page">
-  <div class="love-scenery" aria-hidden="true"><div class="love-scene-haze"></div><div class="love-moon-rays"></div><div class="love-particles" id="love-particles"></div></div>
-
-  <header class="love-topbar">
-    <a class="love-forest-link" href="../index.html">
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 5 7 12l7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>Back to the Forest</span>
+  <main id="love-chase" class="love-chase" aria-labelledby="love-page-title">
+    <h1 id="love-page-title" class="love-sr-only">Secret Love Notes</h1>
+    <p class="love-sr-only">Five letters fly all over the screen. Catch the same letter twice to open its empty note page. The first catch makes it fly much faster.</p>
+    <div class="love-scenery" aria-hidden="true"></div>
+    <div class="love-glimmer" id="love-glimmer" aria-hidden="true"></div>
+    <a href="../index.html" class="love-exit" aria-label="Back to Rayan's Dark Forest">
+      <img src="../assets/love-notes-back.webp" alt="" width="702" height="236">
     </a>
-    <a href="../index.html" class="love-brand">Rayan’s <span>Dark Forest</span></a>
-    <div class="love-topbar-aside" aria-hidden="true"><span class="love-tiny-heart"></span> A little world for us</div>
-  </header>
-
-  <main id="love-app">
-    <section class="love-garden" id="love-garden" aria-labelledby="love-heading">
-      <div class="love-heading">
-        <p class="love-overline">THE MOONLIT LETTER GARDEN</p>
-        <h1 id="love-heading">Secret <em>Love</em> Notes</h1>
-        <p class="love-intro">Five little letters escaped into the night.<br>Catch one twice to discover what my heart has hidden for you.</p>
-        <div class="love-heading-flourish" aria-hidden="true"><span></span><svg viewBox="0 0 34 30" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 27C11 21 2 15 2 9c0-8 11-9 15-1 4-8 15-7 15 1 0 6-9 12-15 18Z"/></svg><span></span></div>
-      </div>
-
-      <div class="love-flight-area" id="love-flight-area" aria-label="Five flying love letters. Click or tap a letter once to make it dart away, then catch the same letter again to open it.">
-        <div class="flight-aura flight-aura-one" aria-hidden="true"></div>
-        <div class="flight-aura flight-aura-two" aria-hidden="true"></div>
-        <a class="flying-letter" href="#baby" data-note="baby" aria-label="Baby. Catch twice to open the letter.">
-          <span class="flying-letter-image"><img src="../assets/love-notes-winged-letter.svg" width="380" height="240" alt="" draggable="false"></span><span class="flying-letter-name">Baby</span>
-        </a>
-        <a class="flying-letter" href="#habibi" data-note="habibi" aria-label="Habibi. Catch twice to open the letter.">
-          <span class="flying-letter-image"><img src="../assets/love-notes-winged-letter.svg" width="380" height="240" alt="" draggable="false"></span><span class="flying-letter-name">Habibi</span>
-        </a>
-        <a class="flying-letter" href="#cutie" data-note="cutie" aria-label="Cutie. Catch twice to open the letter.">
-          <span class="flying-letter-image"><img src="../assets/love-notes-winged-letter.svg" width="380" height="240" alt="" draggable="false"></span><span class="flying-letter-name">Cutie</span>
-        </a>
-        <a class="flying-letter" href="#love" data-note="love" aria-label="Love. Catch twice to open the letter.">
-          <span class="flying-letter-image"><img src="../assets/love-notes-winged-letter.svg" width="380" height="240" alt="" draggable="false"></span><span class="flying-letter-name">Love</span>
-        </a>
-        <a class="flying-letter" href="#kawaii" data-note="kawaii" aria-label="Kawaii. Catch twice to open the letter.">
-          <span class="flying-letter-image"><img src="../assets/love-notes-winged-letter.svg" width="380" height="240" alt="" draggable="false"></span><span class="flying-letter-name">Kawaii</span>
-        </a>
-      </div>
-      <div class="love-bottom">
-        <p id="love-status" class="love-status" role="status" aria-live="polite">Choose a flying letter. The first catch makes it extra shy.</p>
-        <p class="love-howto">FIRST CATCH: IT FLIES FASTER <span class="love-howto-divider"></span> SECOND CATCH: YOUR LETTER OPENS</p>
-      </div>
-    </section>
-
-    <section class="love-reader" id="love-reader" role="dialog" aria-modal="true" aria-labelledby="love-reader-title" hidden>
-      <div class="love-reader-underlay" aria-hidden="true"></div>
-      <div class="love-reader-content">
-        <button class="love-reader-back" id="love-reader-back" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 5 7 12l7 7M7 12h13" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Chase the letters again
-        </button>
-        <div class="love-reader-heading">A SECRET, JUST FOR YOU</div>
-        <nav class="love-note-tabs" aria-label="The five secret love notes">
-          <a href="#baby" data-note-tab="baby">Baby</a>
-          <a href="#habibi" data-note-tab="habibi">Habibi</a>
-          <a href="#cutie" data-note-tab="cutie">Cutie</a>
-          <a href="#love" data-note-tab="love">Love</a>
-          <a href="#kawaii" data-note-tab="kawaii">Kawaii</a>
-        </nav>
-        <article class="love-parchment">
-          <div class="parchment-corner parchment-corner-tl" aria-hidden="true"></div>
-          <div class="parchment-corner parchment-corner-tr" aria-hidden="true"></div>
-          <div class="parchment-corner parchment-corner-bl" aria-hidden="true"></div>
-          <div class="parchment-corner parchment-corner-br" aria-hidden="true"></div>
-          <div class="love-paper-seal" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none"><path d="M24 41C17 35 6 27 6 18 6 8 19 6 24 16 29 6 42 8 42 18c0 9-11 17-18 23Z" stroke="currentColor" stroke-width="2.5"/></svg>
-          </div>
-          <p class="love-note-count" id="love-note-count">LETTER ONE OF FIVE</p>
-          <h2 id="love-reader-title" tabindex="-1">Baby</h2>
-          <div class="love-letter-words" id="love-letter-words"></div>
-          <div class="love-paper-divider" aria-hidden="true"><span></span><i></i><span></span></div>
-          <p class="love-letter-signature">Forever and always,<br><em>Your spoiled little princess</em></p>
-        </article>
-        <p class="love-reader-foot">Every letter is a little piece of my heart.</p>
-      </div>
-    </section>
+    <nav class="love-letter-playfield" id="love-letter-playfield" aria-label="Flying love letters">
+      <a class="chase-letter" href="love-notes/baby.html" data-letter="baby" aria-label="Baby. Catch twice to open."><img src="../assets/love-note-baby.webp" width="584" height="304" draggable="false" alt="Baby"></a>
+      <a class="chase-letter" href="love-notes/habibi.html" data-letter="habibi" aria-label="Habibi. Catch twice to open."><img src="../assets/love-note-habibi.webp" width="573" height="305" draggable="false" alt="Habibi"></a>
+      <a class="chase-letter" href="love-notes/cutie.html" data-letter="cutie" aria-label="Cutie. Catch twice to open."><img src="../assets/love-note-cutie.webp" width="490" height="332" draggable="false" alt="Cutie"></a>
+      <a class="chase-letter" href="love-notes/love.html" data-letter="love" aria-label="Love. Catch twice to open."><img src="../assets/love-note-love.webp" width="471" height="329" draggable="false" alt="Love"></a>
+      <a class="chase-letter" href="love-notes/kawaii.html" data-letter="kawaii" aria-label="Kawaii. Catch twice to open."><img src="../assets/love-note-kawaii.webp" width="484" height="328" draggable="false" alt="Kawaii"></a>
+    </nav>
+    <span class="love-sr-only" id="love-announcer" role="status" aria-live="polite" aria-atomic="true"></span>
   </main>
-  <footer class="love-page-footer"><span>Made with love, under the same moon</span></footer>
 </body>
 </html>
