@@ -1,13 +1,12 @@
 /*
  * Matching Memory content.
  *
- * Hollow Knight, Hollow Knight: Silksong, Lies of P, Terraria,
- * Shadow of the Colossus, Bloodborne, and Dark Souls each have 50
- * owner-supplied names across 5 rounds of 10. GIFs remain blank.
+ * All eight categories now each have 50 owner-supplied names across
+ * five rounds of 10. GIFs remain blank until added.
  *
  * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs,
  * terrariaGifs, colossusGifs, bloodborneGifs, darkSoulsGifs,
- * hollowKnightGifs, or silksongGifs.
+ * hollowKnightGifs, silksongGifs, or sanrioGifs.
  * For example, inside liesOfPGifs:
  *   'Pinocchio': '../assets/pinocchio.gif'
  * Each GIF will then match its keyword wherever that keyword appears.
@@ -583,6 +582,96 @@
     };
   });
 
+
+  // Sanrio: 36 named characters, 2 Aggretsuko workplace bosses,
+  // and 12 places, groups and important things from the owner's list.
+  // Exact names/punctuation are preserved (including red bow and Café).
+  const sanrioCharacters = [
+    "Hello Kitty",
+    "Dear Daniel",
+    "My Melody",
+    "Kuromi",
+    "Cinnamoroll",
+    "Pompompurin",
+    "Pochacco",
+    "Keroppi",
+    "Chococat",
+    "Badtz-Maru",
+    "Kiki",
+    "Lala",
+    "Tuxedosam",
+    "Hangyodon",
+    "Mimmy",
+    "Charmmy Kitty",
+    "My Sweet Piano",
+    "Wish Me Mell",
+    "Gudetama",
+    "Cogimyun",
+    "Pekkle",
+    "Monkichi",
+    "Marroncream",
+    "Bonbonribbon",
+    "Usahana",
+    "Corocorokuririn",
+    "Kirimichan",
+    "Tiny Chum",
+    "Patty",
+    "Jimmy",
+    "Littleforestfellow",
+    "Strawberry King",
+    "Gaopowerroo",
+    "Hanamaruobake",
+    "Retsuko",
+    "Fenneko"
+  ];
+  const sanrioBosses = [
+    "Director Ton",
+    "Director Gori"
+  ];
+  const sanrioThings = [
+    "Sanrio Puroland",
+    "Harmonyland",
+    "Little Twin Stars",
+    "Sugarbunnies",
+    "Lloromannic",
+    "Jewelpet",
+    "Aggretsuko",
+    "Show By Rock!!",
+    "Hello Kitty’s red bow",
+    "Café Cinnamon",
+    "Hello Kitty Island Adventure",
+    "Sanrio Character Ranking"
+  ];
+  // Later: 'Hello Kitty': '../assets/hello-kitty.gif'
+  const sanrioGifs = {};
+
+  // Fixed mixed groups, freshly randomized board positions each time.
+  // Rounds 2 and 4 include one workplace boss each; every round includes
+  // several places/groups/items alongside characters.
+  const sanrioCharacterPool = shuffledForLevels(sanrioCharacters, 20261201);
+  const sanrioBossPool = shuffledForLevels(sanrioBosses, 20261202);
+  const sanrioThingsPool = shuffledForLevels(sanrioThings, 20261203);
+  const sanrioRoundDistribution = [
+    [8, 0, 2],
+    [7, 1, 2],
+    [7, 0, 3],
+    [7, 1, 2],
+    [7, 0, 3]
+  ];
+  const sanrioOffsets = [0, 0, 0];
+  const sanrioPools = [sanrioCharacterPool, sanrioBossPool, sanrioThingsPool];
+  const sanrioRounds = sanrioRoundDistribution.map((counts, round) => {
+    const names = counts.flatMap((count, category) => {
+      const start = sanrioOffsets[category];
+      sanrioOffsets[category] += count;
+      return sanrioPools[category].slice(start, start + count);
+    });
+    return {
+      pairs: shuffledForLevels(names, 20261270 + round)
+        .map(name => ({name, gif: sanrioGifs[name] || ''}))
+    };
+  });
+
   const categories = [
     ['hollow-knight', 'Hollow Knight', 'Where little lights are never forgotten', 'forest-04.png'],
     ['silksong', 'Hollow Knight: Silksong', 'Silken threads beneath the moon', 'forest-03.png'],
@@ -610,6 +699,8 @@
             ? bloodborneRounds
             : id === 'dark-souls'
               ? darkSoulsRounds
-              : Array.from({length:5}, () => ({pairs: []}))
+              : id === 'sanrio'
+                ? sanrioRounds
+                : Array.from({length:5}, () => ({pairs: []}))
   }));
 })();
