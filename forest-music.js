@@ -63,7 +63,7 @@
     '<div class="forest-music-menu" id="forest-cozy-menu" hidden>',
     '<label for="forest-cozy-volume">Music volume</label>',
     '<input id="forest-cozy-volume" type="range" min="0" max="100" value="55" aria-label="Music volume">',
-    '<p>Add your “Cozy Library” MP3 once, and it will be available on the front page, in every game, and in the Word Search menu. Your Word Search categories still use their own songs.</p>',
+    '<p>Link Cozy Library from Google Drive without downloading it, or import a local MP3. It plays across the Forest; Word Search worlds keep their own songs.</p>',
     '<div class="forest-cozy-drive-area" id="forest-cozy-drive-area">',
     '<strong>Cozy Library from Google Drive</strong>',
     '<p>Connect once, then drop or paste a Drive folder or song link. No music downloads required.</p>',
@@ -81,7 +81,7 @@
     '<button type="button" id="forest-cozy-import">Or choose a local Cozy Library MP3</button>',
     '<input id="forest-cozy-file" type="file" accept=".mp3,.m4a,.mp4,.ogg,.wav,audio/*" hidden>',
     '<button type="button" id="forest-cozy-delete">Remove saved Cozy Library music</button>',
-    '<p class="forest-music-note">Music is stored only in this browser. Clearing site data or switching devices means importing it again.</p>',
+    '<p class="forest-music-note">Local MP3 imports stay in this browser. Drive songs play online with Google sign-in; only the song link is remembered here.</p>',
     '</div>',
     '</div>'
   ].join('');
