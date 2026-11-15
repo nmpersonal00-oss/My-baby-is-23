@@ -280,3 +280,60 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
 .memory-hangman-placeholder a:hover{box-shadow:0 0 21px #efba6ec9}
 @media(max-width:1050px){.memory-rail-nav{gap:8px}.memory-hangman-button{font-size:12px}}
 @media(max-width:720px){.memory-rail-nav{display:flex;align-items:center;gap:7px}.memory-hangman-button{font-size:13px;padding:3px 8px}.memory-hangman-placeholder{margin:35px auto 20px}}
+
+
+/* GIF tiles share the source animations' 480:210 (16:7) aspect ratio.
+   The outer board's ten shared subgrid rows keep every name, GIF and match
+   connection vertically aligned without cropping or compressing the artwork.
+   This applies equally to filled GIFs and future empty gold frames. */
+.memory-matching-board{
+  grid-template-rows:repeat(10,minmax(0,auto));
+  min-height:0;
+}
+.memory-match-list{
+  grid-template-rows:subgrid;
+  grid-row:1 / span 10;
+  gap:8px;
+}
+.memory-gifs{grid-column:1}
+.memory-center-lane{grid-column:2;grid-row:1 / span 10}
+.memory-names{grid-column:3}
+.memory-match-row{height:100%;min-height:0}
+.memory-gifs .memory-match-slot{
+  width:100%;height:auto;aspect-ratio:16 / 7;
+  min-height:0;padding:2px;overflow:hidden;
+  border-radius:16px 6px 16px 6px;
+}
+.memory-gifs .memory-match-slot img{
+  display:block;width:100%;height:100%;min-height:0;
+  object-fit:contain;object-position:center;
+  border-radius:12px 3px 12px 3px;pointer-events:none;
+}
+.memory-names .memory-match-slot{
+  height:100%;min-height:0;padding:7px 11px;
+}
+/* Older browsers without CSS subgrid use synchronized fixed-height rows. */
+@supports not (grid-template-rows:subgrid){
+  .memory-matching-board{
+    --memory-fallback-row:134px;
+    grid-template-rows:none;
+  }
+  .memory-match-list{
+    grid-row:auto;
+    grid-template-rows:repeat(10,var(--memory-fallback-row));
+  }
+  .memory-center-lane{grid-row:auto}
+  .memory-gifs .memory-match-slot{height:100%;aspect-ratio:auto}
+  @media(max-width:1380px){
+    .memory-matching-board{--memory-fallback-row:112px}
+  }
+  @media(max-width:1050px){
+    .memory-matching-board{--memory-fallback-row:83px}
+  }
+  @media(max-width:720px){
+    .memory-matching-board{--memory-fallback-row:68px}
+  }
+  @media(max-width:390px){
+    .memory-matching-board{--memory-fallback-row:59px}
+  }
+}
