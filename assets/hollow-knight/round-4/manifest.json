@@ -1,0 +1,99 @@
+{
+  "category": "Hollow Knight",
+  "round": 4,
+  "assetStatus": "Installed — all ten GIF files committed and Git blob hashes verified",
+  "width": 480,
+  "height": 210,
+  "pairs": [
+    {
+      "position": 1,
+      "name": "Nailmaster Mato",
+      "path": "assets/hollow-knight/round-4/r04-01-nailmaster-mato.gif",
+      "bytes": 545546,
+      "frames": 6,
+      "sha256": "835f502250eac770a52110c4068afe6b0b2f6c32b648c3017e89223339db37f5",
+      "revised": false
+    },
+    {
+      "position": 2,
+      "name": "Paintmaster Sheo",
+      "path": "assets/hollow-knight/round-4/r04-02-paintmaster-sheo.gif",
+      "bytes": 549547,
+      "frames": 12,
+      "sha256": "72a59815a3b308bfee25ff9cca76350b6b3365f18872bc8fce79e278643d1ce8",
+      "revised": false
+    },
+    {
+      "position": 3,
+      "name": "Relic Seeker Lemm",
+      "path": "assets/hollow-knight/round-4/r04-03-relic-seeker-lemm.gif",
+      "bytes": 608944,
+      "frames": 12,
+      "sha256": "2a402346d6c488549a4f2c0004313e868497d442d674b1d56284d868d29014f4",
+      "revised": false
+    },
+    {
+      "position": 4,
+      "name": "Broken Vessel",
+      "path": "assets/hollow-knight/round-4/r04-04-broken-vessel.gif",
+      "bytes": 1018985,
+      "frames": 12,
+      "sha256": "5ae81a6f1d995b6c01706272ec4aac74e87d2072457419bea79493fd2405a944",
+      "revised": true
+    },
+    {
+      "position": 5,
+      "name": "Lost Kin",
+      "path": "assets/hollow-knight/round-4/r04-05-lost-kin.gif",
+      "bytes": 1030093,
+      "frames": 12,
+      "sha256": "3374fa40aec5d529cb91b2201d9d4cf0b703245d23e8116fc0354491e818092c",
+      "revised": true
+    },
+    {
+      "position": 6,
+      "name": "Nosk",
+      "path": "assets/hollow-knight/round-4/r04-06-nosk.gif",
+      "bytes": 634615,
+      "frames": 12,
+      "sha256": "89b120f0a13dea43cd7d14e30da8bcd6c4ae5a5fca22ab7073f5bc94b53a4c2f",
+      "revised": false
+    },
+    {
+      "position": 7,
+      "name": "Crystal Heart",
+      "path": "assets/hollow-knight/round-4/r04-07-crystal-heart.gif",
+      "bytes": 1318861,
+      "frames": 16,
+      "sha256": "89a735b55e1225972e3daa97024c0ab61dcb8388c75568afb33f3123a35ae093",
+      "revised": true
+    },
+    {
+      "position": 8,
+      "name": "SOUL",
+      "path": "assets/hollow-knight/round-4/r04-08-soul.gif",
+      "bytes": 1435224,
+      "frames": 16,
+      "sha256": "e7b65bb5a84cacb02361d8fd21363fd06e49b084f9c833f4185481382df1469d",
+      "revised": true
+    },
+    {
+      "position": 9,
+      "name": "Deepnest",
+      "path": "assets/hollow-knight/round-4/r04-09-deepnest.gif",
+      "bytes": 1480572,
+      "frames": 16,
+      "sha256": "bfe1a873e0591e66bc917c6c68a6949ce956ccd1f2dde32406c3e34c5e570818",
+      "revised": true
+    },
+    {
+      "position": 10,
+      "name": "Crystal Peak",
+      "path": "assets/hollow-knight/round-4/r04-10-crystal-peak.gif",
+      "bytes": 509838,
+      "frames": 12,
+      "sha256": "7e1eaef208cb5c608406f1d7475999b2ce796f351b51cbcc85e3a910d6e98ca6",
+      "revised": false
+    }
+  ]
+}
