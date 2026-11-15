@@ -411,20 +411,23 @@
     driveFeedback.textContent = 'Reading the music folder from Google Drive…';
     const {tracks} = await drive.listFolder(folderId);
     if (!tracks.length) throw Error('No audio files found in this folder or its subfolders.');
-    let added = 0;
+    let added = 0, matched = 0;
     for (const track of tracks) {
       const world = recognize(track.path) || realm;
       if (!world) continue;
+      matched++;
       const songs = driveSongs[world];
       const entry = { id:'drive:' + track.fileId, driveId:track.fileId, name:track.name };
       const old = songs.findIndex(s => s.id === entry.id);
       if (old < 0) { songs.push(entry); added++; }
       else songs[old] = entry;
     }
-    if (!added) throw Error('No new songs were found. Try another folder or world.');
+    if (!matched) throw Error('The folder has songs, but none match a music world. Open a world and try again.');
     rememberDriveSongs();
     await refresh();
-    driveFeedback.textContent = added + ' songs linked from Drive. Nothing was downloaded to this device.';
+    driveFeedback.textContent = added
+      ? added + ' songs linked from Drive. Nothing was downloaded to this device.'
+      : 'This Drive folder is already linked. Your songs are ready.';
     notice = '';
     show();
     if (realm && !userPaused) { wantsMusic = true; start(); }
@@ -532,6 +535,8 @@
     // Browser storage is optional for Drive streaming; the song links still work.
     db = null;
     ready = true;
+    node('ws-add').disabled = true;
+    node('ws-add-folders').disabled = true;
     refresh().catch(() => {});
     notice = 'Local storage unavailable; Google Drive links can still play.';
     show();
