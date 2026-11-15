@@ -8,14 +8,14 @@ This is the easiest offline-file option for the Word Search music player. It doe
 2. In Rayan's Dark Forest, enter **Word Search**, then open one of the seven music worlds (for example, Dark Souls).
 3. Tap the tiny **✦** music star and then **♫** to open music settings.
 4. Under **Music already on this laptop**, click **Choose music folder**.
-5. Select the folder containing the actual MP3/music files, then click **Open** in the laptop's file chooser. You can also drag an extracted folder into the dashed area.
+5. Select the folder containing the actual MP3/music files. Chrome and Edge use a read-only folder picker; other browsers may ask you to click **Open** and confirm folder access. If the first chooser fails, a **Use regular folder chooser** option appears. You can also drag an extracted folder into the dashed area.
 6. The page will show **Ready: N songs from the selected folder**. Press **Play** if the browser did not automatically start music.
 
 You can select a **parent folder** containing several albums (like Dark Souls I, Lies of P, Terraria, etc.). The app reads subfolders and sends recognizable albums to the right Word Search world. If your folder names are different, open the intended world first, then select just that album folder.
 
 ## How this works
 
-- **No uploading** and no Google account or Google Drive permission required.
+- **No server uploading** and no Google account or Google Drive permission required. The website requests read access only to the selected folder.
 - Selecting a folder provides the app access to those music files **during the current browser visit**; the app plays directly from the chosen files.
 - If you reload the page, close the tab, or return later, you may need to select the folder again.
 - There is an optional **Remember songs in this browser** checkbox, initially unchecked. This copies songs into this browser's site storage so they might still be there next time; it can take a while and can fail for a collection as large as the complete music library. **You do not need it to play the folder now.**
