@@ -1,13 +1,13 @@
 # Rayan's Dark Forest
 
-A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search is playable, and Matching Memory has an empty GIF-to-name matching board ready for content.**
+A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search is playable, Memory Matching has a GIF-to-name board, and Secret Love Notes is now an interactive flying-letter garden.**
 
 ## Homepage
 
 - Displays the approved artwork as one continuous full-screen image (`assets/rayans-dark-forest.avif`), avoiding seams and dark side margins. The full original PNG remains in the downloadable archive.
 - Five transparent, accessible click targets correspond to the original ornaments in the tree.
 - Warm, animated fireflies and gentle focus/hover glows decorate the illustration without obscuring it.
-- Each ornament opens its own dedicated placeholder page, ready for a future game or love note.
+- Each ornament opens its own adventure page. The Secret Love Notes room is playable; some other chapters remain placeholders.
 - Full-bleed desktop art, a horizontally pannable scene on portrait phones, and reduced-motion accessibility.
 
 ## Forest sections
@@ -17,6 +17,17 @@ A lovingly illustrated, interactive forest home screen built around the exact ap
 3. Matching Memory Game — interactive GIF-to-name matching setup, waiting for GIFs and names
 4. Secret Love Notes
 5. Mystery Treasure Trail
+
+## Secret Love Notes · The Moonlit Letter Garden
+
+The Secret Love Notes ornament opens `chapters/love-notes.html`, a romantic forest-and-rose-garden scene that uses **only original, local artwork and animations**. It never loads a remote image, font, icon pack, emoji sprite, tracking script, or library.
+
+- The enchanted night garden is `assets/love-notes-night-garden.svg`; the five angel-winged envelope illustrations reuse the project-original `assets/love-notes-winged-letter.svg`.
+- Five moving letters are named **Baby**, **Habibi**, **Cutie**, **Love**, and **Kawaii**. On the first click/tap of an individual letter it darts away more than three times faster; on the **second click/tap of the same letter**, its reading tab opens.
+- Each letter has its own shareable hash destination: `#baby`, `#habibi`, `#cutie`, `#love`, and `#kawaii`. Open tabs directly by URL or switch between letters from the tab navigation.
+- To change the **starter love-note messages**, edit the `notes` entries near the top of `love-notes.js`. Every other part of the game can stay as-is.
+- Responsive layouts, readable parchment letters, keyboard focus and Escape support, labeled links, and a reduced-motion static selection layout are included.
+- The homepage art and its invisible lantern hotspots remain untouched.
 
 ## Deployment
 
