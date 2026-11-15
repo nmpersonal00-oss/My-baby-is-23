@@ -129,3 +129,27 @@
 }
 #forest-adventure-frame[hidden]{display:none!important}
 body.forest-shell-in-chapter {overflow:hidden!important}
+
+
+/* Google Drive music: no album download or file upload required. */
+#forest-cozy-music .forest-cozy-drive-area{
+  margin:12px 0;padding:10px;border:1px solid #e0be83aa;
+  border-radius:11px;background:linear-gradient(145deg,#122c3b,#2c2439)
+}
+#forest-cozy-music .forest-cozy-drive-area strong{
+  display:block;margin-bottom:6px;color:#ffdfa5
+}
+#forest-cozy-music .forest-cozy-drop{
+  display:grid;gap:7px;padding:9px 6px;
+  border:2px dashed #dfbb80;border-radius:8px;
+  color:#f5dfbd;text-align:center
+}
+#forest-cozy-music .forest-cozy-drop.is-dragging{background:#ddbe7930;border-color:#ffe7a9}
+#forest-cozy-music .forest-cozy-drive-area input[type=url],
+#forest-cozy-music .forest-cozy-drive-area select{
+  display:block;width:100%;min-height:35px;padding:6px;
+  border:1px solid #d5b77e;border-radius:7px;
+  background:#081b2b;color:#fff1d6;font:inherit
+}
+#forest-cozy-music .forest-cozy-drive-area #forest-cozy-drive-connect{background:#6b573a}
+#forest-cozy-music .forest-cozy-drive-feedback{color:#ffdfa6;min-height:14px}
