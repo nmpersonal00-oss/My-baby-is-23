@@ -10,6 +10,8 @@
   const SETTINGS_KEY = 'rayans-forest-cozy-settings-v1';
   const POSITION_KEY = 'rayans-forest-cozy-position-v1';
   const WORD_SEARCH = /\/chapters\/word-search\.html$/i.test(location.pathname);
+  const REMOTE_URL = typeof window.forestMusicUrl === 'function'
+    ? window.forestMusicUrl('cozy/cozy-library.mp3') : null;
   const WORLD_HASH = /^#\/(souls|lies|blood|stars|terraria|princess|hollow)\/[1-5]$/;
 
   function getSetting() {
@@ -311,8 +313,64 @@
     ready
   });
 
+  if (REMOTE_URL) {
+    // The gift recipient never has to import music. When the R2 URL is configured,
+    // the recording streams directly; IndexedDB is not required.
+    ready = true;
+    savedFile = { name: 'Cozy Library' };
+    audio.src = REMOTE_URL;
+    audio.load();
+    find('forest-cozy-import').hidden = true;
+    deleteButton.hidden = true;
+    const instructions = menu.querySelector('p');
+    if (instructions) instructions.textContent = 'Cozy Library is part of your forest. No music uploads are needed.';
+  }
   update();
-  openDatabase().then(async database => {
+
+  if (REMOTE_URL && document.body.classList.contains('home') && !userPaused) {
+    // A single tap to enter provides the user gesture required for audible
+    // playback on iOS Safari, Chrome and similar browsers.
+    let entered = false;
+    try { entered = sessionStorage.getItem('forest-entry-unlocked-v1') === 'yes'; } catch {}
+    if (!entered) {
+      const entrance = document.createElement('div');
+      entrance.id = 'forest-music-entrance';
+      entrance.innerHTML = '<div class="forest-entrance-card">' +
+        '<p class="forest-entrance-eyebrow">A world made just for you</p>' +
+        '<h2>Rayan’s Dark Forest</h2>' +
+        '<p>Follow the lanterns, my love. The music will travel with you.</p>' +
+        '<button type="button" id="forest-entrance-button">♫ Enter the Forest</button>' +
+        '<p class="forest-entrance-hint">Tap to enter with music</p>' +
+        '</div>';
+      document.body.appendChild(entrance);
+      const enter = entrance.querySelector('#forest-entrance-button');
+      enter.addEventListener('click', () => {
+        try { sessionStorage.setItem('forest-entry-unlocked-v1', 'yes'); } catch {}
+        userPaused = false;
+        message = '';
+        rememberSettings();
+        entrance.remove();
+        // The play() call is synchronous inside this real click event.
+        // Do not await IndexedDB or network before attempting it.
+        try {
+          const attempt = audio.play();
+          if (attempt && typeof attempt.catch === 'function') {
+            attempt.catch(() => {
+              message = 'Tap Play to enable sound in this browser.';
+              update();
+            });
+          }
+        } catch {
+          message = 'Tap Play to enable sound in this browser.';
+        }
+        update();
+      });
+    }
+  }
+
+  if (REMOTE_URL) {
+    if (!userPaused && !disabledForWorld) tryPlay();
+  } else openDatabase().then(async database => {
     db = database;
     const saved = await getFile();
     ready = true;
