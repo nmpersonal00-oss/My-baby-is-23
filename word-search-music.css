@@ -1,77 +1,63 @@
-/* Quiet soundtrack menu: no embedded video or pop-up over the puzzle. */
-.ws-music-dock[hidden],.ws-music-menu[hidden]{display:none!important}
+/* Only used by chapters/word-search.html; no music controls on other games. */
+.ws-music-dock[hidden],.ws-music-details[hidden]{display:none!important}
 .ws-music-dock{
-  position:fixed;z-index:35;top:82px;right:clamp(9px,1.7vw,24px);
-  width:min(230px,calc(100vw - 18px));
-  color:#ffe9be;
-  font:500 13px/1.4 Georgia,"Times New Roman",serif;
-  filter:drop-shadow(0 6px 14px #0009);
+  position:fixed;z-index:45;top:76px;right:clamp(8px,1.5vw,22px);
+  width:min(290px,calc(100vw - 16px));
+  color:#fff0d3;font:500 13px/1.4 Georgia,"Times New Roman",serif;
+  filter:drop-shadow(0 8px 18px #000a);
 }
-.ws-music-dock button,.ws-music-dock select{font:inherit}
-.ws-music-dock :is(button,select,a):focus-visible{outline:2px solid #ffebaa;outline-offset:3px}
-.ws-music-tab{
-  display:flex;align-items:center;gap:8px;width:100%;
-  min-height:42px;padding:8px 12px;
-  border:1px solid #eec988a8;border-radius:14px;
-  background:linear-gradient(130deg,#071927f6,#182534f7,#523724ef);
-  color:#ffebbf;cursor:pointer;
-  box-shadow:0 0 14px #f5bf6252,inset 0 0 10px #f8c97716;
+.ws-music-dock *{box-sizing:border-box}
+.ws-music-dock :is(button,select,input,a):focus-visible{
+  outline:2px solid #ffebaa;outline-offset:3px;
 }
-.ws-music-tab>span:first-child{font-size:20px;color:#ffdc9f}
-.ws-music-tab #ws-music-label{
-  flex:1;text-align:left;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;font-size:12px;
+.ws-music-main{
+  display:flex;gap:5px;padding:5px;border:1px solid #d9ba84b9;
+  border-radius:14px;background:linear-gradient(135deg,#081927f7,#252139f7);
+  box-shadow:0 0 16px #ffcc7138;
 }
-.ws-music-arrow{font-size:22px;line-height:1}
-.ws-music-menu{
-  margin-top:7px;padding:13px;border:1px solid #dfb875a3;border-radius:15px;
-  background:linear-gradient(145deg,#091c2bfc,#241e2bfc);
-  box-shadow:0 0 22px #d99f5055,inset 0 0 20px #ffd89410;
+.ws-music-main button{
+  min-height:37px;padding:6px 8px;border:1px solid #e7c98a77;
+  border-radius:10px;background:linear-gradient(125deg,#6c4b2f,#c99f5a);
+  color:#21150c;font:700 13px Georgia,serif;cursor:pointer;
 }
-.ws-music-caption{margin:0 0 12px;color:#f6d39c;text-align:center;font-size:10px;letter-spacing:.17em}
-.ws-music-field{display:block;color:#f2d7a8;margin-bottom:6px;font-size:12px}
-.ws-music-menu select{
-  display:block;width:100%;padding:9px 7px;
-  background:#0a1a28;color:#fff2d0;
-  border:1px solid #d7b67d9c;border-radius:9px;
-  text-overflow:ellipsis;cursor:pointer;
+.ws-music-main button:first-child{flex:1}
+.ws-music-main button:not(:first-child){min-width:37px}
+.ws-music-main button:disabled{opacity:.47;cursor:not-allowed}
+.ws-music-dock button:hover:not(:disabled){filter:brightness(1.12)}
+.ws-now-playing{
+  max-width:100%;margin:4px 1px 0;padding:5px 9px;
+  border-radius:8px;background:#0b1b2be8;color:#ffe4a8;
+  font-size:11px;line-height:1.35;overflow-wrap:anywhere;
 }
-.ws-music-open{
-  display:block;margin-top:12px;padding:10px 9px;text-align:center;
-  border:1px solid #e8c78ca9;border-radius:12px;
-  background:linear-gradient(125deg,#624527,#e3b56a);
-  color:#150f0b!important;font-weight:700;text-decoration:none!important;
+.ws-music-details{
+  margin-top:5px;max-height:min(65vh,550px);overflow:auto;
+  padding:13px;border:1px solid #dab782ad;border-radius:14px;
+  background:linear-gradient(145deg,#0b1b2bfa,#231d2bfa);
+  box-shadow:0 9px 28px #000a;
 }
-.ws-music-open:hover{box-shadow:0 0 13px #f7c87c8c}
-.ws-music-help{margin:11px 0 0;text-align:center;color:#f1d9b7;font:italic 12px/1.4 Georgia,serif}
-@media(max-width:720px){.ws-music-dock{top:61px;right:7px;width:min(210px,calc(100vw - 14px))}.ws-music-tab{min-height:39px;padding:7px 9px}.ws-music-menu{padding:10px}}
-
-
-/* Single-click soundtrack launch: opens YouTube elsewhere; never overlays the game. */
-.ws-music-dock{width:min(245px,calc(100vw - 18px))}
-.ws-music-actions{display:flex;gap:6px;align-items:stretch}
-.ws-music-start{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  padding:10px 9px;min-height:43px;
-  border:1px solid #f6d38da8;border-radius:13px;
-  background:linear-gradient(125deg,#76512dbf,#e1b36e,#76512dd8);
-  color:#21150b!important;font:700 13px/1.2 Georgia,"Times New Roman",serif;
-  text-decoration:none!important;white-space:nowrap;
-  box-shadow:0 0 16px #edb75b62,inset 0 0 12px #fff4b841;
+.ws-music-details strong{display:block;margin-bottom:12px;color:#ffe6b0}
+.ws-music-details label{display:block;margin:10px 0 5px;color:#f8dca6}
+.ws-music-details select{
+  width:100%;min-height:36px;padding:6px 8px;
+  border:1px solid #c5a56e;border-radius:8px;background:#0b1b2b;
+  color:#fff0d3;font:inherit;
 }
-.ws-music-start:hover{box-shadow:0 0 23px #f3bf73a2}
-.ws-music-actions .ws-music-tab{
-  flex:0 0 53px;min-width:0;width:53px;justify-content:center;
-  padding:8px 5px;border-radius:13px;
+.ws-music-details input[type=range]{width:100%;accent-color:#e6bd76}
+.ws-music-details p{margin:10px 0;color:#ecd7b1;font-size:12px}
+.ws-music-details button{
+  display:block;width:100%;margin:7px 0;padding:9px 8px;
+  border:1px solid #d7b477;border-radius:9px;background:#59442f;
+  color:#fff0d3;font:inherit;cursor:pointer;
 }
-.ws-music-actions .ws-music-tab>span:first-child{font-size:19px}
-.ws-music-actions .ws-music-arrow{font-size:19px}
-.ws-music-menu .ws-music-caption{
-  margin:0 0 12px;overflow-wrap:anywhere;
-  letter-spacing:.08em;
-}
+.ws-music-details button:disabled{opacity:.5;cursor:not-allowed}
+.ws-music-details #ws-delete{background:#352731}
+.ws-music-details a{color:#f8d39a;text-decoration:underline}
+.ws-source-folders{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
+.ws-source-folders a{font-size:11px}
+.ws-source-folders a+a::before{content:"· ";color:#b9aa9b}
 @media(max-width:720px){
-  .ws-music-dock{width:min(214px,calc(100vw - 14px))}
-  .ws-music-start{font-size:12px;min-height:40px;padding:8px 6px}
-  .ws-music-actions .ws-music-tab{flex-basis:42px;width:42px}
+ .ws-music-dock{top:58px;right:7px;width:min(220px,calc(100vw - 14px))}
+ .ws-music-main button{min-height:32px;font-size:12px;padding:5px}
+ .ws-now-playing{font-size:10px}
+ .ws-music-details{padding:10px;max-height:55vh}
 }
