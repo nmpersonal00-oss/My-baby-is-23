@@ -27,6 +27,13 @@
   const wordDisplay = $('hangman-word');
   const keyboard = $('hangman-keyboard');
   const wrongTrack = $('hangman-wrong-track');
+  const wrongCount = $('hangman-wrong-count');
+  const answerFrame = $('hangman-answer-frame');
+  const illustrationFrame = $('hangman-illustration-frame');
+  const confettiLayer = $('hangman-confetti');
+  const resultPanel = $('hangman-result');
+  const resultTitle = $('hangman-result-title');
+  const resultMessage = $('hangman-result-message');
   const hintButton = $('hangman-hint');
   const restartButton = $('hangman-restart');
   const nextButton = $('hangman-next');
@@ -34,8 +41,9 @@
   const levelTopic = $('hangman-level-topic');
   const status = $('hangman-status');
   if (![categoryName, categoryLeft, categoryRight, wordDisplay, keyboard,
-        wrongTrack, hintButton, restartButton, nextButton, levelLabel,
-        levelTopic, status].every(Boolean)) return;
+        wrongTrack, wrongCount, answerFrame, illustrationFrame, confettiLayer,
+        resultPanel, resultTitle, resultMessage, hintButton, restartButton,
+        nextButton, levelLabel, levelTopic, status].every(Boolean)) return;
 
   const cleanLetter = value => String(value).normalize('NFD')
     .replace(/[\u0300-\u036f]/g,'').toUpperCase();
@@ -84,6 +92,62 @@
   let selectedCategory = Math.max(0,catalog.findIndex(cat=>cat.id===saved.category));
   let current = null, currentIndex = 0, guesses = new Set();
   let wrong = 0, hints = 0, finished = false;
+  let wrongFlashTimer = null, confettiTimer = null;
+
+  // Derive the displayed number of errors from distinct guessed letters,
+  // rather than relying on a separately incremented value.
+  function countWrongGuesses() {
+    if (!current) return 0;
+    const answerLetters = new Set([...current.answer]
+      .filter(revealable).map(cleanLetter));
+    return [...guesses].filter(letter => !answerLetters.has(letter)).length;
+  }
+  function clearEffects() {
+    clearTimeout(wrongFlashTimer);
+    clearTimeout(confettiTimer);
+    wrongFlashTimer = null;
+    confettiTimer = null;
+    answerFrame.classList.remove('is-wrong-flash');
+    illustrationFrame.classList.remove('is-wrong-flash');
+    wrongTrack.classList.remove('is-wrong-flash');
+    confettiLayer.replaceChildren();
+  }
+  function showWrongEffect() {
+    // Re-trigger for every NEW wrong letter, even consecutive mistakes.
+    clearTimeout(wrongFlashTimer);
+    answerFrame.classList.remove('is-wrong-flash');
+    illustrationFrame.classList.remove('is-wrong-flash');
+    wrongTrack.classList.remove('is-wrong-flash');
+    void answerFrame.offsetWidth; // restart the CSS animation cleanly
+    answerFrame.classList.add('is-wrong-flash');
+    illustrationFrame.classList.add('is-wrong-flash');
+    wrongTrack.classList.add('is-wrong-flash');
+    wrongFlashTimer = setTimeout(() => {
+      answerFrame.classList.remove('is-wrong-flash');
+      illustrationFrame.classList.remove('is-wrong-flash');
+      wrongTrack.classList.remove('is-wrong-flash');
+    }, 850);
+  }
+  function celebrateWin() {
+    clearTimeout(confettiTimer);
+    confettiLayer.replaceChildren();
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      return;
+    // Golden/pink/violet paper petals made from CSS, not icons or images.
+    for (let i = 0; i < 64; i++) {
+      const piece = document.createElement('i');
+      piece.className = 'hangman-confetti-piece';
+      piece.style.setProperty('--x', (Math.random()*100).toFixed(1) + '%');
+      piece.style.setProperty('--delay', (Math.random()*.65).toFixed(2) + 's');
+      piece.style.setProperty('--duration', (2.5+Math.random()*1.25).toFixed(2) + 's');
+      piece.style.setProperty('--drift', ((Math.random()-.5)*230).toFixed(0) + 'px');
+      piece.style.setProperty('--spin', (Math.random()*1200).toFixed(0) + 'deg');
+      piece.style.setProperty('--size', (5+Math.random()*8).toFixed(1) + 'px');
+      piece.style.setProperty('--tone', String(i%4));
+      confettiLayer.appendChild(piece);
+    }
+    confettiTimer = setTimeout(() => confettiLayer.replaceChildren(), 4600);
+  }
 
   function save() {
     try {
@@ -156,6 +220,10 @@
     });
   }
   function renderWrong() {
+    wrongCount.textContent = wrong + ' / ' + MAX_WRONG + ' wrong';
+    wrongTrack.setAttribute('aria-label',
+      wrong + ' incorrect guesses out of ' + MAX_WRONG +
+      '; ' + (MAX_WRONG - wrong) + ' chances remaining');
     wrongTrack.innerHTML = '';
     for (let index=0;index<MAX_WRONG;index++) {
       const diamond = document.createElement('span');
@@ -188,12 +256,26 @@
       button.disabled = !current || finished || used;
     });
     hintButton.disabled = !current || finished || hints >= MAX_HINTS;
+    resultPanel.hidden = !finished;
+    const won = finished && wrong < MAX_WRONG;
+    resultPanel.classList.toggle('is-win',won);
+    resultPanel.classList.toggle('is-loss',finished && !won);
+    if (finished) {
+      resultTitle.textContent = won ? 'LEVEL COMPLETE!' : 'FIVE WRONG GUESSES';
+      resultMessage.textContent = won
+        ? 'Beautifully done! Move on to the next level.'
+        : 'The answer was ' + current.answer + '. Try again or continue.';
+    } else {
+      resultTitle.textContent = '';
+      resultMessage.textContent = '';
+    }
     nextButton.hidden = !finished;
     if (finished) nextButton.textContent =
-      currentIndex+1===deck.length ? 'Replay from Level 1' : 'Next Level';
+      currentIndex+1===deck.length ? 'REPLAY FROM LEVEL 1' : 'MOVE TO NEXT LEVEL';
     renderWrong();
   }
   function startRound() {
+    clearEffects();
     const deck = activeDeck();
     const index = Number(saved.indices[activeId()]);
     currentIndex = Number.isInteger(index) && index>=0 && index<deck.length ? index : 0;
@@ -214,20 +296,28 @@
     guesses.add(letter);
     const correct = [...current.answer].some(ch=>
       revealable(ch) && cleanLetter(ch)===letter);
-    if (!correct && !fromHint) wrong++;
+    wrong = countWrongGuesses();
     if (solvedEverything()) {
       finished = true;
       saved.solved[current.id] = true;
       save();
-      say('Excellent! Correct answer: ' + current.answer + '. Choose Next Level to continue.');
+      say('Excellent! Correct answer: ' + current.answer +
+        '. Move on to the next level using the highlighted button.');
     } else if (wrong>=MAX_WRONG) {
       finished = true;
-      say('The answer was: ' + current.answer + '. Choose Next Level or Restart to try again.');
+      say('Five wrong guesses. The answer was: ' + current.answer +
+        '. Choose Restart to retry or move on to the next level.');
     } else {
       say(correct ? 'Correct: ' + letter + ' appears in the answer.' :
         'No ' + letter + '. ' + (MAX_WRONG-wrong) + ' chances remaining.');
     }
     render();
+    if (!correct) showWrongEffect();
+    if (finished && wrong < MAX_WRONG) celebrateWin();
+    if (finished) {
+      // Bring the result action into view on small screens as well.
+      nextButton.focus();
+    }
   }
   function nextLevel() {
     if (!finished) return;
