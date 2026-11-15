@@ -64,3 +64,36 @@
  #forest-cozy-music .forest-music-toolbar button{min-height:30px;padding:4px 5px;font-size:11px}
  #forest-cozy-music .forest-music-status{font-size:10px}
 }
+
+/* Hosted soundtracks: the visitor only sees player controls, not file setup. */
+#forest-cozy-music [hidden] {display:none!important}
+#forest-music-entrance {
+  position:fixed;inset:0;z-index:2147480000;
+  display:grid;place-items:center;padding:24px;
+  background:radial-gradient(ellipse at 50% 35%,#252040ea,#030b16f2 75%);
+  color:#fce8bd;text-align:center;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+}
+#forest-music-entrance .forest-entrance-card {
+  width:min(440px,100%);padding:36px 24px;
+  border:1px solid #d6b477aa;border-radius:20px;
+  background:linear-gradient(145deg,#182333ee,#271f37ee);
+  box-shadow:0 18px 80px #0009,0 0 42px #e5b9782a;
+  font-family:Georgia,"Times New Roman",serif;
+}
+#forest-music-entrance .forest-entrance-eyebrow {
+  font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#d7b681;
+}
+#forest-music-entrance h2 {
+  margin:14px 0;font:600 clamp(28px,6vw,42px)/1.1 Georgia,serif;color:#ffe7ac;
+}
+#forest-music-entrance p {font-size:16px;line-height:1.6;color:#f7e3c2}
+#forest-music-entrance button {
+  display:block;margin:28px auto 14px;padding:15px 30px;min-height:52px;
+  border:1px solid #f9dfa6;border-radius:30px;
+  background:linear-gradient(125deg,#ae804c,#f0d090);
+  color:#241716;cursor:pointer;
+  font:bold 17px Georgia,serif;box-shadow:0 3px 26px #d6b47777;
+}
+#forest-music-entrance button:focus-visible {outline:3px solid #fff;outline-offset:4px}
+#forest-music-entrance .forest-entrance-hint {font-size:12px;color:#dec69a}
