@@ -84,3 +84,16 @@ The provided keyword list is preserved verbatim, including “King’s Flame, Fu
 The 50 words are mixed across the five rounds without duplication, and the five
 sets stay consistent so future GIFs can be linked to their keywords. Until GIFs
 are supplied, the names display and shuffle but cannot produce correct matches.
+
+### Terraria: name-only content
+
+Terraria now contains exactly 50 names from the provided list: 15 people,
+15 bosses, and 20 important things. They are mixed across 5 fixed rounds with
+10 unique names each. The names appear in a freshly shuffled display order
+when each round starts or Shuffle is pressed.
+
+All Terraria GIF slots remain blank. Once a GIF is chosen, add a key with
+that item's exact name to `terrariaGifs` in `memory-matching-data.js`,
+for example `'Guide': '../assets/guide.gif'`. The correct name-to-GIF
+relationship will work without changing the game mechanics. Lies of P and
+the other six categories retain their existing data and styles.
