@@ -1,0 +1,85 @@
+/* Baby's four-question love quiz — every visual asset is original and hosted locally. */
+:root{color-scheme:dark;--baby-cream:#ffe9dc;--baby-rose:#d62b66;--baby-burgundy:#622039;--baby-gold:#ffe0a1}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#280d23;overflow-x:hidden}
+body{color:#56192b;font-family:Georgia,"Palatino Linotype","Book Antiqua",serif}
+button{font:inherit}
+.baby-viewport{position:relative;display:grid;place-items:center;min-height:100svh;min-height:100dvh;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 45%,#b7607380,transparent 67%),#230e22}
+.baby-viewport::before{content:"";position:absolute;inset:-5%;z-index:-2;background:url("assets/baby-quiz-blank-scene.webp") center/cover no-repeat;filter:blur(24px) brightness(.63);transform:scale(1.08)}
+.baby-stage{position:relative;container-type:inline-size;isolation:isolate;width:min(100vw,177.68dvh);aspect-ratio:1672/941;overflow:hidden;box-shadow:0 0 125px #e67a9f29}
+.baby-art{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+.baby-back{position:absolute;z-index:10;left:1.6%;top:2.2%;width:5.6%;height:9%;border-radius:50%;outline-offset:4px;text-decoration:none;color:#ffefda;display:grid;place-items:center;transition:filter .18s,transform .18s}
+.baby-back:hover,.baby-back:focus-visible{filter:drop-shadow(0 0 12px #fff0d1);transform:scale(1.08)}
+.baby-back-arrow,.baby-back-text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.baby-mobile-title{display:none}
+.baby-questions{display:contents}
+.baby-question{position:absolute;z-index:3;width:19.55%;height:30.8%;margin:0;text-align:center;pointer-events:none}
+.baby-question--animal{left:12.85%;top:22%}
+.baby-question--color{left:36.95%;top:22%}
+.baby-question--drink{left:12.85%;top:56.20%}
+.baby-question--game{left:36.95%;top:56.20%}
+.baby-question h2{position:absolute;top:.5%;left:0;width:100%;margin:0;color:#4a1828;font-size:1.58cqw;line-height:1.01;font-weight:700;letter-spacing:-.026em;text-shadow:0 1px 0 #ffddd09c;pointer-events:none}
+.baby-answers{position:absolute;left:0;right:0;bottom:4.0%;height:33.1%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.55cqw .68cqw;pointer-events:auto}
+.baby-question--animal .baby-answers,.baby-question--color .baby-answers{bottom:6.4%}
+.baby-answers button{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:0 .15cqw;border:0;border-radius:999px;background:transparent;color:#56192b;font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:1.08cqw;line-height:1.05;text-align:center;cursor:pointer;text-shadow:0 1px 0 #ffe5d4a8;transition:background .18s,box-shadow .18s,color .18s,transform .18s}
+.baby-answers button:hover:not(:disabled),.baby-answers button:focus-visible:not(:disabled){background:linear-gradient(180deg,#fffdeda6,#ec7ba0a8);box-shadow:inset 0 0 0 1px #fff7e0,0 0 .85cqw #ff84b0a0;color:#641b3b;outline:0;transform:scale(1.015)}
+.baby-answers button:focus-visible{outline:.16cqw solid #fff4d5;outline-offset:.08cqw}
+.baby-answers button.is-correct,.baby-answers button.is-correct:disabled{background:linear-gradient(170deg,#fa7ba6,#eb326d 56%,#bb2253);border:.11cqw solid #fff1cd;color:#fffaf5;text-shadow:0 .08cqw .22cqw #8d194f;box-shadow:inset 0 0 .43cqw #fff1d4bd,0 0 1.05cqw #ff6f9b,0 0 .43cqw #fff0b5;opacity:1}
+.baby-answers button.is-correct::after{content:"";width:.34cqw;height:.67cqw;border:solid #fff7da;border-width:0 .15cqw .15cqw 0;transform:translate(.12cqw,-.08cqw) rotate(45deg);flex:none;margin-left:.48cqw;filter:drop-shadow(0 0 .15cqw #fff)}
+.baby-answers button:disabled:not(.is-correct){opacity:.65;cursor:default}
+.baby-answers button.is-wrong{animation:baby-try-again .42s both;background:#cd45659c;box-shadow:0 0 1.15cqw #dd6c8aa0}
+.baby-letter{position:absolute;z-index:3;left:66.4%;top:22.8%;width:21.8%;height:37.5%;pointer-events:none}
+.baby-letter-words{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;text-align:center;color:#6c1837;padding:9% 0 0;opacity:0;visibility:hidden;transform:translateY(.7cqw);text-shadow:0 .03cqw 0 #fffae2a8}
+.baby-letter-words:not([hidden]){visibility:visible;animation:baby-letter-appear 1.05s cubic-bezier(.2,.8,.2,1) forwards}
+.baby-letter-words[hidden]{display:none}
+.baby-letter-words p{margin:0;font-style:italic;font-weight:700;font-size:1.18cqw;line-height:1.23;letter-spacing:-.012em;max-width:100%;text-wrap:pretty}
+.baby-letter.is-revealed::after{content:"";position:absolute;inset:-5%;border-radius:35%;pointer-events:none;background:radial-gradient(ellipse,#ffd5e81e 20%,transparent 74%);box-shadow:0 0 2cqw #f7adce4a;animation:baby-halo 2.1s ease-in-out infinite alternate}
+.baby-magical-lights,.baby-celebration{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.baby-magical-lights{z-index:2}.baby-celebration{z-index:7}
+.baby-wisp{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;background:#ffefcd;box-shadow:0 0 .33cqw .14cqw #ffe39d,0 0 1.4cqw .55cqw #ffa8ad80;animation:baby-flicker var(--duration) ease-in-out var(--delay) infinite alternate;opacity:.35}
+.baby-celebrate-star{position:absolute;left:var(--start-x);top:var(--start-y);width:var(--size);height:var(--size);border-radius:50%;background:#fffbe7;box-shadow:0 0 .8cqw .3cqw #ffe6a8,0 0 2cqw .6cqw #ff86bb;animation:baby-sparkle-burst .95s ease-out both}
+.baby-screenreader-message{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+@keyframes baby-try-again{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4%)}40%,80%{transform:translateX(4%)}}
+@keyframes baby-flicker{from{opacity:.1;transform:translate3d(0,.5cqw,0) scale(.6)}to{opacity:.8;transform:translate3d(var(--drift),-1cqw,0) scale(1.1)}}
+@keyframes baby-sparkle-burst{0%{opacity:0;transform:scale(.1)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.15)}}
+@keyframes baby-letter-appear{from{opacity:0;transform:translateY(.8cqw) scale(.97);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes baby-halo{from{opacity:.25;transform:scale(.95)}to{opacity:.65;transform:scale(1.08)}}
+/* A touch-first layout retains the same illustrated question plaques, rather
+   than shrinking a desktop image into microscopic controls. */
+@media(max-width:1050px), (max-aspect-ratio:6/7){
+  .baby-viewport{display:block;overflow-x:clip;overflow-y:visible;min-height:100svh;padding:0}
+  .baby-viewport::before{position:fixed;inset:0;filter:blur(12px) brightness(.65);background-position:50% 40%}
+  .baby-stage{width:100%;min-height:100svh;aspect-ratio:auto;overflow:visible;box-shadow:none;container-type:normal;display:flex;flex-direction:column;align-items:center;padding:76px 15px 55px;gap:10px}
+  .baby-art{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(7px) brightness(.52);opacity:.6;z-index:-1}
+  .baby-back{position:absolute;top:17px;left:18px;width:auto;height:auto;min-height:44px;display:flex;align-items:center;gap:8px;justify-content:flex-start;padding:10px 16px;background:linear-gradient(150deg,#9a2150,#3e102d);border:1px solid #ffe9bc;border-radius:999px;box-shadow:inset 0 0 10px #ffafbc5b,0 0 17px #260a1aba;white-space:nowrap}
+  .baby-back-arrow,.baby-back-text{position:static;clip:auto;width:auto;height:auto;overflow:visible;white-space:normal}
+  .baby-back-arrow{font-size:23px;line-height:1}.baby-back-text{font-size:13px}
+  .baby-mobile-title{display:block;z-index:2;margin:0 0 3px;font-weight:normal;font-style:italic;font-size:clamp(35px,5.5vw,55px);line-height:1;color:#fff0dc;text-shadow:0 0 20px #e7408dc5,0 2px 8px #341323}
+  .baby-questions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:min(820px,100%);position:relative;z-index:3}
+  .baby-question{left:auto;top:auto;position:relative;width:100%;height:auto;aspect-ratio:1.215;pointer-events:none;border-radius:20px;background-repeat:no-repeat;background-size:100% 100%;filter:drop-shadow(0 7px 12px #1d0828a0)}
+  .baby-question--animal{background-image:url('assets/baby-quiz-animal-panel.webp')}
+  .baby-question--color{background-image:url('assets/baby-quiz-color-panel.webp')}
+  .baby-question--drink{background-image:url('assets/baby-quiz-drink-panel.webp')}
+  .baby-question--game{background-image:url('assets/baby-quiz-game-panel.webp')}
+  .baby-question h2{top:8%;width:90%;left:5%;font-size:clamp(14px,2.4vw,26px);line-height:1.05}
+  .baby-question--animal .baby-answers,.baby-question--color .baby-answers{bottom:10.1%}
+  .baby-answers{left:8%;right:8%;bottom:10.1%;height:28.8%;gap:5% 4.5%}
+  .baby-answers button{font-size:clamp(12px,2vw,21px);padding:0 2px}
+  .baby-answers button.is-correct,.baby-answers button.is-correct:disabled{border:1px solid #fff2df;box-shadow:0 0 11px #ff8aaf,inset 0 0 6px #fff3d5ad}
+  .baby-answers button.is-correct::after{width:5px;height:9px;border-width:0 2px 2px 0;margin-left:6px;transform:translateY(-2px) rotate(45deg)}
+  .baby-letter{position:relative;left:auto;top:auto;width:min(100%,550px);height:auto;aspect-ratio:679/683;margin-top:20px;background:url('assets/baby-quiz-letter-panel.webp') center/contain no-repeat;filter:drop-shadow(0 12px 26px #210c1cb5)}
+  .baby-letter-words{inset:15% 17.6% 30% 18.2%;display:flex;align-items:flex-start;padding:0}
+  .baby-letter-words p{font-size:clamp(11px,2.3vw,18px);line-height:1.24;letter-spacing:-.015em}
+  .baby-letter.is-revealed::after{box-shadow:0 0 20px 3px #ffbad363}
+  .baby-magical-lights,.baby-celebration{position:fixed}
+  .baby-wisp{box-shadow:0 0 4px 2px #ffe39d,0 0 14px 4px #ffa8ad80}
+}
+@media(max-width:620px){
+  .baby-stage{padding:76px 10px 38px}
+  .baby-questions{grid-template-columns:minmax(0,1fr);gap:13px;width:min(405px,100%)}
+  .baby-question h2{font-size:clamp(20px,6vw,27px)}
+  .baby-answers button{font-size:clamp(16px,4.7vw,22px)}
+  .baby-letter{width:min(100%,405px);margin-top:6px}
+  .baby-letter-words p{font-size:clamp(13px,3.9vw,16px)}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.baby-wisp,.baby-celebrate-star{display:none}.baby-letter-words:not([hidden]){opacity:1;transform:none;filter:none}}
