@@ -326,7 +326,7 @@
       "Black Egg Temple"
     ]
   ];
-  // Original action loops, approved for Round 1 only. Each entry is keyed
+  // Approved action loops for Hollow Knight Rounds 1 and 2. Each entry is keyed
   // by its exact answer, so shuffling never changes match correctness.
   const hollowKnightGifs = {
     "The Knight": '../assets/hollow-knight/round-1/r01-01-the-knight.gif?v=2',
@@ -338,7 +338,17 @@
     "Dream Nail": '../assets/hollow-knight/round-1/r01-07-dream-nail.gif?v=2',
     "Geo": '../assets/hollow-knight/round-1/r01-08-geo.gif?v=2',
     "Hallownest": '../assets/hollow-knight/round-1/r01-09-hallownest.gif?v=2',
-    "Dirtmouth": '../assets/hollow-knight/round-1/r01-10-dirtmouth.gif?v=2'
+    "Dirtmouth": '../assets/hollow-knight/round-1/r01-10-dirtmouth.gif?v=2',
+    "Cornifer": '../assets/hollow-knight/round-2/r02-01-cornifer.gif?v=1',
+    "Sly": '../assets/hollow-knight/round-2/r02-02-sly.gif?v=1',
+    "Zote the Mighty": '../assets/hollow-knight/round-2/r02-03-zote-the-mighty.gif?v=1',
+    "Failed Champion": '../assets/hollow-knight/round-2/r02-04-failed-champion.gif?v=1',
+    "Soul Tyrant": '../assets/hollow-knight/round-2/r02-05-soul-tyrant.gif?v=1',
+    "Traitor Lord": '../assets/hollow-knight/round-2/r02-06-traitor-lord.gif?v=1',
+    "Mothwing Cloak": '../assets/hollow-knight/round-2/r02-07-mothwing-cloak.gif?v=1',
+    "Essence": '../assets/hollow-knight/round-2/r02-08-essence.gif?v=1',
+    "Forgotten Crossroads": '../assets/hollow-knight/round-2/r02-09-forgotten-crossroads.gif?v=1',
+    "Greenpath": '../assets/hollow-knight/round-2/r02-10-greenpath.gif?v=1'
   };
   const hollowKnightRounds = hollowKnightRoundNames.map(names => ({
     pairs: names.map(name => ({name, gif: hollowKnightGifs[name] || ''}))
