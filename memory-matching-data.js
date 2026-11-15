@@ -329,16 +329,16 @@
   // Original action loops, approved for Round 1 only. Each entry is keyed
   // by its exact answer, so shuffling never changes match correctness.
   const hollowKnightGifs = {
-    "The Knight": '../assets/hollow-knight/round-1/r01-01-the-knight.gif',
-    "Quirrel": '../assets/hollow-knight/round-1/r01-02-quirrel.gif',
-    "Elderbug": '../assets/hollow-knight/round-1/r01-03-elderbug.gif',
-    "False Knight": '../assets/hollow-knight/round-1/r01-04-false-knight.gif',
-    "Soul Master": '../assets/hollow-knight/round-1/r01-05-soul-master.gif',
-    "Watcher Knights": '../assets/hollow-knight/round-1/r01-06-watcher-knights.gif',
-    "Dream Nail": '../assets/hollow-knight/round-1/r01-07-dream-nail.gif',
-    "Geo": '../assets/hollow-knight/round-1/r01-08-geo.gif',
-    "Hallownest": '../assets/hollow-knight/round-1/r01-09-hallownest.gif',
-    "Dirtmouth": '../assets/hollow-knight/round-1/r01-10-dirtmouth.gif'
+    "The Knight": '../assets/hollow-knight/round-1/r01-01-the-knight.gif?v=2',
+    "Quirrel": '../assets/hollow-knight/round-1/r01-02-quirrel.gif?v=2',
+    "Elderbug": '../assets/hollow-knight/round-1/r01-03-elderbug.gif?v=2',
+    "False Knight": '../assets/hollow-knight/round-1/r01-04-false-knight.gif?v=2',
+    "Soul Master": '../assets/hollow-knight/round-1/r01-05-soul-master.gif?v=2',
+    "Watcher Knights": '../assets/hollow-knight/round-1/r01-06-watcher-knights.gif?v=2',
+    "Dream Nail": '../assets/hollow-knight/round-1/r01-07-dream-nail.gif?v=2',
+    "Geo": '../assets/hollow-knight/round-1/r01-08-geo.gif?v=2',
+    "Hallownest": '../assets/hollow-knight/round-1/r01-09-hallownest.gif?v=2',
+    "Dirtmouth": '../assets/hollow-knight/round-1/r01-10-dirtmouth.gif?v=2'
   };
   const hollowKnightRounds = hollowKnightRoundNames.map(names => ({
     pairs: names.map(name => ({name, gif: hollowKnightGifs[name] || ''}))
