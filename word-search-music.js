@@ -1,6 +1,7 @@
-/* Word Search soundtrack player. Music stays in the user's browser, not public GitHub. */
+/* Word Search soundtrack player: streamed albums when hosting is connected, with local import fallback. */
 (() => {
   'use strict';
+  const HOSTED = Boolean(window.FOREST_AUDIO_CONFIG?.baseUrl && window.FOREST_AUDIO_MANIFEST?.worlds);
   const LABELS = {
     souls:'Dark Souls I & II', lies:'Lies of P', blood:'Bloodborne',
     stars:'Star Wars', terraria:'Terraria', princess:'Princess World',
@@ -102,6 +103,7 @@
   }
   async function songUrl(song) {
     if (objectUrls.has(song.id)) return objectUrls.get(song.id);
+    if (!db) throw Error('Music has not been imported');
     const saved = await get('audio',song.id);
     if (!saved?.file) throw Error('Missing music file');
     const url = URL.createObjectURL(saved.file);
@@ -126,7 +128,7 @@
     category.textContent = LABELS[realm] + ' soundtrack';
     play.disabled = !ready || !songs.length;
     next.disabled = !ready || songs.length < 2;
-    remove.disabled = !ready || !songs.length;
+    remove.disabled = !ready || !songs.length || HOSTED;
     const isPlaying = !player.paused && wantsMusic;
     play.textContent = isPlaying ? '❚❚ Pause' : '▶ Play';
     play.setAttribute('aria-label',isPlaying ? 'Pause music' : 'Play music');
@@ -142,18 +144,20 @@
       return a;
     }));
     status.textContent = notice || (!ready ? 'Loading your music library…'
-      : !current ? 'No songs yet — open ♫ to add music.'
+      : !current ? (HOSTED ? 'This soundtrack is being prepared.' : 'No songs yet — open ♫ to add music.')
       : (isPlaying ? '♫ ' : '') + current.name);
   }
   async function start() {
     if (!realm || !ready || !wantsMusic) { show(); return; }
     const world = realm, song = lists[realm][index];
-    if (!song) { notice = 'Add songs through ♫ to start your soundtrack.'; show(); return; }
+    if (!song) { notice = HOSTED ? 'Soundtrack unavailable.' : 'Add songs through ♫ to start your soundtrack.'; show(); return; }
     const token = ++generation;
     notice = 'Loading ' + song.name + '…';
     show();
     try {
-      const url = objectUrls.get(song.id) || await songUrl(song);
+      const url = song.key ? window.forestMusicUrl(song.key)
+        : objectUrls.get(song.id) || await songUrl(song);
+      if (!url) throw Error('Music hosting URL is not configured');
       if (token !== generation || world !== realm || !wantsMusic) return;
       if (player.dataset.songId !== song.id) {
         player.pause();
@@ -169,6 +173,7 @@
       if (token !== generation) return;
       notice = err?.name === 'NotAllowedError'
         ? 'Tap Play to enable sound in this browser.'
+        : HOSTED ? 'Music could not load from the sound library. Try Next.'
         : 'This file cannot play here. Choose another song or try MP3.';
     }
     show();
@@ -249,7 +254,7 @@
   player.addEventListener('pause',show);
   player.addEventListener('error',() => {
     if (!realm || !player.currentSrc) return;
-    notice = 'Could not play this file. Try another song or MP3.';
+    notice = HOSTED ? 'This track could not load. Try Next.' : 'Could not play this file. Try another song or MP3.';
     show();
   });
   selection.addEventListener('change',() => {
@@ -346,8 +351,27 @@
     world:realm, trackCount:realm ? lists[realm].length : 0,
     playing:!player.paused, storageReady:ready
   });
+  if (HOSTED) {
+    lists = Object.fromEntries(Object.keys(LABELS).map(id => [
+      id, (window.FOREST_AUDIO_MANIFEST.worlds[id] || []).map(song => ({
+        id: song.id, name: song.name, key: song.key
+      }))
+    ]));
+    ready = true;
+    node('ws-add').hidden = true;
+    node('ws-add-folders').hidden = true;
+    remove.hidden = true;
+    sources.hidden = true;
+    const help = details.querySelector('p');
+    if (help) help.textContent = 'These songs are built into the Forest soundtrack library. No uploads needed.';
+    const drive = details.querySelectorAll('p');
+    if (drive[1]) drive[1].hidden = true;
+  }
   route();
-  openDb().then(async database => {
+  if (HOSTED) {
+    show();
+    if (realm && wantsMusic) start();
+  } else openDb().then(async database => {
     db = database;
     ready = true;
     await refresh();

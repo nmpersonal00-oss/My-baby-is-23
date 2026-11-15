@@ -1,5 +1,10 @@
 # Rayan's Dark Forest
 
+## Hosted soundtracks — no uploads for the recipient
+
+The gift-ready music system is described in [FOREST-AUDIO-DEPLOY.md](FOREST-AUDIO-DEPLOY.md). It indexes 497 tracks across the seven Word Search worlds plus the supplied Cozy Library soundtrack on other pages. The husband/visitor never uploads songs. The administrator must perform the one-time Cloudflare R2 transfer and set the verified public audio base URL in `forest-audio-config.js` before hosted playback becomes active. Until then, the existing private browser-import fallback still works.
+
+
 A lovingly illustrated, interactive forest home screen built around the exact approved design. **Homepage preserved; Word Search is playable, Memory Matching has a GIF-to-name board, and Secret Love Notes is now an interactive flying-letter garden.**
 
 ## Homepage
