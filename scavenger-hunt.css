@@ -1,0 +1,75 @@
+/* The Scavenger Hunt: self-hosted approved painting & local illustrated sprites.
+   No external fonts, emoji, frameworks, images, or network services. */
+:root{color-scheme:dark;--hunt-ivory:#fff1d8;--hunt-gold:#f6cd8e;--hunt-violet:#7b2b92;--hunt-plum:#1d0a2c}
+*{box-sizing:border-box}
+html,body{height:100%;min-height:100%;margin:0;overflow:hidden;background:#120821}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--hunt-ivory)}
+button{font:inherit}.sr-only{position:absolute!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;border:0!important;white-space:nowrap!important}
+[hidden]{display:none!important}
+.hunt-viewport{position:fixed;inset:0;isolation:isolate;overflow:hidden;background:#120821}
+.hunt-scroll{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-color:#ba7c7a #180b25;scrollbar-width:thin;touch-action:pan-x}
+.hunt-world{width:max(100vw,177.683dvh);height:100dvh;min-height:0;position:relative;isolation:isolate;overflow:hidden}
+.hunt-scene{position:relative;height:69.82%;overflow:hidden;isolation:isolate;background:#1d0b2b}
+.hunt-scene-art{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.hunt-glow{position:absolute;z-index:1;pointer-events:none;mix-blend-mode:screen;filter:blur(15px)}
+.hunt-glow-fire{left:26%;top:49%;width:15%;height:35%;background:radial-gradient(ellipse,#ffb75225 0%,#f682140e 42%,transparent 70%);animation:fire-flutter 2.8s ease-in-out infinite alternate}
+.hunt-glow-moon{right:13%;top:3%;width:22%;height:38%;background:radial-gradient(ellipse,#b8a6ff22 0%,#9175e81c 34%,transparent 70%);animation:moon-breathe 8s ease-in-out infinite alternate}
+@keyframes fire-flutter{0%{transform:scale(.97) translateY(2%);opacity:.45}100%{transform:scale(1.18) translateY(-4%);opacity:.97}}
+@keyframes moon-breathe{to{opacity:.52;transform:scale(1.15)}}
+.hunt-dust,.hunt-props,.hunt-targets{position:absolute;inset:0}
+.hunt-dust{z-index:2;pointer-events:none;overflow:hidden}.hunt-props{z-index:3;pointer-events:none}.hunt-targets{z-index:4;pointer-events:none}
+.hunt-spark{position:absolute;width:var(--s);height:var(--s);left:var(--x);top:var(--y);border-radius:50%;background:#fff8d2;box-shadow:0 0 8px 2px #fff1beaa,0 0 18px 5px #c95dff6b;opacity:.15;animation:hunt-twinkle var(--dur) ease-in-out var(--delay) infinite alternate;pointer-events:none}
+@keyframes hunt-twinkle{0%{opacity:.05;transform:translate3d(0,6px,0) scale(.4)}55%{opacity:.76}100%{opacity:.13;transform:translate3d(var(--dx),-10px,0) scale(1.08)}}
+.hunt-prop{position:absolute;display:block;object-fit:contain;user-select:none;filter:drop-shadow(0 1px 3px #17051d) drop-shadow(0 0 4px #ffd39b50)}
+.hunt-target{position:absolute;display:block;z-index:1;transform:translate(-50%,-50%);padding:0;border:0;border-radius:25%;background:transparent;cursor:crosshair;pointer-events:auto;touch-action:manipulation;outline:0;-webkit-tap-highlight-color:transparent}
+.hunt-target:focus-visible{outline:2px solid #fff1bd;box-shadow:0 0 0 5px #a967d188,0 0 25px 7px #f6c26ca8;background:#ffc56e15}
+.hunt-target:disabled{pointer-events:none}
+.hunt-found-ring{position:absolute;z-index:12;pointer-events:none;border:2px solid #fff0c2;border-radius:50%;width:var(--w);height:var(--h);left:var(--x);top:var(--y);transform:translate(-50%,-50%);box-shadow:0 0 15px 4px #ffe9b9,0 0 40px 10px #ae5cf79a,inset 0 0 22px #fff5cd88;animation:hunt-found-pop 1s ease-out forwards}
+@keyframes hunt-found-pop{0%{transform:translate(-50%,-50%) scale(.65);opacity:0}25%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.3);opacity:0}}
+.hunt-back{position:absolute;z-index:7;top:.5%;left:1%;width:5.2%;height:12.5%;border-radius:48%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hunt-back:hover,.hunt-back:focus-visible{outline:2px solid #fff3c4;outline-offset:-4px;box-shadow:0 0 25px #ffbd749f,inset 0 0 18px #f6d1af60}
+.hunt-scene-progress{position:absolute;z-index:7;right:1.7%;top:1.2%;width:10.4%;height:12.4%;border-radius:55% / 44%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:#fff1d8;text-shadow:0 0 10px #ffbe86,0 1px 3px #170516;background:radial-gradient(ellipse at 50% 30%,#4b2356 0%,#210b36 65%,#1b092ccf 100%);border:1px solid #bb8a6dc9;box-shadow:0 0 13px #f4c6879e,inset 0 0 17px 3px #a54b8b77;pointer-events:none}
+.hunt-scene-progress strong{font-size:clamp(14px,2.7dvh,27px);font-weight:400;white-space:nowrap;line-height:1.05}
+.hunt-scene-progress span{font-size:clamp(8px,1.3dvh,12px);letter-spacing:.15em}
+.hunt-inventory{height:30.18%;position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,#261033,#1b0928)}
+.hunt-inventory::before{content:'';position:absolute;inset:0;background:url('assets/scavenger-hunt/tray.webp') 0 0/100% 100% no-repeat;z-index:-1;pointer-events:none}
+.hunt-inventory-items{position:absolute;left:2.4%;right:2.4%;top:16%;bottom:7%;display:grid;grid-template-columns:repeat(20,minmax(0,1fr));grid-template-rows:repeat(2,1fr);column-gap:0;row-gap:0;align-items:start}
+.hunt-item{position:relative;display:grid;place-items:center;align-content:center;justify-items:center;width:92%;height:82%;margin-inline:auto;margin-top:3%;padding:1px;border:1px solid #e6aa706b;border-radius:12px;background:linear-gradient(155deg,#18082365,#280c3acc);box-shadow:inset 0 0 12px #e8858d12,0 0 7px #ffbd653b;cursor:help;outline:none;touch-action:manipulation}
+.hunt-item:focus-visible,.hunt-item:hover{border-color:#ffe6ad;box-shadow:0 0 14px #ffe29f92,inset 0 0 15px #ba5c9b72}
+.hunt-item-icon{display:block;width:min(94%,74px);aspect-ratio:1;flex:none;border-radius:12px;background-image:url('assets/scavenger-hunt/icons.webp');background-size:1000% 400%;background-position:var(--icon-x) var(--icon-y);background-repeat:no-repeat;pointer-events:none;transition:opacity .25s,filter .25s,transform .25s}
+.hunt-item.is-found .hunt-item-icon{opacity:.26;filter:grayscale(.85);transform:scale(.9)}
+.hunt-item.is-found{border-color:#c4a6e68c;background:linear-gradient(155deg,#412457a3,#140a26ec)}
+.hunt-item.is-found::after{content:'';display:block;position:absolute;left:50%;top:48%;height:22%;width:42%;border-right:3px solid #fff0bb;border-bottom:3px solid #fff0bb;transform:translate(-50%,-70%) rotate(42deg);filter:drop-shadow(0 0 4px #f9db90) drop-shadow(0 0 9px #b76be4);pointer-events:none}
+.hunt-item.is-found::before{content:'';position:absolute;inset:4%;border:1px solid #fff2bd77;border-radius:10px;box-shadow:inset 0 0 13px #c28de76d;pointer-events:none}
+.hunt-found-toast{position:fixed;z-index:30;left:50%;top:14%;transform:translate(-50%,12px);max-width:min(90vw,420px);padding:11px 25px;border:1px solid #ffe3ad;border-radius:30px;text-align:center;font-style:italic;font-size:16px;color:#fff3d4;background:linear-gradient(130deg,#54255eea,#160c2af2);box-shadow:0 0 13px #f3b78288,0 0 37px #ba57d899;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.hunt-found-toast.show{opacity:1;transform:translate(-50%,0)}
+.hunt-reset{position:fixed;z-index:8;left:12px;bottom:9px;background:linear-gradient(140deg,#26112ccb,#501d45cc);border:1px solid #f2c48a6f;color:#ffe4b8;font-size:12px;letter-spacing:.05em;padding:5px 11px;border-radius:20px;opacity:.14;cursor:pointer;transition:opacity .25s}
+.hunt-reset:hover,.hunt-reset:focus-visible{opacity:1;outline:1px solid #ffefb6}
+.hunt-mobile-tip,.hunt-mobile-progress{display:none}
+/* Chase and on-page reveal */
+.hunt-finale{position:fixed;inset:0;z-index:50;pointer-events:none;visibility:hidden;isolation:isolate}
+.hunt-finale.active{visibility:visible}
+.hunt-finale-sparkles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hunt-envelope{position:fixed;z-index:3;left:0;top:0;width:clamp(125px,13.5vw,225px);aspect-ratio:1.45;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;touch-action:manipulation;filter:drop-shadow(0 3px 9px #20051e) drop-shadow(0 0 12px #f9c5afba) drop-shadow(0 0 22px #b95cefa0);transform-origin:center;will-change:transform}
+.hunt-envelope img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;user-select:none}
+.hunt-envelope:focus-visible{outline:2px solid #fff0c3;border-radius:35%;outline-offset:5px}
+.hunt-envelope.is-faking img{animation:hunt-fake .55s cubic-bezier(.2,.9,.2,1) both}
+@keyframes hunt-fake{0%{transform:scale(.95)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1.08)}}
+.hunt-chase-message{position:fixed;z-index:6;max-width:min(360px,85vw);padding:12px 21px;border:1px solid #f7d9a5;border-radius:25px;text-align:center;color:#fff1d6;font-size:clamp(15px,2.2vw,23px);font-style:italic;background:linear-gradient(145deg,#4b1e52f3,#1a0b2cf7);box-shadow:0 0 15px #fdbb7b7b,0 0 32px #ac4bda8a;text-shadow:0 0 9px #ffca9f;opacity:0;transform:translateY(14px) scale(.94);transition:opacity .25s,transform .25s;pointer-events:none}
+.hunt-chase-message.show{opacity:1;transform:translateY(0) scale(1)}
+.hunt-trail{position:absolute;width:var(--s);height:var(--s);border-radius:50%;left:var(--x);top:var(--y);background:#ffe7bc;box-shadow:0 0 8px #fff5cf,0 0 18px #bd64f4;pointer-events:none;animation:hunt-trail-fade .85s ease-out forwards}
+@keyframes hunt-trail-fade{to{transform:translate(var(--dx),var(--dy)) scale(.15);opacity:0}}
+.hunt-opened{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;background:radial-gradient(ellipse at 50% 44%,#371b4175,#090414d8 78%);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);text-align:center;opacity:0;transition:opacity .7s}
+.hunt-opened.is-visible{opacity:1}
+.hunt-opened h2{font-size:clamp(19px,2.8vw,32px);font-style:italic;font-weight:normal;letter-spacing:.02em;color:#ffe5b6;text-shadow:0 0 15px #ffd1a5,0 0 28px #c16eee;opacity:0;transform:translateY(10px);transition:opacity .7s,transform .7s;margin:0 0 7px}
+.hunt-reveal-art{position:relative;width:min(83vw,510px);aspect-ratio:1.42;filter:drop-shadow(0 0 36px #e7af7fb8) drop-shadow(0 0 45px #a24ecc88)}
+.hunt-reveal-art img{width:100%;height:100%;object-fit:contain;display:block}
+.hunt-secret{position:absolute;top:33%;left:50%;white-space:nowrap;transform:translate(-50%,-15%) scale(.8);font-size:clamp(27px,4.3vw,49px);letter-spacing:.095em;color:#7c3d47;text-shadow:0 1px 1px #fff6d9,0 0 9px #ffe7b9;font-weight:700;opacity:0;transition:transform 1.1s,opacity 1.1s}
+.hunt-secret.is-visible{transform:translate(-50%,-15%) scale(1);opacity:1}
+.hunt-opened h2.is-visible,.hunt-opened #hunt-code-caption.is-visible{opacity:1;transform:translateY(0)}
+#hunt-code-caption{font-size:clamp(12px,1.7vw,17px);letter-spacing:.22em;text-transform:uppercase;color:#ffe6b9;text-shadow:0 0 10px #ffce9f;margin:4px 0 0;opacity:0;transform:translateY(10px);transition:opacity .7s,transform .7s}
+.hunt-chase-again{margin-top:22px;padding:11px 23px;border:1px solid #f4d5a2;border-radius:32px;background:linear-gradient(125deg,#66265e,#290b42);color:#fff2d0;cursor:pointer;box-shadow:0 0 20px #f5c18c75;opacity:0;pointer-events:none;transition:opacity .6s}
+.hunt-chase-again.is-visible{opacity:1;pointer-events:auto}
+.hunt-chase-again:focus-visible{outline:2px solid white;outline-offset:5px}
+@media(max-aspect-ratio:1/1){.hunt-mobile-progress{position:fixed;top:11px;right:11px;z-index:31;display:block;padding:10px 14px;border:1px solid #f7d2a1;border-radius:23px;background:#241031f1;color:#ffe5bd;font-size:10px;letter-spacing:.06em;text-align:center;box-shadow:0 0 16px #bc57c893;pointer-events:none}.hunt-mobile-progress span{display:block;font-size:19px;line-height:1.3}.hunt-mobile-tip{display:block;position:fixed;left:50%;bottom:9px;z-index:28;transform:translateX(-50%);text-align:center;max-width:90vw;margin:0;padding:6px 14px;border:1px solid #c18b9577;border-radius:28px;color:#ffe9bd;background:#180828df;white-space:nowrap;font-size:12px;pointer-events:none}.hunt-reset{bottom:38px;opacity:.65}.hunt-envelope{width:clamp(125px,34vw,180px)}.hunt-reveal-art{width:min(98vw,510px)}.hunt-secret{font-size:clamp(26px,7vw,42px)}}
+@media(prefers-reduced-motion:reduce){.hunt-glow,.hunt-spark,.hunt-trail{animation:none!important}.hunt-spark{display:none}.hunt-envelope{will-change:auto}*,*::before,*::after{scroll-behavior:auto!important;transition-duration:0.01ms!important}}

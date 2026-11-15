@@ -1,1 +1,58 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050e16"><title>Scavenger Hunt · Rayan's Dark Forest</title><link rel="icon" href="../assets/heart.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css"></head><body><main class="chapter"><section class="chapter-card"><svg class="chapter-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="18"/><path d="m32 10 6 16 16 6-16 6-6 16-6-16-16-6 16-6z"/><circle cx="32" cy="32" r="4" fill="#ffe6b0"/></svg><h1>Scavenger Hunt</h1><p>This secret path is waiting for our first adventure.</p><a class="chapter-back" href="../index.html">← Back to Rayan's Forest</a></section></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#120821">
+  <meta name="description" content="Find 40 magical treasures in an enchanted study, then chase a mischievous secret letter.">
+  <title>Scavenger Hunt · Rayan's Dark Forest</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/heart.svg">
+  <link rel="preload" as="image" type="image/webp" href="../assets/scavenger-hunt/scene.webp">
+  <link rel="stylesheet" href="../scavenger-hunt.css">
+  <script defer src="../scavenger-hunt-data.js"></script>
+  <script defer src="../scavenger-hunt.js"></script>
+</head>
+<body class="hunt-page">
+  <main class="hunt-viewport" aria-label="The enchanted scavenger hunt">
+    <div id="hunt-scroll" class="hunt-scroll" tabindex="0" aria-label="Scrollable enchanted scavenger hunt illustration and object inventory">
+      <div class="hunt-world" id="hunt-world">
+        <section class="hunt-scene" id="hunt-scene" aria-label="Enchanted study: search for the 40 illustrated objects">
+          <img class="hunt-scene-art" src="../assets/scavenger-hunt/scene.webp" width="1672" height="657" alt="Moonlit enchanted study with purple velvet furniture, fireplace, flowers, treasures, fountains, and hidden curiosities" draggable="false">
+          <div class="hunt-glow hunt-glow-fire" aria-hidden="true"></div>
+          <div class="hunt-glow hunt-glow-moon" aria-hidden="true"></div>
+          <div class="hunt-dust" id="hunt-dust" aria-hidden="true"></div>
+          <div id="hunt-props" class="hunt-props" aria-hidden="true"></div>
+          <div class="hunt-targets" id="hunt-targets"></div>
+          <a class="hunt-back" href="../index.html" aria-label="Back to Rayan's Dark Forest" title="Back to the Forest"></a>
+          <div class="hunt-scene-progress" aria-live="polite"><strong id="hunt-progress">0 / 40</strong><span>FOUND</span></div>
+        </section>
+        <section id="hunt-inventory" class="hunt-inventory" aria-label="40 treasures to find">
+          <h1 class="sr-only">Scavenger Hunt — 40 hidden objects</h1>
+          <h2 class="sr-only">Items to find</h2>
+          <div class="hunt-inventory-items" id="hunt-items"></div>
+        </section>
+      </div>
+    </div>
+    <div class="hunt-mobile-progress" aria-hidden="true"><span id="hunt-mobile-count">0 / 40</span> FOUND</div>
+    <p class="hunt-mobile-tip" id="hunt-mobile-tip">Swipe sideways to explore the room and the treasures below.</p>
+    <div class="hunt-found-toast" id="hunt-toast" role="status" aria-live="polite"></div>
+    <button class="hunt-reset" id="hunt-reset" type="button" title="Start the hunt over">Start over</button>
+    <section id="hunt-finale" class="hunt-finale" aria-label="Magical envelope surprise" aria-hidden="true">
+      <div class="hunt-finale-sparkles" id="hunt-finale-sparkles" aria-hidden="true"></div>
+      <div class="hunt-chase-message" id="hunt-chase-message" role="status" aria-live="polite"></div>
+      <button id="hunt-envelope" class="hunt-envelope" type="button" aria-label="Catch the magical envelope" hidden>
+        <img id="hunt-envelope-picture" src="../assets/scavenger-hunt/envelope-closed.webp" alt="" draggable="false">
+      </button>
+      <div id="hunt-opened" class="hunt-opened" role="group" aria-label="Secret letter revealed" hidden>
+        <h2>At last, you caught me...</h2>
+        <div class="hunt-reveal-art">
+          <img id="hunt-reveal-picture" src="../assets/scavenger-hunt/envelope-closed.webp" alt="An ivory, gold-trimmed envelope opening to reveal its secret" draggable="false">
+          <strong id="hunt-secret" class="hunt-secret" aria-label="Secret code 670304">670304</strong>
+        </div>
+        <p id="hunt-code-caption">Your secret code</p>
+        <button id="hunt-chase-again" class="hunt-chase-again" type="button">Chase it again</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
