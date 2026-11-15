@@ -359,16 +359,16 @@
     "Pale Ore": '../assets/hollow-knight/round-3/r03-08-pale-ore.gif?v=1',
     "Fungal Wastes": '../assets/hollow-knight/round-3/r03-09-fungal-wastes.gif?v=1',
     "City of Tears": '../assets/hollow-knight/round-3/r03-10-city-of-tears.gif?v=1',
-    "Nailmaster Mato": '../assets/hollow-knight/round-4/r04-01-nailmaster-mato.gif?v=1',
-    "Paintmaster Sheo": '../assets/hollow-knight/round-4/r04-02-paintmaster-sheo.gif?v=1',
+    "Nailmaster Mato": '../assets/hollow-knight/round-4/r04-01-nailmaster-mato.gif?v=3',
+    "Paintmaster Sheo": '../assets/hollow-knight/round-4/r04-02-paintmaster-sheo.gif?v=3',
     "Relic Seeker Lemm": '../assets/hollow-knight/round-4/r04-03-relic-seeker-lemm.gif?v=2',
     "Broken Vessel": '../assets/hollow-knight/round-4/r04-04-broken-vessel.gif?v=2',
     "Lost Kin": '../assets/hollow-knight/round-4/r04-05-lost-kin.gif?v=2',
-    "Nosk": '../assets/hollow-knight/round-4/r04-06-nosk.gif?v=1',
-    "Crystal Heart": '../assets/hollow-knight/round-4/r04-07-crystal-heart.gif?v=1',
-    "SOUL": '../assets/hollow-knight/round-4/r04-08-soul.gif?v=1',
-    "Deepnest": '../assets/hollow-knight/round-4/r04-09-deepnest.gif?v=1',
-    "Crystal Peak": '../assets/hollow-knight/round-4/r04-10-crystal-peak.gif?v=1'
+    "Nosk": '../assets/hollow-knight/round-4/r04-06-nosk.gif?v=3',
+    "Crystal Heart": '../assets/hollow-knight/round-4/r04-07-crystal-heart.gif?v=3',
+    "SOUL": '../assets/hollow-knight/round-4/r04-08-soul.gif?v=3',
+    "Deepnest": '../assets/hollow-knight/round-4/r04-09-deepnest.gif?v=3',
+    "Crystal Peak": '../assets/hollow-knight/round-4/r04-10-crystal-peak.gif?v=3'
   };
   const hollowKnightRounds = hollowKnightRoundNames.map(names => ({
     pairs: names.map(name => ({name, gif: hollowKnightGifs[name] || ''}))
