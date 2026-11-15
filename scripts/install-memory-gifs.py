@@ -62,8 +62,8 @@ def main() -> None:
                             ": " + json.dumps(url, ensure_ascii=False))
             count += 1
         map_name = group["map"]
-        pattern = r"(const\\s+" + re.escape(map_name) + r"\\s*=\\s*)\\{[\\s\\S]*?\\};"
-        replacement = "const " + map_name + " = {\\n" + ",\\n".join(mappings) + "\\n  };"
+        pattern = r"(const\s+" + re.escape(map_name) + r"\s*=\s*)\{[\s\S]*?\};"
+        replacement = "const " + map_name + " = {\n" + ",\n".join(mappings) + "\n  };"
         new_text, changed = re.subn(pattern, lambda _: replacement, text, count=1)
         if changed != 1:
             raise ValueError(f"Cannot find mapping for {category} ({map_name})")
@@ -75,7 +75,7 @@ def main() -> None:
     if text != DATA.read_text(encoding="utf-8"):
         DATA.write_text(text, encoding="utf-8")
         html = PAGE.read_text(encoding="utf-8")
-        match = re.search(r"memory-matching-data\\.js\\?v=(\\d+)", html)
+        match = re.search(r"memory-matching-data\.js\?v=(\d+)", html)
         if match:
             number = int(match.group(1)) + 1
             html = html.replace(match.group(0), f"memory-matching-data.js?v={number}", 1)
