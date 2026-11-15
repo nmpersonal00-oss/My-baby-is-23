@@ -208,3 +208,24 @@ borders remain gold until explicit selection, then gain their existing purple
 glow. The selected world header uses the same approved artwork rather than
 a generic symbol. The watercolor/gothic background, 400 names, all blank GIF
 slots and matching logic are unchanged.
+
+### Hangman: approved Gothic layout, phrase content to follow
+
+Hangman now has a dedicated real HTML/SVG/CSS page at `chapters/hangman.html`
+with the owner's approved moonlit purple-castle AI background
+(`assets/hangman-approved-forest.avif`). It follows the approved Hangman
+design: ornate gold navigation (HOME, HANGMAN, MEMORY MATCHING), illuminated
+gallows scene, category arrows (Random plus the eight existing categories),
+letter spaces, five incorrect-guess indicators, A–Z keyboard, Restart and Hint (3).
+All controls are live elements, never hotspots over a UI screenshot.
+
+The phrase bank in `hangman-phrases.js` is intentionally **empty** until the
+owner supplies the words and sentences. With no phrases, the page displays an
+eight-space visual placeholder and politely explains that content will be added
+later; it never invents a puzzle. The `hangman.js` engine is in place for
+later play (correct and incorrect guesses, five allowed misses, three hints,
+loss/win states, category filtering, physical keyboard). To add content
+later, insert phrase strings into the arrays keyed by their category ID.
+
+The existing Memory Matching artwork, all 400 names, Word Search, and homepage
+are unchanged.
