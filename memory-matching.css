@@ -404,3 +404,32 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   .memory-footer-crown{font-size:24px;top:-12px}
   .memory-feedback{font-size:13px}
 }
+
+/* Mid-size tablets: lift the category menu above the board instead of
+   squeezing 20 cards beside a 260px category sidebar. */
+@media(min-width:721px) and (max-width:1100px){
+  .memory-heading{height:112px}
+  .memory-content{display:block}
+  .memory-categories{
+    margin:0 0 9px;padding:8px 10px 6px;border-radius:20px;
+  }
+  .memory-categories::before{inset:4px;border-radius:16px}
+  .memory-categories-crown{top:-17px;font-size:27px}
+  .memory-categories h2{font-size:15px}
+  .memory-categories-decoration{display:none}
+  .memory-world-list{
+    display:flex;gap:7px;overflow-x:auto;
+    padding:5px 3px 6px;scrollbar-width:thin;
+    scrollbar-color:#d6a769 #170a28;
+  }
+  .memory-category{flex:0 0 145px;min-height:45px;padding:3px 5px;gap:5px}
+  .memory-category-icon{width:39px;height:39px}
+  .memory-category-name{font-size:15px}
+  .memory-category::after{display:none}
+  .memory-game-top{min-height:75px}
+  .memory-matching-board{width:min(100%,calc(140svh - 325px))}
+  .memory-footer-badge{height:53px;margin-top:9px}
+  .memory-footer-badge-label{min-height:43px}
+  .memory-footer-crown{font-size:35px;top:-20px}
+  .memory-small-actions{margin-top:3px}
+}
