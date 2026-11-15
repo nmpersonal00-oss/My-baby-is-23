@@ -700,6 +700,7 @@
   // Round 1: custom animated GIF artwork lives in assets/sanrio/round-1.
   const sanrioGifs = {
     "My Melody": "../assets/sanrio/my-melody.gif?v=83a7c62fda",
+    "Kuromi": "../assets/sanrio/kuromi.gif?v=56e4f30317",
     "Cinnamoroll": "../assets/sanrio/cinnamoroll.gif?v=0d43011b74",
     "Pompompurin": "../assets/sanrio/pompompurin.gif?v=571cf2332c",
     "Pochacco": "../assets/sanrio/pochacco.gif?v=2d5f45865c",
@@ -709,7 +710,6 @@
     "Jimmy": "../assets/sanrio/jimmy.gif?v=26313fe526",
     "Sanrio Puroland": "../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817",
     "Sugarbunnies": "../assets/sanrio/sugarbunnies.gif?v=7b4e62125f"
-      "Kuromi": "../assets/sanrio/kuromi.gif?v=2cb543b1c3",
   };
 
   // Fixed mixed groups, freshly randomized board positions each time.
