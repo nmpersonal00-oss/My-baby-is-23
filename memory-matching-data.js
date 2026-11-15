@@ -705,21 +705,21 @@
     "Pompompurin": "../assets/sanrio/pompompurin.gif?v=571cf2332c",
     "Pochacco": "../assets/sanrio/pochacco.gif?v=2d5f45865c",
     "Badtz-Maru": "../assets/sanrio/badtz-maru.gif?v=60eadd6939",
-    "Pekkle": "../assets/sanrio/pekkle.gif?v=30efc28619",
-    "Kirimichan": "../assets/sanrio/kirimichan.gif?v=3df3e664a3",
-    "Jimmy": "../assets/sanrio/jimmy.gif?v=26313fe526",
-    "Sanrio Puroland": "../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817",
-    "Sugarbunnies": "../assets/sanrio/sugarbunnies.gif?v=7b4e62125f",
+    "Lala": "../assets/sanrio/lala.gif?v=767484d341",
     "Tuxedosam": "../assets/sanrio/tuxedosam.gif?v=56969c2648",
-    "Director Ton": "../assets/sanrio/director-ton.gif?v=914960ec1d",
-    "Harmonyland": "../assets/sanrio/harmonyland.gif?v=8fcc4eb732",
+    "Mimmy": "../assets/sanrio/mimmy.gif?v=62f1fc7e82",
+    "Pekkle": "../assets/sanrio/pekkle.gif?v=30efc28619",
+    "Marroncream": "../assets/sanrio/marroncream.gif?v=914d927b87",
     "Bonbonribbon": "../assets/sanrio/bonbonribbon.gif?v=bc62db6ebf",
     "Usahana": "../assets/sanrio/usahana.gif?v=35c3f7976c",
-    "Marroncream": "../assets/sanrio/marroncream.gif?v=914d927b87",
-    "Lala": "../assets/sanrio/lala.gif?v=767484d341",
+    "Kirimichan": "../assets/sanrio/kirimichan.gif?v=3df3e664a3",
+    "Jimmy": "../assets/sanrio/jimmy.gif?v=26313fe526",
     "Fenneko": "../assets/sanrio/fenneko.gif?v=f8251eafe2",
-    "Show By Rock!!": "../assets/sanrio/show-by-rock.gif?v=8b7b51f2d3",
-    "Mimmy": "../assets/sanrio/mimmy.gif?v=62f1fc7e82"
+    "Director Ton": "../assets/sanrio/director-ton.gif?v=914960ec1d",
+    "Sanrio Puroland": "../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817",
+    "Harmonyland": "../assets/sanrio/harmonyland.gif?v=8fcc4eb732",
+    "Sugarbunnies": "../assets/sanrio/sugarbunnies.gif?v=7b4e62125f",
+    "Show By Rock!!": "../assets/sanrio/show-by-rock.gif?v=8b7b51f2d3"
   };
 
   // Fixed mixed groups, freshly randomized board positions each time.
