@@ -8,9 +8,9 @@
   <title>Scavenger Hunt · Rayan's Dark Forest</title>
   <link rel="icon" type="image/svg+xml" href="../assets/heart.svg">
   <link rel="preload" as="image" type="image/webp" href="../assets/scavenger-hunt/scene.webp">
-  <link rel="stylesheet" href="../scavenger-hunt.css?v=2">
+  <link rel="stylesheet" href="../scavenger-hunt.css?v=3">
   <script defer src="../scavenger-hunt-data.js"></script>
-  <script defer src="../scavenger-hunt.js?v=2"></script>
+  <script defer src="../scavenger-hunt.js?v=3"></script>
 </head>
 <body class="hunt-page">
   <main class="hunt-viewport" aria-label="The enchanted scavenger hunt">
@@ -29,6 +29,16 @@
         <section id="hunt-inventory" class="hunt-inventory" aria-label="40 treasures to find">
           <h1 class="sr-only">Scavenger Hunt — 40 hidden objects</h1>
           <h2 class="sr-only">Items to find</h2>
+          <div class="hunt-actions" aria-label="Scavenger Hunt actions">
+            <button class="hunt-action hunt-reset" id="hunt-reset" type="button" title="Reset all 40 found items">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 10a8 8 0 1 1 1.6 6M4 4v6h6"/></svg>
+              <span>RESET</span>
+            </button>
+            <button class="hunt-action hunt-shuffle" id="hunt-shuffle" type="button" title="Shuffle the item tray without moving hidden objects">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h3c5 0 7 12 12 12h3M17 15l4 3-4 3M3 18h3c2.6 0 4.4-2.8 6-6M15 6h6m-4-3 4 3-4 3"/></svg>
+              <span>SHUFFLE</span>
+            </button>
+          </div>
           <div class="hunt-inventory-items" id="hunt-items"></div>
         </section>
       </div>
@@ -44,7 +54,6 @@
       </div>
     </div>
     <div class="hunt-found-toast" id="hunt-toast" role="status" aria-live="polite"></div>
-    <button class="hunt-reset" id="hunt-reset" type="button" title="Start the hunt over">Start over</button>
     <section id="hunt-finale" class="hunt-finale" aria-label="Magical envelope surprise" aria-hidden="true">
       <div class="hunt-finale-sparkles" id="hunt-finale-sparkles" aria-hidden="true"></div>
       <div class="hunt-chase-message" id="hunt-chase-message" role="status" aria-live="polite"></div>

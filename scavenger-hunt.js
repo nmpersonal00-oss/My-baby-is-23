@@ -23,6 +23,7 @@
   const mobileProgress = document.getElementById('hunt-mobile-count');
   const toast = document.getElementById('hunt-toast');
   const resetButton = document.getElementById('hunt-reset');
+  const shuffleButton = document.getElementById('hunt-shuffle');
   const mobileTip = document.getElementById('hunt-mobile-tip');
   const finale = document.getElementById('hunt-finale');
   const sparkles = document.getElementById('hunt-finale-sparkles');
@@ -38,12 +39,18 @@
   const elementsById = new Map();
   const timers = new Set();
   let found = new Set();
+  const originalOrder = data.map(item => item.id);
+  let inventoryOrder = originalOrder.slice();
   let stage = 'locked', catches = 0, x = 0, y = 0, vx = 144, vy = 103;
   let lastTick = 0, lastTrail = 0, toastTimer = 0, messageTimer = 0;
   let keyboardControl = false;
 
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (Array.isArray(stored.order) && stored.order.length === 40 &&
+        new Set(stored.order).size === 40 && stored.order.every(id => originalOrder.includes(id))) {
+      inventoryOrder = stored.order.slice();
+    }
     if (Array.isArray(stored.found)) {
       const valid = new Set(data.map(item => item.id));
       found = new Set(stored.found.filter(id => valid.has(id)));
@@ -51,7 +58,7 @@
   } catch (_) { /* Private browsing or storage denial must not block gameplay. */ }
 
   function save() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({found: [...found]})); }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({found: [...found], order: inventoryOrder})); }
     catch (_) { /* In-memory play still works when storage is blocked. */ }
   }
   function later(fn, ms) {
@@ -126,6 +133,28 @@
       announce(`${item.name} found! ${found.size} of 40`);
     }
   }
+  function applyInventoryOrder() {
+    // Stable IDs tie every card to its find target. Moving cards never changes artwork mapping.
+    for (const id of inventoryOrder) {
+      const pair = elementsById.get(id);
+      if (pair) items.appendChild(pair.inventory);
+    }
+  }
+  function shuffleInventory() {
+    hideItemPreview();
+    const before = inventoryOrder.join('|');
+    for (let i = inventoryOrder.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [inventoryOrder[i], inventoryOrder[j]] = [inventoryOrder[j], inventoryOrder[i]];
+    }
+    if (inventoryOrder.join('|') === before) {
+      [inventoryOrder[0], inventoryOrder[1]] = [inventoryOrder[1], inventoryOrder[0]];
+    }
+    applyInventoryOrder();
+    save();
+    announce('Clues shuffled! Hidden objects remain in the same places.');
+  }
+  shuffleButton.addEventListener('click', shuffleInventory);
   function buildGame() {
     for (const [i, item] of data.entries()) {
       const target = document.createElement('button');
@@ -154,6 +183,11 @@
       icon.style.setProperty('--icon-y', `${Math.floor(i / 10) / 3 * 100}%`);
       icon.setAttribute('aria-hidden', 'true');
       inventory.appendChild(icon);
+      const number = document.createElement('span');
+      number.className = 'hunt-item-number';
+      number.textContent = String(i + 1);
+      number.setAttribute('aria-hidden', 'true');
+      inventory.appendChild(number);
       inventory.addEventListener('click', () => showItemPreview(item, i));
       inventory.addEventListener('keydown', event => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -176,6 +210,7 @@
       }
       if (found.has(item.id)) markUI(item.id);
     }
+    applyInventoryOrder();
     updateProgress();
     if (!reduced.matches) {
       let seed = 423561;
@@ -319,7 +354,7 @@
     if (!window.confirm('Start the scavenger hunt over? This resets the 40 found objects in this browser.')) return;
     clearTimers(); clearTimeout(messageTimer);
     hideItemPreview();
-    found = new Set(); save();
+    found = new Set(); inventoryOrder = originalOrder.slice(); applyInventoryOrder(); save();
     for (const pair of elementsById.values()) {
       pair.target.disabled = false;
       pair.target.setAttribute('aria-label', `Find ${pair.item.name}`);
