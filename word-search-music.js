@@ -397,8 +397,17 @@
     // Browser storage is optional; laptop files still play directly.
     db = null;
     ready = true;
-    refresh().catch(() => {});
-    notice = 'Saved songs unavailable. Add a music folder from the laptop instead.';
-    show();
+    refresh().then(() => {
+      if (realm && wantsMusic && lists[realm].length) {
+        notice = '';
+        start();
+      } else {
+        notice = lists[realm]?.length ? '' : 'Drop a music folder onto the page to add songs.';
+        show();
+      }
+    }).catch(error => {
+      notice = 'Could not read the music folder. Try choosing the folder again.';
+      show();
+    });
   });
 })();
