@@ -41,7 +41,7 @@
   let found = new Set();
   const originalOrder = data.map(item => item.id);
   let inventoryOrder = originalOrder.slice();
-  let stage = 'locked', catches = 0, x = 0, y = 0, vx = 144, vy = 103;
+  let stage = 'locked', catches = 0, x = 0, y = 0, vx = 275, vy = 205;
   let lastTick = 0, lastTrail = 0, toastTimer = 0, messageTimer = 0;
   let keyboardControl = false;
 
@@ -265,7 +265,7 @@
     envelope.classList.remove('is-faking');
     envelopeImg.src = assetUrl('envelope-closed.webp');
     const b = bounds(); place(b.maxX * .45, b.maxY * .30);
-    vx = 150; vy = 112; lastTick = 0;
+    vx = 275; vy = 205; lastTick = 0;
     if (mobileTip) mobileTip.textContent = 'Catch the glowing envelope four times!';
     envelope.setAttribute('aria-label', 'Catch the enchanted flying envelope, catch 1 of 4');
   }
@@ -285,10 +285,10 @@
     catches += 1;
     if (catches === 1) {
       showMessage('Ha ha, try and get me!');
-      speedUp(220);
+      speedUp(445);
     } else if (catches === 2) {
       showMessage('Nope, you can’t get me!');
-      speedUp(310);
+      speedUp(625);
     } else if (catches === 3) {
       stage = 'fake';
       envelope.classList.add('is-faking');
@@ -296,7 +296,7 @@
       later(() => showMessage('Sike, you thought!'), 550);
       later(() => {
         envelope.classList.remove('is-faking');
-        speedUp(410);
+        speedUp(820);
         stage = 'chasing';
         envelope.setAttribute('aria-label', 'Catch the enchanted envelope one final time');
       }, 1600);
