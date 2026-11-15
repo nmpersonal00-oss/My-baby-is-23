@@ -1,23 +1,26 @@
-/* Hangman UI and logic.
-   The owner-approved page is a REAL HTML game interface over a clean AI
-   background. Puzzles are deliberately empty until the owner adds phrases. */
+/* Rayan's Dark Forest — 400-level Islamic Hangman.
+ * Each of eight Islamic themes has 50 real puzzles; Random mode plays all 400
+ * in a stable shuffled order without repeats. Progress is saved in this browser.
+ * The gold Gothic UI and background stay separate from the gameplay/data.
+ */
 (() => {
   'use strict';
 
   const $ = id => document.getElementById(id);
   const catalog = [
-    {id:'random',name:'Random'},
-    {id:'hollow-knight',name:'Hollow Knight'},
-    {id:'silksong',name:'Hollow Knight: Silksong'},
-    {id:'colossus',name:'Shadow of the Colossus'},
-    {id:'lies-of-p',name:'Lies of P'},
-    {id:'terraria',name:'Terraria'},
-    {id:'dark-souls',name:'Dark Souls'},
-    {id:'bloodborne',name:'Bloodborne'},
-    {id:'sanrio',name:'Sanrio'}
+    {id:'random',name:'Random — All Topics'},
+    {id:'quran',name:'The Quran'},
+    {id:'prophets',name:'The Prophets'},
+    {id:'seerah',name:'The Seerah'},
+    {id:'worship',name:'Worship'},
+    {id:'faith-values',name:'Faith & Values'},
+    {id:'history',name:'Islamic History'},
+    {id:'places',name:'Sacred Places'},
+    {id:'terms',name:'Islamic Terms'}
   ];
-  const bank = window.HANGMAN_PHRASES || {};
+  const source = window.HANGMAN_LEVELS || {};
   const MAX_WRONG = 5, MAX_HINTS = 3;
+  const SAVE_KEY = 'rayans-dark-forest.islam-hangman.v1';
   const categoryName = $('hangman-category-name');
   const categoryLeft = $('hangman-category-prev');
   const categoryRight = $('hangman-category-next');
@@ -26,188 +29,229 @@
   const wrongTrack = $('hangman-wrong-track');
   const hintButton = $('hangman-hint');
   const restartButton = $('hangman-restart');
+  const nextButton = $('hangman-next');
+  const levelLabel = $('hangman-level-label');
+  const levelTopic = $('hangman-level-topic');
   const status = $('hangman-status');
-  if (!categoryName || !categoryLeft || !categoryRight || !wordDisplay ||
-      !keyboard || !wrongTrack || !hintButton || !restartButton || !status) return;
+  if (![categoryName, categoryLeft, categoryRight, wordDisplay, keyboard,
+        wrongTrack, hintButton, restartButton, nextButton, levelLabel,
+        levelTopic, status].every(Boolean)) return;
 
-  let selectedCategory = 0;
-  let current = null, categoryChosen = false;
-  let guesses = new Set(), wrong = 0, hints = 0, finished = false;
-  let lastPhrase = '';
-
-  // Words with accents match their base A-Z keyboard letter, and all
-  // punctuation/spaces are displayed automatically.
   const cleanLetter = value => String(value).normalize('NFD')
     .replace(/[\u0300-\u036f]/g,'').toUpperCase();
-  const isLetter = char => /^\p{L}$/u.test(char);
-  const revealable = char => isLetter(char) && /^[A-Z]$/.test(cleanLetter(char));
-  function say(message) { status.textContent = message; }
-  function pool() {
-    const ids = catalog[selectedCategory].id === 'random'
-      ? catalog.slice(1).map(x => x.id)
-      : [catalog[selectedCategory].id];
-    return ids.flatMap(id => {
-      const phrases = Array.isArray(bank[id]) ? bank[id] : [];
-      return phrases.filter(value => typeof value === 'string' &&
-          [...value.trim()].some(revealable))
-        .map(value => value.trim());
-    });
-  }
+  const isLetter = ch => /^\p{L}$/u.test(ch);
+  const revealable = ch => isLetter(ch) && /^[A-Z]$/.test(cleanLetter(ch));
 
+  function stableShuffle(input, seed) {
+    const copy = input.slice();
+    let value = seed >>> 0;
+    for (let i = copy.length - 1; i > 0; i--) {
+      value = (Math.imul(1664525,value) + 1013904223) >>> 0;
+      const index = value % (i+1);
+      [copy[i],copy[index]] = [copy[index],copy[i]];
+    }
+    return copy;
+  }
+  function validPuzzle(entry) {
+    return entry && typeof entry.answer === 'string' &&
+      entry.answer.trim().length > 0 &&
+      [...entry.answer].some(revealable) &&
+      typeof entry.topic === 'string' && entry.topic.trim();
+  }
+  const decks = {};
+  let allPuzzles = [];
+  catalog.slice(1).forEach((cat,index) => {
+    const entries = Array.isArray(source[cat.id]) ? source[cat.id] : [];
+    decks[cat.id] = stableShuffle(entries.filter(validPuzzle).map((entry,n) => ({
+      id: cat.id + ':' + n,
+      category: cat.id,
+      answer: entry.answer.trim(),
+      topic: entry.topic.trim()
+    })), 20261260 + index);
+    allPuzzles = allPuzzles.concat(decks[cat.id]);
+  });
+  decks.random = stableShuffle(allPuzzles, 20261300);
+  const saved = {category:'random', indices:{}, solved:{}};
+  try {
+    const stored = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+    if (catalog.some(cat=>cat.id===stored.category)) saved.category = stored.category;
+    if (stored.indices && typeof stored.indices === 'object' && !Array.isArray(stored.indices))
+      Object.assign(saved.indices, stored.indices);
+    if (stored.solved && typeof stored.solved === 'object' && !Array.isArray(stored.solved))
+      Object.assign(saved.solved, stored.solved);
+  } catch {}
+
+  let selectedCategory = Math.max(0,catalog.findIndex(cat=>cat.id===saved.category));
+  let current = null, currentIndex = 0, guesses = new Set();
+  let wrong = 0, hints = 0, finished = false;
+
+  function save() {
+    try {
+      saved.category = catalog[selectedCategory].id;
+      localStorage.setItem(SAVE_KEY,JSON.stringify(saved));
+    } catch {}
+  }
+  function say(message) { status.textContent = message; }
+  function activeId() { return catalog[selectedCategory].id; }
+  function activeDeck() { return decks[activeId()]; }
   function renderKeyboard() {
     keyboard.innerHTML = '';
-    ['ABCDEFGHIJ','KLMNOPQRST','UVWXYZ'].forEach((letters, rowIndex) => {
+    ['ABCDEFGHIJ','KLMNOPQRST','UVWXYZ'].forEach((letters,index)=>{
       const row = document.createElement('div');
       row.className = 'hangman-key-row';
-      row.setAttribute('aria-label','Letters ' + (rowIndex + 1));
+      row.setAttribute('aria-label','Letters ' + (index+1));
       for (const letter of letters) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'hangman-key';
-        btn.textContent = letter;
-        btn.dataset.letter = letter;
-        btn.setAttribute('aria-label','Guess ' + letter);
-        row.appendChild(btn);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'hangman-key';
+        button.textContent = letter;
+        button.dataset.letter = letter;
+        button.setAttribute('aria-label','Guess ' + letter);
+        row.appendChild(button);
       }
       keyboard.appendChild(row);
     });
   }
-
+  function createLetter(ch,placeholder=false) {
+    const node = document.createElement('span');
+    const letter = !placeholder && revealable(ch);
+    node.className = 'hangman-letter' +
+      (!letter && !placeholder ? ' is-punctuation' : '');
+    if (letter) {
+      const visible = (finished && wrong >= MAX_WRONG) || guesses.has(cleanLetter(ch));
+      node.textContent = visible ? ch.toUpperCase() : '';
+      node.setAttribute('aria-label',visible ? ch : 'Hidden letter');
+    } else if (placeholder) {
+      node.textContent = '';
+      node.setAttribute('aria-label','Empty puzzle slot');
+    } else {
+      node.textContent = ch;
+      node.setAttribute('aria-label',ch);
+    }
+    return node;
+  }
   function renderWord() {
     wordDisplay.innerHTML = '';
-    const letters = current ? Array.from(current) : Array(8).fill('_');
-    letters.forEach(ch => {
-      const node = document.createElement('span');
-      const isSpace = current && /\s/.test(ch);
-      const letter = current && revealable(ch);
-      node.className = 'hangman-letter' + (isSpace ? ' is-space' : '') +
-        (!letter && current && !isSpace ? ' is-punctuation' : '');
-      if (letter) {
-        const show = finished && wrong >= MAX_WRONG ||
-          guesses.has(cleanLetter(ch));
-        node.textContent = show ? ch.toUpperCase() : '';
-        node.setAttribute('aria-label',show ? ch : 'Hidden letter');
-      } else if (isSpace) {
-        node.textContent = ' ';
-        node.setAttribute('aria-label','Word break');
-      } else if (current) {
-        node.textContent = ch;
-        node.setAttribute('aria-label',ch);
-      } else {
-        node.textContent = '';
-        node.setAttribute('aria-label','Letter space coming soon');
+    wordDisplay.classList.toggle('is-long',Boolean(current && current.answer.replace(/\s/g,'').length>14));
+    wordDisplay.classList.toggle('is-very-long',Boolean(current && current.answer.replace(/\s/g,'').length>29));
+    if (!current) {
+      const group = document.createElement('span');
+      group.className = 'hangman-word-unit';
+      for (let i=0;i<8;i++) group.appendChild(createLetter('',true));
+      wordDisplay.appendChild(group);
+      return;
+    }
+    const words = current.answer.split(/\s+/);
+    words.forEach((word,index)=>{
+      if (index) {
+        const gap = document.createElement('span');
+        gap.className = 'hangman-word-gap';
+        gap.setAttribute('aria-label','Word break');
+        wordDisplay.appendChild(gap);
       }
-      wordDisplay.appendChild(node);
+      const unit = document.createElement('span');
+      unit.className = 'hangman-word-unit';
+      for (const ch of word) unit.appendChild(createLetter(ch));
+      wordDisplay.appendChild(unit);
     });
   }
-
   function renderWrong() {
     wrongTrack.innerHTML = '';
-    for (let index=0; index<MAX_WRONG; index++) {
+    for (let index=0;index<MAX_WRONG;index++) {
       const diamond = document.createElement('span');
       diamond.className = 'hangman-diamond' + (index < wrong ? ' is-lost' : '');
       diamond.setAttribute('aria-label',index < wrong ?
         'Incorrect guess ' + (index+1) : 'Remaining chance');
       wrongTrack.appendChild(diamond);
     }
-    document.querySelectorAll('[data-hang-stage]').forEach(part => {
+    document.querySelectorAll('[data-hang-stage]').forEach(part=>{
       const number = Number(part.getAttribute('data-hang-stage'));
-      part.classList.toggle('is-visible',number <= wrong);
+      part.classList.toggle('is-visible',number<=wrong);
     });
   }
-
-  function renderButtons() {
-    hintButton.querySelector('.hangman-hint-count').textContent =
-      '(' + Math.max(0,MAX_HINTS-hints) + ')';
-    keyboard.querySelectorAll('[data-letter]').forEach(button => {
-      const letter = button.dataset.letter;
-      const used = guesses.has(letter);
-      button.classList.toggle('is-correct',used && Boolean(current) &&
-        Array.from(current).some(c => cleanLetter(c) === letter));
-      button.classList.toggle('is-wrong',used && Boolean(current) &&
-        !Array.from(current).some(c => cleanLetter(c) === letter));
-      button.disabled = Boolean(current) && (finished || used);
-    });
-    hintButton.disabled = Boolean(current) && (finished || hints >= MAX_HINTS);
-    renderWrong();
-  }
-
   function render() {
     categoryName.textContent = catalog[selectedCategory].name;
+    const deck = activeDeck();
+    levelLabel.textContent = deck.length ?
+      'Level ' + (currentIndex+1) + ' of ' + deck.length : 'No levels yet';
+    levelTopic.textContent = current ? 'Clue: ' + current.topic : 'Islamic knowledge';
     renderWord();
-    renderButtons();
+    hintButton.querySelector('.hangman-hint-count').textContent =
+      '(' + Math.max(0,MAX_HINTS-hints) + ')';
+    keyboard.querySelectorAll('[data-letter]').forEach(button=>{
+      const letter = button.dataset.letter;
+      const used = guesses.has(letter);
+      const correct = Boolean(current) &&
+        [...current.answer].some(ch=>revealable(ch) && cleanLetter(ch)===letter);
+      button.classList.toggle('is-correct',used && correct);
+      button.classList.toggle('is-wrong',used && !correct);
+      button.disabled = !current || finished || used;
+    });
+    hintButton.disabled = !current || finished || hints >= MAX_HINTS;
+    nextButton.hidden = !finished;
+    if (finished) nextButton.textContent =
+      currentIndex+1===deck.length ? 'Replay from Level 1' : 'Next Level';
+    renderWrong();
   }
-
-  function startRound(announce=true) {
+  function startRound() {
+    const deck = activeDeck();
+    const index = Number(saved.indices[activeId()]);
+    currentIndex = Number.isInteger(index) && index>=0 && index<deck.length ? index : 0;
+    current = deck[currentIndex] || null;
     guesses = new Set(); wrong = 0; hints = 0; finished = false;
-    const choices = pool();
-    if (choices.length) {
-      const alternatives = choices.length > 1
-        ? choices.filter(p => p !== lastPhrase)
-        : choices;
-      current = alternatives[Math.floor(Math.random()*alternatives.length)];
-      lastPhrase = current;
-      if (announce) say('New Hangman puzzle. Guess a letter.');
-    } else {
-      current = null;
-      if (announce || categoryChosen) say(
-        'The layout is ready. We will add ' +
-        (selectedCategory===0 ? 'the words and sentences' :
-          catalog[selectedCategory].name + ' phrases') + ' next.');
-      else say('Words and sentences will be added next.');
-    }
     render();
+    if (current) say('Guess the answer using the clue. Five mistakes allowed.');
+    else say('No Islamic knowledge puzzles have been added to this topic.');
+    save();
   }
-
-  function guessedEverything() {
-    return Array.from(current).every(ch =>
+  function solvedEverything() {
+    return current && [...current.answer].every(ch=>
       !revealable(ch) || guesses.has(cleanLetter(ch)));
   }
-
-  function guess(letter, fromHint=false) {
-    if (!current) {
-      say('The keyboard is ready. We will add the words and sentences next.');
-      return;
-    }
-    if (finished || guesses.has(letter)) return;
+  function guess(letter,fromHint=false) {
+    letter = cleanLetter(letter);
+    if (!current || finished || guesses.has(letter) || !/^[A-Z]$/.test(letter)) return;
     guesses.add(letter);
-    const correct = Array.from(current).some(ch=>cleanLetter(ch)===letter);
-    if (!correct && !fromHint) wrong += 1;
-
-    if (guessedEverything()) {
+    const correct = [...current.answer].some(ch=>
+      revealable(ch) && cleanLetter(ch)===letter);
+    if (!correct && !fromHint) wrong++;
+    if (solvedEverything()) {
       finished = true;
-      say('Beautifully done! You solved the Hangman puzzle. Select Restart to play again.');
-    } else if (wrong >= MAX_WRONG) {
+      saved.solved[current.id] = true;
+      save();
+      say('Excellent! Correct answer: ' + current.answer + '. Choose Next Level to continue.');
+    } else if (wrong>=MAX_WRONG) {
       finished = true;
-      say('The answer was: ' + current + '. Choose Restart to try again.');
+      say('The answer was: ' + current.answer + '. Choose Next Level or Restart to try again.');
     } else {
-      say(correct ? 'The letter ' + letter + ' is in the answer!' :
-        'No ' + letter + '. ' + (MAX_WRONG - wrong) + ' chances left.');
+      say(correct ? 'Correct: ' + letter + ' appears in the answer.' :
+        'No ' + letter + '. ' + (MAX_WRONG-wrong) + ' chances remaining.');
     }
     render();
   }
-
-  function changeCategory(direction) {
-    selectedCategory = (selectedCategory + direction + catalog.length) % catalog.length;
-    categoryChosen = true;
-    startRound(true);
+  function nextLevel() {
+    if (!finished) return;
+    const deck = activeDeck();
+    saved.indices[activeId()] = (currentIndex+1)%deck.length;
+    save();
+    startRound();
   }
-
+  function changeCategory(direction) {
+    selectedCategory = (selectedCategory+direction+catalog.length)%catalog.length;
+    startRound();
+  }
   categoryLeft.addEventListener('click',()=>changeCategory(-1));
   categoryRight.addEventListener('click',()=>changeCategory(1));
-  restartButton.addEventListener('click',()=>startRound(true));
+  restartButton.addEventListener('click',startRound);
+  nextButton.addEventListener('click',nextLevel);
   hintButton.addEventListener('click',()=>{
-    if (!current) {
-      say('Hints will be available when we add the phrases.');
-      return;
-    }
-    if (finished || hints >= MAX_HINTS) return;
-    const available = [...new Set(Array.from(current)
+    if (!current || finished || hints>=MAX_HINTS) return;
+    const unseen = [...new Set([...current.answer]
       .filter(revealable).map(cleanLetter))]
       .filter(letter=>!guesses.has(letter));
-    if (!available.length) return;
-    hints += 1;
-    guess(available[Math.floor(Math.random()*available.length)],true);
+    if (!unseen.length) return;
+    hints++;
+    guess(unseen[Math.floor(Math.random()*unseen.length)],true);
   });
   keyboard.addEventListener('click',event=>{
     const button = event.target.closest('[data-letter]');
@@ -220,7 +264,6 @@
     const letter = String(event.key).toUpperCase();
     if (/^[A-Z]$/.test(letter)) guess(letter);
   });
-
   renderKeyboard();
-  startRound(false);
+  startRound();
 })();

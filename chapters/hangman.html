@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#120823">
-  <meta name="description" content="Hangman in Rayan's Dark Forest — an enchanted letter-guessing game.">
+  <meta name="description" content="Play 400 moderate Islamic Hangman levels on Quran, prophets, Seerah, worship, faith, history, places, and Islamic terms.">
   <title>Hangman · Rayan's Dark Forest</title>
   <link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="preload" href="../assets/hangman-approved-forest.avif" as="image" type="image/avif">
-  <link rel="stylesheet" href="../hangman.css?v=1">
-  <script defer src="../hangman-phrases.js?v=1"></script>
-  <script defer src="../hangman.js?v=1"></script>
+  <link rel="stylesheet" href="../hangman.css?v=2">
+  <script defer src="../hangman-phrases.js?v=2"></script>
+  <script defer src="../hangman.js?v=2"></script>
 </head>
 <body class="hangman-page">
   <!-- The background is the separately supplied, clean AI forest art.
@@ -142,6 +142,11 @@
             </div>
           </div>
 
+          <div class="hangman-level-meta" role="group" aria-label="Islamic Hangman level and clue">
+            <span id="hangman-level-label" class="hangman-level-number">Level 1 of 400</span>
+            <span id="hangman-level-topic" class="hangman-level-topic">Islamic knowledge</span>
+          </div>
+
           <section class="hangman-answer-frame" aria-label="Hidden word or sentence">
             <div class="hangman-frame-ornament" aria-hidden="true"></div>
             <div id="hangman-word" class="hangman-word" aria-label="Puzzle letter spaces"></div>
@@ -165,7 +170,8 @@
               <span>HINT <span class="hangman-hint-count">(3)</span></span>
             </button>
           </div>
-          <p class="hangman-status" id="hangman-status" role="status" aria-live="polite">Words and sentences will be added next.</p>
+          <button type="button" class="hangman-next-level" id="hangman-next" hidden>Next Level</button>
+          <p class="hangman-status" id="hangman-status" role="status" aria-live="polite">Explore 400 Islamic Hangman puzzles.</p>
         </section>
       </div>
     </main>

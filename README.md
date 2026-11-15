@@ -209,23 +209,51 @@ glow. The selected world header uses the same approved artwork rather than
 a generic symbol. The watercolor/gothic background, 400 names, all blank GIF
 slots and matching logic are unchanged.
 
-### Hangman: approved Gothic layout, phrase content to follow
+### Islamic Hangman: 400 playable levels (November 2026)
 
-Hangman now has a dedicated real HTML/SVG/CSS page at `chapters/hangman.html`
-with the owner's approved moonlit purple-castle AI background
-(`assets/hangman-approved-forest.avif`). It follows the approved Hangman
-design: ornate gold navigation (HOME, HANGMAN, MEMORY MATCHING), illuminated
-gallows scene, category arrows (Random plus the eight existing categories),
-letter spaces, five incorrect-guess indicators, A–Z keyboard, Restart and Hint (3).
-All controls are live elements, never hotspots over a UI screenshot.
+The approved Gothic Hangman interface at `chapters/hangman.html` is preserved,
+including the separately approved AI-painted background, gold navigation,
+illustrated five-stage gallows, keyboard, Restart and Hint (3).
 
-The phrase bank in `hangman-phrases.js` is intentionally **empty** until the
-owner supplies the words and sentences. With no phrases, the page displays an
-eight-space visual placeholder and politely explains that content will be added
-later; it never invents a puzzle. The `hangman.js` engine is in place for
-later play (correct and incorrect guesses, five allowed misses, three hints,
-loss/win states, category filtering, physical keyboard). To add content
-later, insert phrase strings into the arrays keyed by their category ID.
+The puzzle bank in `hangman-phrases.js` has **400 unique answers**, mixing
+Islamic words, recognizable terms, short phrases, and factual sentences.
+They are organized into eight topics with 50 levels each:
 
-The existing Memory Matching artwork, all 400 names, Word Search, and homepage
-are unchanged.
+1. The Quran
+2. The Prophets
+3. The Seerah (life of Prophet Muhammad)
+4. Worship
+5. Faith & Values
+6. Islamic History
+7. Sacred Places
+8. Islamic Terms
+
+The ninth option, **Random — All Topics**, plays the full set of 400 in a
+fixed shuffled order, avoiding repeats in that run. Each individual topic
+provides its own stable 50-level sequence. A small **Level X of 50 / 400**
+indicator and non-spoiler topic clue appear above the answer blanks.
+
+- Five incorrect guesses end a puzzle, with each error advancing the
+  on-screen SVG illustration.
+- Three hints per puzzle reveal an unguessed correct letter without
+  using a mistake; multiple instances of a letter appear together.
+- Correct guesses fill letter slots; spaces and punctuation are displayed.
+  Multiple-word answers wrap as groups for readability on phones.
+- **Restart** replays the current level. **Next Level** appears after
+  a win or loss and advances to the following puzzle. At the last level,
+  it offers to replay from Level 1.
+- The current level for each topic and Random mode, plus completed puzzles,
+  are stored in browser `localStorage` under
+  `rayans-dark-forest.islam-hangman.v1`.
+- The content targets a **moderate** knowledge level, mixing familiar
+  concepts with more specific terms. English transliterations of Arabic
+  words can vary; the puzzle answer displays the chosen form. The content
+  is original puzzle wording rather than quotations from scripture.
+
+General cross-check references for fundamental terms and practices:
+[Islamic Relief UK — Five Pillars](https://www.islamic-relief.org.uk/resources/knowledge-base/five-pillars-of-islam/),
+[Pew Research Center — Glossary](https://www.pewresearch.org/religion/2017/07/26/appendix-a-glossary/).
+These are background references, not sources for every individual puzzle.
+
+The memory matching game (400 names, 40 rounds, GIFs still blank),
+Word Search, and the homepage have not been changed by this update.
