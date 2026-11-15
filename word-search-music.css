@@ -85,3 +85,29 @@
  .ws-music-dock.is-open{width:min(220px,calc(100vw - 14px))}
  .ws-music-dock .ws-music-toggle{width:43px;height:43px;min-width:43px}
 }
+
+
+/* Read-only Google Drive folder linking (original forest palette). */
+.ws-drive-area{
+  margin:14px 0;padding:11px;border:1px solid #dfbd81b8;border-radius:11px;
+  background:linear-gradient(145deg,#122d39,#29223a)
+}
+.ws-drive-area strong{margin:0 0 7px;color:#ffe0a0}
+.ws-drive-area p{line-height:1.45}
+.ws-drive-area label{margin:8px 0 6px}
+.ws-drive-area .ws-drive-drop{
+  display:grid;gap:8px;padding:10px 7px;
+  border:2px dashed #d6b783;border-radius:9px;
+  color:#f0d7a4;text-align:center;font-size:12px;
+}
+.ws-drive-area .ws-drive-drop.is-dragging{
+  background:#a5834c33;border-color:#ffe4a8
+}
+.ws-drive-area input[type=url]{
+  display:block;width:100%;min-height:37px;padding:7px;
+  border:1px solid #d3b27c;border-radius:7px;
+  color:#fff0d3;background:#081b2b;font:inherit
+}
+.ws-drive-area #ws-drive-connect{background:#6c5940}
+.ws-drive-area .ws-drive-feedback{min-height:14px;color:#ffdfa5}
+.ws-music-dock [hidden]{display:none!important}
