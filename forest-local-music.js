@@ -185,7 +185,7 @@
     accept(records);
   });
   controls.querySelector('.forest-local-folder-button')?.addEventListener('click',openFolder);
-  hub.chooseFolder = openFolder;
+  if (!isFrame) hub.chooseFolder = openFolder;
 
   let dragDepth = 0;
   const filesPresent = transfer => [...(transfer?.types || [])].includes('Files') ||
