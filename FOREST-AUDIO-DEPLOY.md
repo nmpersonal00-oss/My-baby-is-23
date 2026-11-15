@@ -1,4 +1,4 @@
-**For future expansion only. The easiest, no-card gift setup is now [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md). You do not need Cloudflare.**
+**Full library deployment reference (497 tracks plus Cozy Library). This guide describes one optional hosting service that can require billing details. Do not enter payment information unless you choose that option. The eight-song GitHub setup was incorrect and has been withdrawn.**
 
 # Deploying the Forest Soundtrack Library (gift preparation only)
 

@@ -1,8 +1,8 @@
 # Rayan's Dark Forest
 
-## Built-in gift soundtracks — no card, no recipient uploads
+## Complete music plan (497 Word Search tracks plus Cozy Library)
 
-Use [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the one-time free upload of **eight MP3s** to the existing GitHub `audio/` folder. Your husband uploads nothing. The app plays the supplied Cozy Library music on the homepage and non-Word-Search screens and one approved track in each of the seven Word Search worlds. The full 497-song index is archived for possible future expansion.
+See [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the correct scope: **all 497 tracks** mapped to the seven Word Search worlds, with the supplied Cozy Library music as the shared soundtrack across the rest of the app. The eight-song ZIP and eight-file GitHub instructions were incorrect and must not be used. The music files have **not** been hosted; an administrator still needs to deploy all the approved recordings for your husband to hear them without importing anything.
 
 ## Homepage
 
