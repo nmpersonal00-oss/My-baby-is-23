@@ -118,30 +118,25 @@
   }
   window.forestLocalMusic = hub;
 
-  // Show controls only in the parent shell. Dropping onto any chapter is
-  // handled by this same per-document listener and stored in the parent hub.
-  const controls = document.createElement('section');
-  controls.className = 'forest-local-music-ui';
-  controls.setAttribute('aria-label','Music folder import');
+  // Music-import buttons live inside the existing music icon's settings.
+  // No extra always-visible panel is mounted on the page.
   const isFrame = (() => { try { return window !== window.parent && !!window.parent.forestMusicShell; } catch { return false; } })();
-  if (!isFrame) {
-    controls.innerHTML = '<button type="button" class="forest-local-folder-button">♫ Add music folder</button>' +
-      '<button type="button" class="forest-local-folder-basic">Use standard folder chooser</button>' +
-      '<p class="forest-local-folder-status" role="status" aria-live="polite">Or drag an extracted music folder anywhere onto this page.</p>';
-    document.body.appendChild(controls);
-  }
   const overlay = document.createElement('div');
   overlay.className = 'forest-local-drop-overlay';
   overlay.setAttribute('aria-hidden','true');
   overlay.textContent = 'Drop your music folder here';
   overlay.hidden = true;
   document.body.appendChild(overlay);
-  const status = controls.querySelector('.forest-local-folder-status');
   function feedback(message) {
-    if (status) status.textContent = message;
-    if (!isFrame) overlay.hidden = true;
+    // Only update statuses already inside the existing music settings.
+    const destination = document.querySelector('#ws-local-feedback') ||
+      document.querySelector('#forest-cozy-folder-status');
+    if (destination) destination.textContent = message;
     try {
-      if (isFrame) window.parent.document.querySelector('.forest-local-folder-status').textContent = message;
+      if (isFrame) {
+        const parentStatus = window.parent.document.querySelector('#forest-cozy-folder-status');
+        if (parentStatus) parentStatus.textContent = message;
+      }
     } catch {}
   }
   hub.subscribe(({message}) => { if (message) feedback(message); });
@@ -150,18 +145,18 @@
     const match = location.hash.match(/^#\/(souls|lies|blood|stars|terraria|princess|hollow)\//);
     return match ? match[1] : null;
   }
-  function accept(records) {
-    const result = hub.importRecords(records,{world:currentWorld()});
+  function accept(records,options = {}) {
+    const result = hub.importRecords(records,{world:options.world || currentWorld()});
     feedback(result.message);
   }
 
-  async function openFolder() {
+  async function openFolder(options = {}) {
     if (typeof window.showDirectoryPicker === 'function') {
       try {
         // This must be invoked from the user's real click, before any await.
         const handle = await window.showDirectoryPicker({mode:'read'});
         feedback('Reading your folder and its album subfolders…');
-        accept(await hub.readDirectory(handle));
+        accept(await hub.readDirectory(handle),options);
         return;
       } catch (error) {
         if (error?.name === 'AbortError') { feedback('Folder selection canceled.'); return; }
@@ -170,10 +165,12 @@
       }
     }
     // Opera GX and other desktop browsers can use webkitdirectory.
-    openStandardFolder();
+    openStandardFolder(options);
   }
   const folderInput = document.createElement('input');
-  function openStandardFolder() {
+  let pendingOptions = {};
+  function openStandardFolder(options = {}) {
+    pendingOptions = options;
     folderInput.value = '';
     folderInput.click();
   }
@@ -187,11 +184,13 @@
     const records = [...(folderInput.files || [])].map(file => ({file,path:file.webkitRelativePath || file.name}));
     folderInput.value='';
     if (!records.length) { feedback('No music files were received. Select the extracted folder, not a ZIP.'); return; }
-    accept(records);
+    accept(records,pendingOptions);
+    pendingOptions = {};
   });
-  controls.querySelector('.forest-local-folder-button')?.addEventListener('click',openFolder);
-  controls.querySelector('.forest-local-folder-basic')?.addEventListener('click',openStandardFolder);
-  if (!isFrame) hub.chooseFolder = openFolder;
+  if (!isFrame) {
+    hub.chooseFolder = openFolder;
+    hub.chooseStandardFolder = openStandardFolder;
+  }
 
   let dragDepth = 0;
   const filesPresent = transfer => [...(transfer?.types || [])].includes('Files') ||
