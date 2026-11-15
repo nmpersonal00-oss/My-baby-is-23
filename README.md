@@ -89,7 +89,7 @@ are supplied, the names display and shuffle but cannot produce correct matches.
 
 Terraria now contains exactly 50 names from the provided list: 15 people,
 15 bosses, and 20 important things. They are mixed across 5 fixed rounds with
-10 unique names each. The names appear in a freshly shuffled display order
+10 unique names each: 3 people, 3 bosses, and 4 important things per round. The names appear in a freshly shuffled display order
 when each round starts or Shuffle is pressed.
 
 All Terraria GIF slots remain blank. Once a GIF is chosen, add a key with
