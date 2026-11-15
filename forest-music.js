@@ -213,7 +213,8 @@
       externalWorldActive = Boolean(active);
       switchWorld();
     },
-    getAudio() { return audio; }
+    getAudio() { return audio; },
+    retry() { if (audio.paused && !userPaused && !disabledForWorld) tryPlay(); }
   };
 
   // If a word-search world is clicked, stop Cozy Library immediately, before
