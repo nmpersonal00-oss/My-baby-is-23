@@ -88,7 +88,7 @@
   frame.addEventListener('load', onChapterLoad);
   document.addEventListener('click', followLinks, false);
   window.addEventListener('message', event => {
-    if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
+    if (frame.hidden || event.origin !== location.origin || event.source !== frame.contentWindow) return;
     if (event.data?.type === 'forest:word-search-world') syncMusic(event.data.active);
   });
   window.addEventListener('popstate', () => {
