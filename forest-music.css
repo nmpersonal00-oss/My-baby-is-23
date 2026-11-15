@@ -147,6 +147,14 @@ body.forest-shell-in-chapter {overflow:hidden!important}
   cursor:pointer;
 }
 .forest-local-folder-button:hover{filter:brightness(1.13)}
+.forest-local-folder-basic{
+  display:block;width:100%;min-height:31px;margin-top:5px;
+  padding:4px 6px;border:1px solid #a48b70;border-radius:7px;
+  background:#183044;color:#ffecd2;font:12px/1.2 system-ui,sans-serif;cursor:pointer;
+}
+.forest-local-folder-basic:hover{filter:brightness(1.1)}
+.forest-local-folder-basic:focus-visible{outline:3px solid #fff5b1;outline-offset:3px}
+
 .forest-local-folder-button:focus-visible{outline:3px solid #fff5b1;outline-offset:3px}
 .forest-local-folder-status{margin:6px 3px 0;color:#f7dbb0;overflow-wrap:anywhere}
 .forest-local-drop-overlay{
