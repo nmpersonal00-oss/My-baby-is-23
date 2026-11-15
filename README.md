@@ -1,8 +1,12 @@
 # Rayan's Dark Forest
 
+## Google Drive music without downloading albums
+
+The Word Search and Cozy Library music controls now support **drop or paste a Google Drive folder link**, Google sign-in, and play-on-demand audio from Drive. Folder links and song selections are remembered in the browser; audio files are not copied into GitHub or the device's Downloads folder. This requires a one-time Google OAuth web client setup by the gift creator and Google Drive Viewer access for the listener. See [GOOGLE-DRIVE-MUSIC.md](GOOGLE-DRIVE-MUSIC.md). The original local import option still works. A browser cannot reliably transfer a Google Drive folder by dragging it as files; use **Copy link** if dragging does not provide the folder URL.
+
 ## Complete music plan (497 Word Search tracks plus Cozy Library)
 
-See [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the correct scope: **all 497 tracks** mapped to the seven Word Search worlds, with the supplied Cozy Library music as the shared soundtrack across the rest of the app. The eight-song ZIP and eight-file GitHub instructions were incorrect and must not be used. The music files have **not** been hosted; an administrator still needs to deploy all the approved recordings for your husband to hear them without importing anything.
+See [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the correct scope: **all 497 tracks** mapped to the seven Word Search worlds, with the supplied Cozy Library music as the shared soundtrack across the rest of the app. The eight-song ZIP and eight-file GitHub instructions were incorrect and must not be used. The music files have **not** been hosted. For completely hands-off playback with no Google sign-in, an administrator still needs to host the recordings. Alternatively, the new Google Drive folder-link option streams private music after Google sign-in.
 
 ## Continuous music and compact star controls
 
