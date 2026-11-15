@@ -282,58 +282,125 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
 @media(max-width:720px){.memory-rail-nav{display:flex;align-items:center;gap:7px}.memory-hangman-button{font-size:13px;padding:3px 8px}.memory-hangman-placeholder{margin:35px auto 20px}}
 
 
-/* GIF tiles share the source animations' 480:210 (16:7) aspect ratio.
-   The outer board's ten shared subgrid rows keep every name, GIF and match
-   connection vertically aligned without cropping or compressing the artwork.
-   This applies equally to filled GIFs and future empty gold frames. */
+/* Compact playboard: each side is TWO COLUMNS × FIVE ROWS.
+   Keep 20 clickable cards visible within a short board, with no vertical
+   board scrolling. Preserve the actual 16:7 GIF geometry and gold borders. */
+.memory-board-viewport{max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;scrollbar-color:#d6a769 #170a28}
 .memory-matching-board{
-  grid-template-rows:repeat(10,minmax(0,auto));
-  min-height:0;
+  --memory-lane-width:clamp(54px,8%,98px);
+  --memory-card-gap:6px;
+  position:relative;display:grid;
+  grid-template-columns:minmax(0,1fr) var(--memory-lane-width) minmax(0,1fr);
+  grid-template-rows:auto;
+  width:min(100%,calc((100svh - 270px)*1.4));
+  max-width:1160px;min-width:0;min-height:0;
+  gap:0;margin:10px auto 0;align-items:stretch;
 }
 .memory-match-list{
-  grid-template-rows:subgrid;
-  grid-row:1 / span 10;
-  gap:8px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(5,auto);
+  column-gap:var(--memory-card-gap);row-gap:var(--memory-card-gap);
+  grid-row:1;min-width:0;min-height:0;
+  margin:0;padding:0;align-content:start;
 }
-.memory-gifs{grid-column:1}
-.memory-center-lane{grid-column:2;grid-row:1 / span 10}
-.memory-names{grid-column:3}
-.memory-match-row{height:100%;min-height:0}
-.memory-gifs .memory-match-slot{
-  width:100%;height:auto;aspect-ratio:16 / 7;
-  min-height:0;padding:2px;overflow:hidden;
-  border-radius:16px 6px 16px 6px;
+.memory-gifs{grid-column:1;position:relative;z-index:2}
+.memory-names{grid-column:3;position:relative;z-index:2}
+.memory-center-lane{grid-column:2;grid-row:1;min-width:0;position:relative;z-index:0}
+.memory-match-row{
+  aspect-ratio:16 / 7;min-height:0;min-width:0;
+  display:flex;align-items:stretch;height:auto;
+}
+.memory-gifs .memory-match-slot,.memory-names .memory-match-slot{
+  display:flex;width:100%;height:100%;min-height:0;min-width:0;
+  padding:3px;overflow:hidden;aspect-ratio:auto;
+  border-radius:12px 5px 12px 5px;
 }
 .memory-gifs .memory-match-slot img{
   display:block;width:100%;height:100%;min-height:0;
   object-fit:contain;object-position:center;
-  border-radius:12px 3px 12px 3px;pointer-events:none;
+  border-radius:9px 3px 9px 3px;pointer-events:none;
 }
 .memory-names .memory-match-slot{
-  height:100%;min-height:0;padding:7px 11px;
+  align-items:center;justify-content:center;text-align:center;
+  padding:5px 9px;
+  font:600 clamp(12px,1.08vw,19px)/1.04 'Cormorant Garamond',Georgia,serif;
 }
-/* Older browsers without CSS subgrid use synchronized fixed-height rows. */
-@supports not (grid-template-rows:subgrid){
+.memory-names .memory-match-slot span{
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
+  max-width:100%;max-height:100%;overflow:hidden;
+  overflow-wrap:anywhere;word-break:normal;
+}
+.memory-match-slot::before,.memory-match-slot::after{display:none}
+/* One SVG covers the entire board, underneath the clickable cards. Lines
+   originate from the ACTUAL matched card edges, even in a two-column grid. */
+.memory-matching-board>.memory-connections{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:1;overflow:visible;pointer-events:none;
+}
+.memory-center-lane::before{display:none}
+.memory-board-swipe-note{display:none}
+.memory-gifs .memory-match-slot.is-empty{
+  background:linear-gradient(135deg,#120b29cf,#08091acf 70%,#1d0f2ec9);
+  box-shadow:0 0 7px #f7bb7490,inset 0 0 12px #f7c07c3d;
+}
+@media(max-height:800px) and (min-width:721px){
+  .memory-heading{height:clamp(90px,15svh,145px)}
+  .memory-main{padding-bottom:9px}
+  .memory-matching-board{width:min(100%,calc((100svh - 225px)*1.4))}
+  .memory-footer-badge{height:54px;margin-top:10px}
+  .memory-footer-crown{top:-20px;font-size:36px}
+  .memory-footer-badge-label{min-height:45px}
+  .memory-small-actions{margin-top:4px}
+}
+@media(max-width:1050px){
+  .memory-matching-board{--memory-card-gap:5px;--memory-lane-width:clamp(48px,8%,80px)}
+  .memory-names .memory-match-slot{font-size:clamp(11px,1.4vw,16px);padding:3px 5px}
+}
+@media(max-width:720px){
+  /* Do not turn the 20 cards into unreadable 65px-wide buttons.
+     The entire board pans horizontally instead; all TEN stay visible vertically. */
+  .memory-board-viewport{max-width:100%;scrollbar-width:thin}
   .memory-matching-board{
-    --memory-fallback-row:134px;
-    grid-template-rows:none;
+    --memory-card-gap:5px;--memory-lane-width:48px;
+    width:570px;max-width:none;min-width:570px;
+    margin:7px 0 3px;
   }
-  .memory-match-list{
-    grid-row:auto;
-    grid-template-rows:repeat(10,var(--memory-fallback-row));
+  .memory-match-list{grid-template-rows:repeat(5,auto);gap:5px}
+  .memory-match-row{aspect-ratio:16 / 7;height:auto;min-height:0}
+  .memory-gifs .memory-match-slot,.memory-names .memory-match-slot{
+    height:100%;min-height:0;padding:2px;aspect-ratio:auto;
+    border-radius:9px 3px 9px 3px;
   }
-  .memory-center-lane{grid-row:auto}
-  .memory-gifs .memory-match-slot{height:100%;aspect-ratio:auto}
-  @media(max-width:1380px){
-    .memory-matching-board{--memory-fallback-row:112px}
+  .memory-gifs .memory-match-slot img{height:100%;border-radius:7px 2px 7px 2px}
+  .memory-names .memory-match-slot{font-size:14px;line-height:1.02;padding:3px 5px}
+  .memory-board-swipe-note{
+    display:block;margin:2px 0 4px;color:#fce5c1;text-align:center;
+    font:italic 600 14px 'Cormorant Garamond',Georgia,serif;
+    text-shadow:0 0 8px #1a082d;
   }
-  @media(max-width:1050px){
-    .memory-matching-board{--memory-fallback-row:83px}
-  }
-  @media(max-width:720px){
-    .memory-matching-board{--memory-fallback-row:68px}
-  }
-  @media(max-width:390px){
-    .memory-matching-board{--memory-fallback-row:59px}
-  }
+  .memory-footer-badge{height:54px;margin-top:6px}
+  .memory-footer-badge-label{min-height:42px}
+  .memory-small-actions{margin-top:3px}
+}
+@media(max-width:720px) and (max-height:780px){
+  .memory-heading{min-height:79px;padding-bottom:4px}
+  .memory-heading h1{font-size:clamp(32px,7.2vw,44px)}
+  .memory-title-row{min-height:27px}
+  .memory-title-row h2{font-size:clamp(22px,5vw,32px)}
+  .memory-heading p{font-size:14px}
+  .memory-categories{margin:4px auto 6px;padding:5px 8px 6px}
+  .memory-world-list{padding:5px 2px 5px}
+  .memory-category{min-height:60px}
+  .memory-category-icon{width:32px;height:32px}
+  .memory-category-name{font-size:13px}
+  .memory-game-top{min-height:73px}
+  .memory-round{width:32px;height:32px;font-size:18px}
+  .memory-round:before{display:none}
+  .memory-matching-board{width:530px;min-width:530px;--memory-lane-width:43px}
+  .memory-match-list{gap:4px}
+  .memory-footer-badge{height:42px}
+  .memory-footer-badge-label{min-height:35px;font-size:17px}
+  .memory-footer-crown{font-size:24px;top:-12px}
+  .memory-feedback{font-size:13px}
 }
