@@ -87,7 +87,7 @@
       const result = groups();
       for (const world of Object.keys(result)) {
         result[world] = (Array.isArray(saved[world]) ? saved[world] : [])
-          .filter(s => /^[\\w-]{15,}$/.test(s.driveId || '') && typeof s.name === 'string')
+          .filter(s => /^[\w-]{15,}$/.test(s.driveId || '') && typeof s.name === 'string')
           .map(s => ({ id:'drive:' + s.driveId, driveId:s.driveId, name:s.name }));
       }
       return result;
@@ -442,7 +442,7 @@
     const transfer = event.dataTransfer;
     const text = transfer?.getData('text/uri-list') || transfer?.getData('text/plain') ||
       transfer?.getData('text/html') || '';
-    const match = text.match(/https?:\\/\\/drive\\.google\\.com\\/[^\\s"'<>]+/i);
+    const match = text.match(/https?:\/\/drive\.google\.com\/[^\s"'<>]+/i);
     if (match && window.forestDrive?.folderId(match[0])) {
       driveInput.value = match[0];
       // Do not open an OAuth popup outside a direct button click.
