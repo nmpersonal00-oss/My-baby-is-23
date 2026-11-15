@@ -1,9 +1,9 @@
-# Hollow Knight — Round 4 (asset installation pending)
+# Hollow Knight — Round 4 (installed)
 
-This branch has the ten **correct name-to-GIF mappings** but is **not ready to merge** until the ten GIF files are committed into this folder. The game expects all ten files at exactly the paths listed in `manifest.json`.
+Round 4 contains ten real **480×210 animated GIFs** with exact name-to-GIF mappings in `memory-matching-data.js`.
 
-The five user-requested revisions are used for **Broken Vessel**, **Lost Kin**, **Crystal Heart**, **SOUL**, and **Deepnest**. The other five use their previously approved Round 4 animations. All files must be animated GIFs, 480×210 pixels.
+The five user-reviewed corrections are used for **Broken Vessel**, **Lost Kin**, **Crystal Heart**, **SOUL**, and **Deepnest**; the other five use the previously approved Round 4 animations. `SOUL` retains the owner's existing card name while showing the requested hostile Shade encounter.
 
-Before merging, verify that the 10 GIF files exist in GitHub, their SHA-256 values match the manifest, and every title loads an animated image in Hollow Knight Round 4. **Never merge this branch while these assets are absent:** that would cause broken cards in the live game.
+Every asset is committed into this folder and its original SHA-256 and frame count are recorded in `manifest.json`. Git blob IDs were independently verified against the source artwork bytes. None of the GIFs are screenshots or nonanimated placeholders.
 
-Names and matching identifiers are unchanged; matching correctness remains tied to each exact name. Earlier rounds and other games are unchanged. Round 5 remains blank.
+The matching logic uses existing exact-name IDs: only correct pairs count and receive a connecting line. Hollow Knight Rounds 1–3, Round 5, and all other categories remain untouched.
