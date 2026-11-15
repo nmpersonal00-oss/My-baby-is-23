@@ -4,6 +4,12 @@
 
 See [SIMPLE-MUSIC-SETUP.md](SIMPLE-MUSIC-SETUP.md) for the correct scope: **all 497 tracks** mapped to the seven Word Search worlds, with the supplied Cozy Library music as the shared soundtrack across the rest of the app. The eight-song ZIP and eight-file GitHub instructions were incorrect and must not be used. The music files have **not** been hosted; an administrator still needs to deploy all the approved recordings for your husband to hear them without importing anything.
 
+## Continuous music and compact star controls
+
+The homepage now hosts a persistent Cozy Library player. When someone opens a chapter **from the homepage**, the chapter appears inside an app frame so the Cozy audio element continues rather than being destroyed on each page transition. Entering one of the seven Word Search category levels pauses Cozy and activates that world's own soundtrack; leaving the category resumes Cozy. Each music player starts collapsed into a small star (✦); tapping the star expands or minimizes Play/Pause, volume, and optional import controls.
+
+**Important:** This is the player/navigation behavior, not the audio-file deployment. The complete **497-track** Word Search manifest and the Cozy Library soundtrack path remain configured, but the recordings still need to be hosted before a new visitor can hear them without importing audio. Browser autoplay policies may also require the initial Enter the Forest gesture. Opening a chapter by a direct URL/reloading that URL uses the standalone page and may interrupt playback.
+
 ## Homepage
 
 - Displays the approved artwork as one continuous full-screen image (`assets/rayans-dark-forest.avif`), avoiding seams and dark side margins. The full original PNG remains in the downloadable archive.
