@@ -64,3 +64,24 @@
 
 /* Hosted gift hides all recipient upload controls. */
 .ws-music-dock [hidden]{display:none!important}
+
+/* Small star in Word Search worlds, with the full menu only when requested. */
+.ws-music-dock { width:auto; z-index:75; }
+.ws-music-dock.is-open { width:min(290px,calc(100vw - 16px)); }
+.ws-music-dock .ws-music-body[hidden] { display:none!important; }
+.ws-music-dock .ws-music-toggle {
+  display:grid;place-items:center;width:46px;height:46px;min-width:46px;
+  margin-left:auto;padding:0;
+  border:1px solid #f0d39b;border-radius:50%;
+  color:#ffe8ad;font:700 29px/1 Georgia,serif;cursor:pointer;
+  background:radial-gradient(circle at 32% 28%,#745585,#112437 80%);
+  box-shadow:0 0 20px #f0c97c80,0 5px 22px #000a;
+}
+.ws-music-dock:not(.is-open) .ws-music-body{display:none!important}
+.ws-music-dock.is-open .ws-music-toggle{margin-bottom:6px}
+.ws-music-dock .ws-music-body {width:100%}
+@media(max-width:720px){
+ .ws-music-dock{width:auto}
+ .ws-music-dock.is-open{width:min(220px,calc(100vw - 14px))}
+ .ws-music-dock .ws-music-toggle{width:43px;height:43px;min-width:43px}
+}
