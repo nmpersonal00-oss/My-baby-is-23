@@ -3,40 +3,171 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#080418">
-  <meta name="description" content="Hangman — coming soon to Rayan's Dark Forest.">
+  <meta name="theme-color" content="#120823">
+  <meta name="description" content="Hangman in Rayan's Dark Forest — an enchanted letter-guessing game.">
   <title>Hangman · Rayan's Dark Forest</title>
   <link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../memory-matching.css?v=13">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="../assets/hangman-approved-forest.avif" as="image" type="image/avif">
+  <link rel="stylesheet" href="../hangman.css?v=1">
+  <script defer src="../hangman-phrases.js?v=1"></script>
+  <script defer src="../hangman.js?v=1"></script>
 </head>
-<body>
-  <div class="memory-scenery" aria-hidden="true"></div>
-  <div class="memory-layout">
-    <aside class="memory-rail" aria-label="Forest navigation">
-      <a class="memory-crest" href="../index.html" aria-label="Rayan's Dark Forest home">
-        <span class="memory-crest-crown" aria-hidden="true">♛</span>
-        <span class="memory-crest-letter" aria-hidden="true">R</span>
-        <span class="memory-crest-leaves" aria-hidden="true">❧ ✦ ❧</span>
-      </a>
-      <nav class="memory-rail-nav" aria-label="Other pages">
-        <a class="memory-home-button" href="../index.html"><span aria-hidden="true">⌂</span> HOME</a>
-        <a class="memory-home-button memory-hangman-button" href="hangman.html" aria-current="page">HANGMAN</a>
+<body class="hangman-page">
+  <!-- The background is the separately supplied, clean AI forest art.
+       All game interface, icons, gallows, and navigation below are REAL DOM/SVG. -->
+  <div class="hangman-scene" aria-hidden="true"></div>
+  <div class="hangman-layout">
+    <aside class="hangman-sidebar" aria-label="Forest navigation">
+      <div class="hangman-sidebar-ornate top" aria-hidden="true"></div>
+      <nav class="hangman-navigation" aria-label="Game navigation">
+        <a class="hangman-nav-button" href="../index.html">
+          <svg class="hangman-nav-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path fill="currentColor" d="M16 3 2 14h4v15h9V19h4v10h8V14h4L16 3Z"/></svg>
+          <span>HOME</span>
+        </a>
+        <a class="hangman-nav-button is-active" href="hangman.html" aria-current="page">
+          <svg class="hangman-nav-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="2"><path d="M5 29V4h20M5 9h20M23 9v9M23 18c-4 3-4 7 0 9 4-2 4-6 0-9ZM3 29h20"/><path d="m7 2 2 3-2 4"/></svg>
+          <span>HANGMAN</span>
+        </a>
+        <a class="hangman-nav-button hangman-nav-matching" href="memory-game.html">
+          <svg class="hangman-nav-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="21" rx="2" transform="rotate(-10 3 7)"/><rect x="12" y="4" width="16" height="20" rx="2" transform="rotate(9 12 4)"/><path d="m17 9 6 1m-5 4 4 1"/></svg>
+          <span>MEMORY<br>MATCHING</span>
+        </a>
       </nav>
+      <div class="hangman-sidebar-vines" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="hangman-sidebar-ornate bottom" aria-hidden="true"></div>
     </aside>
-    <main class="memory-main">
-      <header class="memory-heading">
-        <a href="../index.html" class="memory-heading-link"><h1>Rayan's Dark Forest</h1></a>
-        <div class="memory-title-row"><span aria-hidden="true">✦</span><h2>Hangman</h2><span aria-hidden="true">✦</span></div>
+
+    <main class="hangman-main">
+      <header class="hangman-header">
+        <div class="hangman-top-flourish" aria-hidden="true"><span></span></div>
+        <h1>HANGMAN</h1>
+        <div class="hangman-title-flourish" aria-hidden="true"><span></span></div>
       </header>
-      <section class="memory-hangman-placeholder" aria-labelledby="hangman-heading">
-        <h2 id="hangman-heading">Hangman</h2>
-        <p>The Hangman game is coming soon.</p>
-        <p>For now, this is your new Hangman tab. We'll build the game together next.</p>
-        <a href="memory-game.html">Back to Memory Matching</a>
-      </section>
+
+      <div class="hangman-play-grid">
+        <section class="hangman-illustration-frame" aria-label="Enchanted Hangman illustration">
+          <div class="hangman-frame-corner top-left" aria-hidden="true"></div>
+          <div class="hangman-frame-corner top-right" aria-hidden="true"></div>
+          <div class="hangman-frame-corner bottom-left" aria-hidden="true"></div>
+          <div class="hangman-frame-corner bottom-right" aria-hidden="true"></div>
+
+          <svg id="hangman-illustration" class="hangman-art" viewBox="0 0 400 550" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="hg-moon"><stop offset="0" stop-color="#fff3ff"/><stop offset=".64" stop-color="#c5a9fc"/><stop offset=".97" stop-color="#8560bd"/><stop offset="1" stop-color="#7141a5"/></radialGradient>
+              <radialGradient id="hg-sky"><stop offset="0" stop-color="#733caa" stop-opacity=".56"/><stop offset="1" stop-color="#0c0821" stop-opacity="0"/></radialGradient>
+              <linearGradient id="hg-wood" x2="1" y2=".3"><stop stop-color="#0f080b"/><stop offset=".25" stop-color="#4c262d"/><stop offset=".52" stop-color="#24131b"/><stop offset=".78" stop-color="#593032"/><stop offset="1" stop-color="#160b15"/></linearGradient>
+              <linearGradient id="hg-rope" x2="1" y2="0"><stop stop-color="#090719"/><stop offset=".5" stop-color="#d9b88c"/><stop offset="1" stop-color="#2f1427"/></linearGradient>
+              <linearGradient id="hg-hill" x2="0" y2="1"><stop stop-color="#35204d"/><stop offset="1" stop-color="#0f0820"/></linearGradient>
+              <filter id="hg-light"><feGaussianBlur stdDeviation="7"/></filter>
+              <filter id="hg-soft"><feGaussianBlur stdDeviation="3"/></filter>
+            </defs>
+            <ellipse cx="214" cy="260" rx="170" ry="235" fill="url(#hg-sky)"/>
+            <circle cx="277" cy="148" r="102" fill="#9b61ef" opacity=".34" filter="url(#hg-light)"/>
+            <circle cx="277" cy="148" r="89" fill="url(#hg-moon)"/>
+            <g fill="#9d83d2" opacity=".23">
+              <ellipse cx="242" cy="117" rx="23" ry="13"/><ellipse cx="306" cy="175" rx="31" ry="16" transform="rotate(22 306 175)"/>
+              <ellipse cx="285" cy="101" rx="13" ry="25"/><circle cx="260" cy="181" r="18"/><circle cx="323" cy="138" r="12"/>
+            </g>
+            <g stroke="#ede3ff" stroke-opacity=".34" fill="none"><circle cx="277" cy="148" r="86" stroke-width="1.1"/><path d="M221 119c19-26 42-34 74-33M239 194c28 10 54 6 80-9" stroke-width="1"/></g>
+            <path d="M0 354 66 293 96 329 165 265 221 329 273 277 319 310 400 258v292H0Z" fill="#1d1139" opacity=".65"/>
+            <path d="M0 404 59 347 114 391 172 343 214 382 280 340 350 381 400 350v200H0Z" fill="url(#hg-hill)" opacity=".88"/>
+            <g fill="#130d2d" opacity=".9">
+              <path d="M318 346v-62l7-20 7 20v62M332 348v-86l8-33 8 33v86M350 348v-75l8-29 8 29v75M312 346h63v12h-63z"/>
+              <path d="M326 333h5v8h-5zm17-31h5v9h-5zm13 15h5v9h-5z" fill="#cf7aa7"/>
+            </g>
+            <path d="M0 470q75-35 150-18t123-19q74-20 127 16v101H0Z" fill="#0c0b22"/>
+            <ellipse cx="198" cy="466" rx="190" ry="14" fill="#ad55da" opacity=".18" filter="url(#hg-soft)"/>
+            <g stroke="#140b16" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M113 446V128" stroke-width="33"/><path d="M100 143H277" stroke-width="29"/>
+              <path d="M106 149V441" stroke="url(#hg-wood)" stroke-width="23"/>
+              <path d="M107 139H276" stroke="url(#hg-wood)" stroke-width="22"/>
+              <path d="m112 240 81-100" stroke="url(#hg-wood)" stroke-width="18"/>
+              <path d="M60 448H173" stroke-width="22"/><path d="M60 444H173" stroke="url(#hg-wood)" stroke-width="16"/>
+            </g>
+            <g stroke="#7f4c49" fill="none" opacity=".5" stroke-width="2">
+              <path d="M98 160v249m12-260v275m8-214v212m-19-194 10-22"/>
+              <path d="M122 129h141m-96 4h65M124 145h90"/>
+              <path d="m135 210 32-41m-32 56 37-48"/>
+            </g>
+            <g stroke="#070619" stroke-width="6" stroke-linecap="round"><path d="M270 143V223"/></g>
+            <g stroke="url(#hg-rope)" stroke-width="3.4" stroke-linecap="round" fill="none">
+              <path d="M270 143V222"/>
+              <path d="M270 220c-15 16-20 39-4 48 21 8 43-15 20-39l-16-9"/>
+              <path d="m268 215 5 8-5 4 5 5-4 5" stroke="#c3a07f" stroke-width="1.8"/>
+            </g>
+            <g fill="none" stroke="#b68d66" stroke-width="2.5" opacity=".9"><path d="M267 145v-10m7 10v-10"/></g>
+            <g fill="#dd8fce" stroke="#3b0c3c" stroke-width="2">
+              <circle cx="112" cy="137" r="20" fill="#4d144b"/>
+              <path d="M112 119q10 6 0 18-15-8 0-18Z"/>
+              <path d="M132 137q-11 10-20 0 11-16 20 0Z"/>
+              <path d="M112 157q-12-9 0-20 15 9 0 20Z"/>
+              <path d="M92 137q9-10 20 0-9 15-20 0Z"/>
+              <circle cx="112" cy="137" r="7" fill="#f4a4d0"/>
+              <circle cx="112" cy="137" r="3" fill="#ffe09b"/>
+            </g>
+            <g fill="none" stroke="#6e3a76" stroke-width="3">
+              <path d="M99 150q-45 20-30 78t-23 89q-19 40 23 112"/>
+              <path d="M112 172q41 43 7 104t8 100"/>
+              <path d="M118 196q-14 19-21 15m29 55q-22 14-30 2m-30 38q25 11 33-6m-33 93q23-17 31-9"/>
+            </g>
+            <g fill="#65356c" stroke="#e48cdb" stroke-width="1"><ellipse cx="81" cy="214" rx="7" ry="17" transform="rotate(36 81 214)"/><ellipse cx="51" cy="288" rx="8" ry="15" transform="rotate(-21 51 288)"/><ellipse cx="125" cy="282" rx="12" ry="6" transform="rotate(-18 125 282)"/></g>
+            <g fill="#a74ba6" stroke="#d98add" stroke-width="1.3">
+              <circle cx="55" cy="412" r="8"/><circle cx="154" cy="423" r="5"/><circle cx="92" cy="449" r="7"/><circle cx="345" cy="449" r="7"/>
+            </g>
+            <g fill="#fbb5fe">
+              <circle cx="26" cy="201" r="2"/><circle cx="344" cy="103" r="2.3"/><circle cx="213" cy="37" r="2.3"/>
+              <circle cx="340" cy="362" r="1.5"/><circle cx="42" cy="348" r="2.4"/><circle cx="362" cy="386" r="1.8"/>
+            </g>
+            <!-- Later wrong guesses reveal a separate, real SVG figure, not an image hotspot. -->
+            <g class="hangman-drawing-stage" data-hang-stage="1"><circle cx="273" cy="283" r="18" fill="none" stroke="#f9cef9" stroke-width="5"/></g>
+            <g class="hangman-drawing-stage" data-hang-stage="2"><path d="M273 303v70" fill="none" stroke="#f9cef9" stroke-width="5" stroke-linecap="round"/></g>
+            <g class="hangman-drawing-stage" data-hang-stage="3"><path d="m272 321-35 33" fill="none" stroke="#f9cef9" stroke-width="5" stroke-linecap="round"/></g>
+            <g class="hangman-drawing-stage" data-hang-stage="4"><path d="m273 321 35 33" fill="none" stroke="#f9cef9" stroke-width="5" stroke-linecap="round"/></g>
+            <g class="hangman-drawing-stage" data-hang-stage="5"><path d="m273 371-28 42m28-42 28 42" fill="none" stroke="#f9cef9" stroke-width="5" stroke-linecap="round"/></g>
+          </svg>
+          <span class="hangman-art-rose" aria-hidden="true"></span>
+          <span class="hangman-art-bottom-flourish" aria-hidden="true"></span>
+        </section>
+
+        <section class="hangman-board" aria-label="Hangman puzzle controls">
+          <div class="hangman-category-group">
+            <h2 class="hangman-category-title"><span> </span>CATEGORY<span> </span></h2>
+            <div class="hangman-category-select" role="group" aria-label="Choose a category">
+              <button type="button" class="hangman-category-arrow" id="hangman-category-prev" aria-label="Previous category"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m14 2-9 8 9 8z"/></svg></button>
+              <span id="hangman-category-name" aria-live="polite">Random</span>
+              <button type="button" class="hangman-category-arrow" id="hangman-category-next" aria-label="Next category"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 2 9 8-9 8z"/></svg></button>
+            </div>
+          </div>
+
+          <section class="hangman-answer-frame" aria-label="Hidden word or sentence">
+            <div class="hangman-frame-ornament" aria-hidden="true"></div>
+            <div id="hangman-word" class="hangman-word" aria-label="Puzzle letter spaces"></div>
+          </section>
+          <div class="hangman-errors" aria-label="Incorrect guesses">
+            <span class="hangman-errors-label">Incorrect Guesses</span>
+            <div id="hangman-wrong-track" class="hangman-wrong-track" role="group" aria-label="Five incorrect guesses allowed"></div>
+          </div>
+
+          <section class="hangman-keyboard-frame" aria-label="Letter keyboard">
+            <div id="hangman-keyboard" class="hangman-keyboard"></div>
+          </section>
+
+          <div class="hangman-actions">
+            <button id="hangman-restart" class="hangman-action-button" type="button">
+              <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M24 11a10 10 0 1 0 0 8M24 3v9h-9"/></svg>
+              <span>RESTART</span>
+            </button>
+            <button id="hangman-hint" class="hangman-action-button" type="button">
+              <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18c-2-2-3-4-3-7a8 8 0 0 1 16 0c0 3-1 5-3 7l-2 2H11zM11 23h6m-5 3h4M14 0v2M4 4l2 2M24 4l-2 2"/></svg>
+              <span>HINT <span class="hangman-hint-count">(3)</span></span>
+            </button>
+          </div>
+          <p class="hangman-status" id="hangman-status" role="status" aria-live="polite">Words and sentences will be added next.</p>
+        </section>
+      </div>
     </main>
   </div>
 </body>
