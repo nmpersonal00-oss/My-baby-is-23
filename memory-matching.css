@@ -84,17 +84,34 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   color:#ffe8c5;box-shadow:0 0 5px #f7bb6288,inset 0 0 9px #e8ae5a40;
   transition:transform .2s,border-color .18s,box-shadow .2s}
 .memory-category::before{content:"";position:absolute;inset:0;z-index:-2;
-  background:linear-gradient(90deg,#120d27b0,#090c227e 54%,#090b1bce),var(--category-art) center/cover no-repeat;
-  opacity:.86;filter:saturate(1.16)}
+  background:linear-gradient(105deg,#0c081ce8,#130b26da 60%,#0b061bfa);
+  opacity:1}
 .memory-category::after{content:"✦";position:absolute;right:8px;top:50%;transform:translateY(-50%);
   color:#f5c27f;text-shadow:0 0 7px #f5b46b;font:14px Georgia,serif}
 .memory-category:hover{transform:translateX(2px);box-shadow:0 0 15px #ffd38c99,inset 0 0 14px #ffc07f56}
 .memory-category.is-chosen{border-color:#fa6bff;box-shadow:0 0 5px 2px #f75cff,
   0 0 17px 3px #b52bf5cc,inset 0 0 12px 2px #e65aff75}
 .memory-category.is-chosen::after{color:#ff90ff;text-shadow:0 0 9px #f05aff}
-.memory-category-icon{display:block;flex:none;width:48px;height:45px;border-radius:8px;
-  background-image:url('assets/memory-category-icons.webp');background-repeat:no-repeat;
-  background-size:58px 464px;background-position:-3px var(--icon-y);filter:drop-shadow(0 0 5px #0009)}
+/* Exactly the eight individually painted artworks approved by the owner.
+   The sprite contains NO UI screenshots, old reference cutouts or emoji icons.
+   Square crops were made only from the AI-generated artwork tiles.
+   Gold frame/glow is always the default. Selected purple comes from the button. */
+.memory-category-icon,.memory-world-emblem{
+  display:block;flex:none;
+  background-image:url('assets/memory-approved-ai-icons.webp');
+  background-repeat:no-repeat;
+  background-size:100% 800%;
+  background-position:center var(--ai-pos,0%);
+  border:1px solid #ffcb81;
+  border-radius:9px;
+  box-shadow:0 0 8px #eab35f9c,inset 0 0 3px #f8d694a8;
+  filter:drop-shadow(0 0 4px #100820d9)
+}
+.memory-category-icon{width:47px;height:47px}
+.memory-category:focus-visible .memory-category-icon,
+.memory-category.is-chosen .memory-category-icon{
+  box-shadow:0 0 9px #f977ffaf,inset 0 0 6px #f8c58cc9;
+}
 .memory-category-name{flex:1;min-width:0;max-width:222px;font:600 clamp(17px,1.6vw,22px)/.99 'Cormorant Garamond',Georgia,serif;
   text-shadow:0 1px 3px #000,0 0 7px #000;overflow-wrap:normal}
 .memory-categories-bottom{height:16px;text-align:center;color:#eebd77;font:20px Georgia,serif}
@@ -109,7 +126,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   border-radius:40px 20px 40px 20px;white-space:nowrap}
 .memory-selected-world::after{content:"✧";position:absolute;bottom:-13px;left:50%;transform:translateX(-50%);
   color:#ffd39c;font-size:18px;text-shadow:0 0 6px #e9b369}
-.memory-world-emblem{font:35px Georgia,serif;color:#ffebc9;text-shadow:0 0 10px #e0b97c}
+.memory-world-emblem{width:47px;height:47px;border-radius:12px}
 .memory-selected-world h2{margin:0;font:600 clamp(22px,2.15vw,31px)/1 'Cormorant Garamond',Georgia,serif}
 .memory-round-label{flex:none;min-width:175px;min-height:49px;border-radius:15px;padding:5px 12px;
   font:600 clamp(17px,1.65vw,22px) 'Cormorant Garamond',Georgia,serif}
@@ -202,7 +219,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   .memory-crest{width:132px;height:135px}.memory-crest-letter{font-size:73px}
   .memory-rail{padding:30px 10px}.memory-home-button{font-size:20px;min-height:61px}
   .memory-categories{padding:23px 10px 21px}.memory-category{min-height:49px;gap:8px}
-  .memory-category-name{font-size:18px}.memory-category-icon{width:44px;height:43px}
+  .memory-category-name{font-size:18px}.memory-category-icon{width:44px;height:44px}
   .memory-selected-world{flex-basis:290px;padding:0 9px}.memory-selected-world h2{font-size:25px}
   .memory-round-label{min-width:141px}.memory-matching-board{grid-template-columns:minmax(200px,285px) minmax(70px,1fr) minmax(200px,280px)}
 }
@@ -234,11 +251,11 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff7ca;outline-offset:3p
   .memory-categories::before{inset:4px;border-radius:16px}.memory-categories-crown{font-size:25px;top:-18px}
   .memory-categories h2{font-size:15px}.memory-categories-decoration,.memory-categories-bottom,.memory-categories::after{display:none}
   .memory-world-list{display:flex;gap:7px;overflow-x:auto;padding:8px 3px 11px;scrollbar-color:#c89466 #0b0a17;scrollbar-width:thin;overscroll-behavior-x:contain}
-  .memory-category{flex:0 0 135px;min-height:70px;padding:5px;flex-direction:column;justify-content:center;gap:2px}
-  .memory-category::after{display:none}.memory-category-icon{height:32px;width:40px;background-size:44px 352px;
-    background-position:-2px var(--icon-y-mobile)}
+  .memory-category{flex:0 0 137px;min-height:88px;padding:5px;flex-direction:column;justify-content:center;gap:4px}
+  .memory-category::after{display:none}
+  .memory-category-icon{width:48px;height:48px}
   .memory-category-name{font-size:15px;text-align:center}
-  .memory-game-top{min-height:94px}.memory-selected-world{flex-basis:60%;min-width:165px}.memory-world-emblem{font-size:22px}.memory-selected-world h2{font-size:21px}
+  .memory-game-top{min-height:94px}.memory-selected-world{flex-basis:60%;min-width:165px}.memory-world-emblem{width:36px;height:36px}.memory-selected-world h2{font-size:21px}
   .memory-round-label{min-width:116px;font-size:18px}.memory-round{width:39px;height:39px;font-size:22px}
   .memory-matching-board{grid-template-columns:minmax(130px,1fr) minmax(45px,.56fr) minmax(137px,1fr);min-height:0}
   .memory-match-list{grid-template-rows:repeat(10,43px);gap:5px}.memory-match-slot{height:42px;padding:3px 5px;border-radius:11px 3px 11px 3px}
