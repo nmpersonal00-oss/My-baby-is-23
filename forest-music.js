@@ -5,6 +5,12 @@
 (() => {
   'use strict';
 
+  // The homepage is the persistent music host. Framed chapter pages do not
+  // create a second Cozy Library player; the host owns that single audio element.
+  try {
+    if (window !== window.parent && window.parent.forestMusicShell) return;
+  } catch {}
+
   const STORAGE = 'rayans-forest-cozy-music-v1';
   const AUDIO_KEY = 'cozy-library';
   const SETTINGS_KEY = 'rayans-forest-cozy-settings-v1';
@@ -26,6 +32,8 @@
   let ready = false;
   let message = '';
   let loading = false;
+  let retryAfterPending = false;
+  let externalWorldActive = false;
   let disabledForWorld = WORD_SEARCH && WORLD_HASH.test(location.hash);
   let lastPositionSave = 0;
 
@@ -42,6 +50,8 @@
   dock.setAttribute('aria-label', 'Forest background music player');
   dock.hidden = disabledForWorld;
   dock.innerHTML = [
+    '<button type="button" class="forest-music-toggle" id="forest-music-toggle" aria-label="Expand music controls" aria-expanded="false" aria-controls="forest-music-body" title="Music controls">✦</button>',
+    '<div class="forest-music-body" id="forest-music-body" hidden>',
     '<div class="forest-music-toolbar">',
     '<span class="forest-music-mark" aria-hidden="true">♫</span>',
     '<span class="forest-music-name">Cozy Library</span>',
@@ -57,11 +67,21 @@
     '<input id="forest-cozy-file" type="file" accept=".mp3,.m4a,.mp4,.ogg,.wav,audio/*" hidden>',
     '<button type="button" id="forest-cozy-delete">Remove saved Cozy Library music</button>',
     '<p class="forest-music-note">Music is stored only in this browser. Clearing site data or switching devices means importing it again.</p>',
+    '</div>',
     '</div>'
   ].join('');
   document.body.appendChild(dock);
 
   const find = id => dock.querySelector('#' + id);
+  const musicToggle = find('forest-music-toggle');
+  const musicBody = find('forest-music-body');
+  musicToggle.addEventListener('click', () => {
+    musicBody.hidden = !musicBody.hidden;
+    const open = !musicBody.hidden;
+    dock.classList.toggle('is-open', open);
+    musicToggle.setAttribute('aria-expanded', String(open));
+    musicToggle.setAttribute('aria-label', open ? 'Minimize music controls' : 'Expand music controls');
+  });
   const playButton = find('forest-cozy-play');
   const settingsButton = find('forest-cozy-settings');
   const menu = find('forest-cozy-menu');
@@ -155,7 +175,8 @@
   }
 
   async function tryPlay() {
-    if (!ready || !savedFile || userPaused || disabledForWorld || loading) { update(); return; }
+    if (!ready || !savedFile || userPaused || disabledForWorld) { update(); return; }
+    if (loading) { retryAfterPending = true; update(); return; }
     loading = true;
     message = '';
     try {
@@ -171,11 +192,17 @@
     } finally {
       loading = false;
       update();
+      // Resume after a previous play() promise was canceled by rapid tab
+      // navigation. Only retry a single pending request, never on autoplay denial.
+      if (retryAfterPending) {
+        retryAfterPending = false;
+        if (!userPaused && !disabledForWorld && audio.paused) tryPlay();
+      }
     }
   }
 
   function switchWorld() {
-    const insideWorld = WORD_SEARCH && WORLD_HASH.test(location.hash);
+    const insideWorld = externalWorldActive || (WORD_SEARCH && WORLD_HASH.test(location.hash));
     if (insideWorld === disabledForWorld) return;
     disabledForWorld = insideWorld;
     dock.hidden = insideWorld;
@@ -186,6 +213,17 @@
       tryPlay();
     }
   }
+
+  // The homepage shell stays mounted while chapters change inside a frame.
+  // It pauses the single Cozy audio element only inside a Word Search world.
+  window.forestCozyMusicControl = {
+    setWorldActive(active) {
+      externalWorldActive = Boolean(active);
+      switchWorld();
+    },
+    getAudio() { return audio; },
+    retry() { if (audio.paused && !userPaused && !disabledForWorld) tryPlay(); }
+  };
 
   // If a word-search world is clicked, stop Cozy Library immediately, before
   // the chapter's own soundtrack starts. This avoids double playback.
