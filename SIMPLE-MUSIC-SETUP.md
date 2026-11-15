@@ -1,5 +1,8 @@
 # The complete Forest music library
 
+**Downloaded folders:** The Word Search player can now play directly from a downloaded/extracted laptop folder without uploading the whole library into browser storage. Open a world, use **Choose music folder**, and see [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md). The default is playback for the current browser visit; saving a large library for future visits may exceed browser storage limits.
+
+
 **Alternative now available:** The music controls can read private Google Drive folders using Google sign-in and a dropped/pasted Drive **folder link**, without downloading all the audio to the laptop. The gift creator must first configure Google OAuth; see [GOOGLE-DRIVE-MUSIC.md](GOOGLE-DRIVE-MUSIC.md). This is not as automatic as a hosted soundtrack because your husband must sign in to Google and connect the shared folder.
 
 **Goal:** Your husband opens the app, taps **Enter the Forest** if his browser requires it, and music plays. He is never asked to import or upload songs.
