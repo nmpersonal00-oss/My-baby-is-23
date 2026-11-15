@@ -211,6 +211,9 @@
     // Tell it to pause/resume whenever a Word Search category is entered/left.
     try {
       if (window !== window.parent && window.parent.forestMusicShell) {
+        // Synchronous handoff within the click gesture maximizes autoplay
+        // compatibility and prevents two soundtracks overlapping.
+        window.parent.forestCozyMusicControl?.setWorldActive(Boolean(world));
         window.parent.postMessage({ type: 'forest:word-search-world', active: Boolean(world) }, location.origin);
       }
     } catch {}
