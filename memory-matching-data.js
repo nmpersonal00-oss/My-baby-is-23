@@ -1,11 +1,12 @@
 /*
  * Matching Memory content.
  *
- * Lies of P, Terraria, Shadow of the Colossus, and Bloodborne each have
- * 50 user-chosen names over 5 rounds of 10. GIFs stay blank until added.
+ * Lies of P, Terraria, Shadow of the Colossus, Bloodborne, and Dark Souls
+ * each have 50 user-chosen names over 5 rounds of 10. GIFs stay blank.
  *
  * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs,
- * terrariaGifs, colossusGifs, or bloodborneGifs. For example, inside liesOfPGifs:
+ * terrariaGifs, colossusGifs, bloodborneGifs, or darkSoulsGifs.
+ * For example, inside liesOfPGifs:
  *   'Pinocchio': '../assets/pinocchio.gif'
  * Each GIF will then match its keyword wherever that keyword appears.
  *
@@ -188,6 +189,77 @@
   // Add an exact-name GIF path later (example: 'The Hunter': '../assets/the-hunter.gif').
   const bloodborneGifs = {};
 
+  // Dark Souls I and II — 25 terms from each game.
+  // Preserve the owner's exact terms, including the long descriptive names.
+  const darkSoulsI = {
+    people: [
+      "Solaire of Astora",
+      "Siegmeyer of Catarina",
+      "Siegmeyer’s friend, Laurentius of the Great Swamp",
+      "Big Hat Logan",
+      "Griggs of Vinheim",
+      "Andre of Astora",
+      "Hawkeye Gough",
+      "Knight Lautrec of Carim"
+    ],
+    bosses: [
+      "Asylum Demon",
+      "Taurus Demon",
+      "Capra Demon",
+      "Iron Golem",
+      "Ornstein and Smough",
+      "Great Grey Wolf Sif",
+      "Gravelord Nito",
+      "Seath the Scaleless",
+      "Knight Artorias",
+      "Gwyn"
+    ],
+    things: [
+      "Firelink Shrine",
+      "Anor Londo",
+      "Estus Flask",
+      "Humanity",
+      "Bells of Awakening",
+      "Rite of Kindling",
+      "First Flame"
+    ]
+  };
+  const darkSoulsII = {
+    people: [
+      "Benhart of Jugo",
+      "Crestfallen Saulden",
+      "Merchant Hag Melentia’s bodyguard, Royal Sorcerer Navlaan",
+      "Straid of Olaphis",
+      "Carhillion of the Fold",
+      "Blacksmith Lenigrast",
+      "Steady Hand McDuff",
+      "Mild-Mannered Pate"
+    ],
+    bosses: [
+      "The Last Giant",
+      "The Pursuer",
+      "Dragonrider",
+      "Old Dragonslayer",
+      "Flexile Sentry",
+      "Executioner’s Chariot",
+      "Old Iron King",
+      "Vendrick",
+      "Fume Knight",
+      "Sir Alonne"
+    ],
+    things: [
+      "Majula",
+      "Drangleic Castle",
+      "Estus Flask Shard",
+      "Human Effigy",
+      "King’s Ring",
+      "Ashen Mist Heart",
+      "Throne of Want"
+    ]
+  };
+  // To attach a GIF in the future: 'Solaire of Astora': '../assets/solaire.gif'
+  const darkSoulsGifs = {};
+
   // Shadow of the Colossus: five agreed sets of ten unique names.
   // The group membership is fixed; the board shuffles positions on each play.
   const colossusRoundNames = [
@@ -310,6 +382,37 @@
     }))
   }));
 
+  // Each round holds exactly 5 Dark Souls I names and 5 Dark Souls II
+  // names. Both games contribute characters, bosses and important things.
+  // Distinct, seeded randomized sets remain stable so GIFs can be attached
+  // to the exact names later; the board also shuffles tile positions on play.
+  function darkSoulsSections(game, seed) {
+    return {
+      people: shuffledForLevels(game.people, seed),
+      bosses: shuffledForLevels(game.bosses, seed + 1),
+      things: shuffledForLevels(game.things, seed + 2)
+    };
+  }
+  const darkSoulsIShuffled = darkSoulsSections(darkSoulsI, 20261121);
+  const darkSoulsIIShuffled = darkSoulsSections(darkSoulsII, 20261124);
+  function fiveTermsForGame(group, round) {
+    const peopleStart = round < 3 ? round * 2 : 6 + (round - 3);
+    const peopleCount = round < 3 ? 2 : 1;
+    const thingsStart = round < 3 ? round : 3 + (round - 3) * 2;
+    const thingsCount = round < 3 ? 1 : 2;
+    return [
+      ...group.people.slice(peopleStart, peopleStart + peopleCount),
+      ...group.bosses.slice(round * 2, round * 2 + 2),
+      ...group.things.slice(thingsStart, thingsStart + thingsCount)
+    ];
+  }
+  const darkSoulsRounds = Array.from({length:5}, (_, round) => ({
+    pairs: shuffledForLevels([
+      ...fiveTermsForGame(darkSoulsIShuffled, round),
+      ...fiveTermsForGame(darkSoulsIIShuffled, round)
+    ], 20261220 + round).map(name => ({name, gif: darkSoulsGifs[name] || ''}))
+  }));
+
   const categories = [
     ['hollow-knight', 'Hollow Knight', 'Where little lights are never forgotten', 'forest-04.png'],
     ['silksong', 'Hollow Knight: Silksong', 'Silken threads beneath the moon', 'forest-03.png'],
@@ -331,6 +434,8 @@
           ? colossusRounds
           : id === 'bloodborne'
             ? bloodborneRounds
-            : Array.from({length:5}, () => ({pairs: []}))
+            : id === 'dark-souls'
+              ? darkSoulsRounds
+              : Array.from({length:5}, () => ({pairs: []}))
   }));
 })();
