@@ -1,9 +1,6 @@
 # The complete Forest music library
 
-**Downloaded folders:** The Word Search player can now play directly from a downloaded/extracted laptop folder without uploading the whole library into browser storage. Open a world, use **Choose music folder**, and see [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md). The default is playback for the current browser visit; saving a large library for future visits may exceed browser storage limits.
-
-
-**Alternative now available:** The music controls can read private Google Drive folders using Google sign-in and a dropped/pasted Drive **folder link**, without downloading all the audio to the laptop. The gift creator must first configure Google OAuth; see [GOOGLE-DRIVE-MUSIC.md](GOOGLE-DRIVE-MUSIC.md). This is not as automatic as a hosted soundtrack because your husband must sign in to Google and connect the shared folder.
+**Current local method:** On the laptop, unzip the downloaded music folder, then drag it onto any page of the Forest, or use the **♫ Add music folder** / **Use standard folder chooser** buttons. No Google Drive connection or browser storage is required. Music remains loaded while navigating the app from its homepage; reselect the folder after reloading the website. See [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md).
 
 **Goal:** Your husband opens the app, taps **Enter the Forest** if his browser requires it, and music plays. He is never asked to import or upload songs.
 
@@ -19,7 +16,7 @@
 
 All **497 Word Search tracks** are listed in `forest-audio-manifest.js`. The Cozy Library recording is a separate, 498th file.
 
-**Current status:** The full playlists are present in the website's code, but the audio bytes are **not hosted yet**. Google Drive folders are private, so the public website cannot simply fetch them. Until the tracks are hosted, the new Google Drive link controls or existing local-import controls may still be visible. Playback with no recipient setup or Google sign-in is **not finished**.
+**Current status:** The full playlists are represented in the website's code, but the audio bytes are **not hosted yet**. The recipient can now import downloaded album folders by dragging them into any game or choosing a music folder. This enables local playback without an internet audio host. For truly hands-off playback on a new device, media hosting would still be required.
 
 **Important:** An eight-song ZIP pack mentioned in an earlier conversation was an incorrect simplification and **must not be uploaded**. All files should be uploaded in one preparation process by the gift creator/administrator, not by the recipient. The earlier GitHub-only instructions are superseded.
 
