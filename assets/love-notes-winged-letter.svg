@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 240" role="img" aria-label="An original ivory love letter flying on two feathery angel wings">
+<style>
+  #left-wing{transform-origin:113px 115px;animation:angel-wingbeat .78s ease-in-out infinite alternate}
+  @keyframes angel-wingbeat{from{transform:rotate(-5deg)}to{transform:rotate(9deg)}}
+  @media(prefers-reduced-motion:reduce){#left-wing{animation:none}}
+</style>
 <defs>
  <linearGradient id="feather" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffdf0"/><stop offset=".45" stop-color="#f8e1dd"/><stop offset="1" stop-color="#c0a6bf"/></linearGradient>
  <linearGradient id="envelope" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fff4de"/><stop offset=".53" stop-color="#e8ccad"/><stop offset="1" stop-color="#b68d86"/></linearGradient>
