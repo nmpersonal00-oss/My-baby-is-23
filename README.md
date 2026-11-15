@@ -185,3 +185,26 @@ path keyed by the exact corresponding term inside `sanrioGifs` in
 All eight worlds now have name-only content: 400 names in 40 rounds, with no
 GIFs configured. Existing category data, Gothic forest visuals, matching game
 logic, homepage, and Word Search are untouched.
+
+### Approved AI-painted world icons
+
+Each of the eight category icons was generated as original AI artwork,
+shown together on a review sheet, and explicitly approved by the owner
+before this update. The eight individual tiles (not screen captures or
+extracted game screenshots) were packed into
+`assets/memory-approved-ai-icons.webp` in their approved order:
+
+1. Lies of P: clockwork hand, glowing clock and blue butterfly
+2. Terraria: pixel-art tree, pickaxe and blue slime
+3. Shadow of the Colossus: rider, horse and towering stone giant
+4. Bloodborne: hunter silhouette and crimson moon
+5. Dark Souls: flaming greatsword among ruined arches
+6. Hollow Knight: white-horned wanderer, blue butterflies and flowers
+7. Hollow Knight: Silksong: red-cloaked needle warrior
+8. Sanrio: pink neon bow-wearing cat portrait
+
+The live category buttons select these artworks by world ID. Category button
+borders remain gold until explicit selection, then gain their existing purple
+glow. The selected world header uses the same approved artwork rather than
+a generic symbol. The watercolor/gothic background, 400 names, all blank GIF
+slots and matching logic are unchanged.
