@@ -17,16 +17,36 @@
   if (!scene || !stage || !wall || !core || !aura || !svg) return;
 
   const descriptions = [
-    'Our happy little selfie', 'A pretty day together', 'Watching the sunset',
-    'A kiss on the cheek', 'Smiling side by side', 'Snuggling close',
-    'Our movie date', 'A playful night out', 'Making cute faces',
-    'A cozy winter memory', 'A walk beneath the blossoms', 'Our silly faces',
-    'A little hug', 'Sharing something sweet', 'Our favorite smiles',
-    'Stealing a kiss', 'Matching sunglasses', 'A sleepy cuddle',
-    'A magical night together', 'A kiss for you', 'Having an adventure',
-    'Playing games together', 'A night of fairy lights', 'A little date',
-    'Wishing on a star', 'The warmest hug', 'Reading together',
-    'Our golden-hour moment', 'One more selfie', 'A sweet surprise'
+    "Our happy little selfie",
+    "A kiss on your cheek",
+    "A cozy hug beneath the blossoms",
+    "Cuddling under our heart blanket",
+    "Hand in hand beneath cherry blossoms",
+    "Watching the sunset together",
+    "Our sweet little portrait",
+    "A gentle kiss from you",
+    "The warmest hug",
+    "Walking through the cherry blossoms",
+    "A sleepy snuggle",
+    "Our playful carnival selfie",
+    "Our popcorn movie date",
+    "Daydreaming together",
+    "Sunset by the water",
+    "A playful nose boop",
+    "Stargazing under the night sky",
+    "Our forehead-to-forehead moment",
+    "Another cute little selfie",
+    "Stealing a kiss",
+    "Cozy together under the blanket",
+    "Bundled up together",
+    "Our ice cream date",
+    "Making cute faces with sunglasses",
+    "Matching sunglasses",
+    "Playing games together",
+    "Laughing at our game",
+    "A night beneath fairy lights",
+    "Our little dessert date",
+    "Playing music together"
   ];
   const N = 30;
   const mobile = window.matchMedia('(max-width:850px) and (orientation:portrait)');
