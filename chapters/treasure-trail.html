@@ -34,8 +34,11 @@ button { -webkit-tap-highlight-color:transparent; }
 @keyframes heart-tap { 40%{filter:brightness(2);transform:translate(-50%,-50%) scale(1.15)} }
 
 /* The letter image is the user-supplied artwork — no external assets. */
-.note { display:grid; place-items:center; background:radial-gradient(circle at 50% 44%,#66275d,#14011f 78%); }
-.note-backdrop { position:absolute; inset:-5%; width:110%; height:110%; object-fit:cover; filter:blur(23px) brightness(.58) saturate(1.35); transform:scale(1.08); }
+.note { display:grid; place-items:center; background:#14011f; }
+/* Fill wide screens with the ORIGINAL painting, not an artificial blurred border.
+   The complete foreground painting keeps its natural aspect ratio so text and hit targets stay aligned. */
+.note-backdrop { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; filter:brightness(.72) saturate(1.12); }
+.note::after { content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(90deg,rgba(20,1,31,.18),transparent 24%,transparent 76%,rgba(20,1,31,.18)); }
 .letter { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2; flex:none; width:min(91.39svh, 100vw); aspect-ratio:1199/1312; max-height:100svh; overflow:visible; filter:drop-shadow(0 0 25px rgba(237,56,191,.25)); }
 .letter > img { position:absolute; inset:0; width:100%; height:100%; display:block; object-fit:fill; user-select:none; -webkit-user-drag:none; }
 /* On tall phones, gently zoom for legible text while keeping the center of the artwork in view. */
