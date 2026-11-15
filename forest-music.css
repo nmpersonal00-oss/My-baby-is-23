@@ -132,31 +132,7 @@ body.forest-shell-in-chapter {overflow:hidden!important}
 
 
 
-/* One persistent folder-import button for the entire Forest, including chapters. */
-.forest-local-music-ui{
-  position:fixed;z-index:1250;bottom:12px;right:12px;
-  width:min(260px,calc(100vw - 26px));
-  padding:8px;border:1px solid #d9bc85aa;border-radius:12px;
-  background:#0c1b2aee;box-shadow:0 5px 22px #000a;
-  color:#ffe4ac;font:12px/1.4 system-ui,sans-serif;
-}
-.forest-local-folder-button{
-  display:block;width:100%;min-height:44px;border:1px solid #dcbf85;
-  border-radius:8px;background:linear-gradient(135deg,#785735,#5e3d54);
-  color:#fff3df;font:700 14px/1.3 system-ui,sans-serif;
-  cursor:pointer;
-}
-.forest-local-folder-button:hover{filter:brightness(1.13)}
-.forest-local-folder-basic{
-  display:block;width:100%;min-height:31px;margin-top:5px;
-  padding:4px 6px;border:1px solid #a48b70;border-radius:7px;
-  background:#183044;color:#ffecd2;font:12px/1.2 system-ui,sans-serif;cursor:pointer;
-}
-.forest-local-folder-basic:hover{filter:brightness(1.1)}
-.forest-local-folder-basic:focus-visible{outline:3px solid #fff5b1;outline-offset:3px}
-
-.forest-local-folder-button:focus-visible{outline:3px solid #fff5b1;outline-offset:3px}
-.forest-local-folder-status{margin:6px 3px 0;color:#f7dbb0;overflow-wrap:anywhere}
+/* Only visible while a local folder is being dragged over the app. */
 .forest-local-drop-overlay{
   position:fixed;inset:10px;z-index:2000;pointer-events:none;
   display:grid;place-items:center;padding:20px;
@@ -165,8 +141,3 @@ body.forest-shell-in-chapter {overflow:hidden!important}
   text-shadow:0 2px 10px #0009;
 }
 .forest-local-drop-overlay[hidden]{display:none!important}
-@media(max-width:640px){
-  .forest-local-music-ui{bottom:8px;right:8px;width:min(200px,calc(100vw - 16px));padding:5px}
-  .forest-local-folder-button{min-height:37px;font-size:12px}
-  .forest-local-folder-status{font-size:10px}
-}

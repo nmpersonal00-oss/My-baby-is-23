@@ -32,6 +32,7 @@
     '<strong>Drag your music folders into the Forest</strong>',
     '<p id="ws-local-help">Drag a downloaded, extracted album folder anywhere onto this page. Or click Choose music folder. The songs play directly from his laptop.</p>',
     '<button type="button" id="ws-add-folders">Choose music folder</button>',
+    '<button type="button" id="ws-add-folders-basic">Use standard folder chooser (Opera GX)</button>',
 
     '<button type="button" id="ws-add">Or choose audio files</button>',
     '<div id="ws-local-drop" class="ws-local-drop" aria-label="Drop music folder here">Drop your music folders anywhere onto the Forest</div>',
@@ -326,8 +327,12 @@
   const unsubscribeLibrary = hub?.subscribe(showLibraryUpdate);
   window.addEventListener('pagehide',() => unsubscribeLibrary?.());
   node('ws-add-folders').addEventListener('click',() => {
-    if (hub?.chooseFolder) hub.chooseFolder();
+    if (hub?.chooseFolder) hub.chooseFolder({world:realm});
     else localFeedback.textContent = 'Folder chooser unavailable. Refresh and try again.';
+  });
+  node('ws-add-folders-basic').addEventListener('click',() => {
+    if (hub?.chooseStandardFolder) hub.chooseStandardFolder({world:realm});
+    else localFeedback.textContent = 'Standard folder chooser unavailable. Refresh and try again.';
   });
   node('ws-add').addEventListener('click',() => fileInput.click());
   fileInput.addEventListener('change',() => {
@@ -379,6 +384,7 @@
     ready = true;
     node('ws-add').hidden = true;
     node('ws-add-folders').hidden = true;
+    node('ws-add-folders-basic').hidden = true;
     remove.hidden = true;
     const help = node('ws-local-help');
     if (help) help.textContent = 'These songs are built into the Forest soundtrack library. No uploads needed.';

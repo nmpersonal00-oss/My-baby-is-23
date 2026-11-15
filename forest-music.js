@@ -64,6 +64,8 @@
     '<input id="forest-cozy-volume" type="range" min="0" max="100" value="55" aria-label="Music volume">',
     '<p>Drag your downloaded music folder anywhere onto the Forest. Or choose the folder below. Cozy Library will play throughout the app, while Word Search has its own soundtracks.</p>',
     '<button type="button" id="forest-cozy-folder">Choose music folder from laptop</button>',
+    '<button type="button" id="forest-cozy-folder-basic">Use standard folder chooser (Opera GX)</button>',
+    '<p class="forest-music-note" id="forest-cozy-folder-status" role="status" aria-live="polite">Folder options are inside this music menu.</p>',
     '<button type="button" id="forest-cozy-import">Or choose one Cozy Library MP3</button>',
     '<input id="forest-cozy-file" type="file" accept=".mp3,.m4a,.mp4,.ogg,.wav,audio/*" hidden>',
     '<button type="button" id="forest-cozy-delete">Remove saved Cozy Library music</button>',
@@ -298,6 +300,10 @@
   find('forest-cozy-folder').addEventListener('click',() => {
     if (hub?.chooseFolder) hub.chooseFolder();
     else { message = 'Music folder picker unavailable. Refresh and try again.'; update(); }
+  });
+  find('forest-cozy-folder-basic').addEventListener('click',() => {
+    if (hub?.chooseStandardFolder) hub.chooseStandardFolder();
+    else { message = 'Standard folder chooser unavailable. Refresh and try again.'; update(); }
   });
   find('forest-cozy-import').addEventListener('click', () => fileInput.click());
   fileInput.addEventListener('change',() => {

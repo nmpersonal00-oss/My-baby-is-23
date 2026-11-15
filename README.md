@@ -2,7 +2,7 @@
 
 ## Music folders from a laptop (whole app)
 
-The Forest now has **♫ Add music folder** visible across the homepage and games, plus **Use standard folder chooser** for Opera GX. Drag an extracted downloaded album folder onto *any game page* or the homepage: the shared in-memory music library detects Cozy Library and routes recognizable album folders to their Word Search worlds. Songs play directly from laptop file handles without server uploads, Google sign-in, or IndexedDB quota requirements. The music library persists as long as the homepage stays open and the user navigates through its game frames. Reloading the whole site requires choosing the folder again. See [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md).
+The Forest keeps folder-import controls inside the existing **✦ music icon**: open **⚙ Music settings** (or **♫** for Word Search), then use **Choose music folder** or the **standard folder chooser (Opera GX)**. Drag an extracted downloaded album folder onto *any game page* or the homepage: the shared in-memory music library detects Cozy Library and routes recognizable album folders to their Word Search worlds. Songs play directly from laptop file handles without server uploads, Google sign-in, or IndexedDB quota requirements. The music library persists as long as the homepage stays open and the user navigates through its game frames. Reloading the whole site requires choosing the folder again. See [LOCAL-MUSIC-FOLDERS.md](LOCAL-MUSIC-FOLDERS.md).
 
 The inactive Google Drive interface and sign-in scripts have been removed from the website.
 
