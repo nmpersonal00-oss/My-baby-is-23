@@ -295,3 +295,24 @@ are a correct pair. Finishing all ten matches saves Round 1 completion.
 Filled image slots show **the animation without a 'GIF' badge**.
 Rounds 2–5 of Hollow Knight, and all other categories, retain their
 name-only lists and blank GIF columns until their artwork is created.
+
+### Compact Memory Matching board
+
+The Memory Matching playboard shows all ten picture cards and all ten name
+cards in a **two-column by five-row grid on each side**. Its card proportions
+remain 16:7 (the original 480x210 GIF ratio). A single SVG overlay sits
+behind the clickable cards, with connection lines calculated from each
+actual matched GIF/name button position. Incorrect selections never draw a
+connection. Existing match IDs, shuffled positions, round completion and
+400 name entries are unchanged.
+
+The board scales its maximum width based on the viewport height so that its
+five rows fit at ordinary laptop/desktop sizes without vertical page
+scrolling. Mid-size tablets show a horizontally scrollable category strip
+above a larger game board. Very narrow phones use a **horizontal swipe
+within the game board** rather than shrinking the 20 controls until they
+are unreadable; the five rows remain grouped without internal vertical
+scrolling. The approved background and AI-painted category icons remain.
+
+Round 1 of Hollow Knight still uses the same ten approved GIF assets;
+further background/animation revisions are a separate content stage.
