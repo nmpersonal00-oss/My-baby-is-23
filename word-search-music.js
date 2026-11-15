@@ -451,6 +451,12 @@
       delete player.dataset.songId;
       clearUrls();
       await refresh();
+      const firstForWorld = newlyAdded.find(({song}) => song.realm === realm);
+      if (firstForWorld && realm) {
+        const selectedIndex = lists[realm].findIndex(song => song.id === firstForWorld.song.id);
+        if (selectedIndex >= 0) index = selectedIndex;
+        show();
+      }
       const summary = 'Ready: ' + added + ' song' + (added === 1 ? '' : 's') +
         ' from the selected folder. No upload needed; play them during this visit.' +
         (skipped ? ' ' + skipped + ' did not match a named world.' : '');
