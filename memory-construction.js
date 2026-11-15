@@ -63,8 +63,22 @@
       });
     }catch{/* Browser-generated sounds are optional. */}
   }
-  function noPeek(){
+  function noPeek(event){
     tell.textContent=jokes[clicks%jokes.length];clicks++;
+    const bounds=root.getBoundingClientRect();
+    const x=typeof event?.clientX==='number'&&event.clientX>0?event.clientX-bounds.left:bounds.width*.52;
+    const y=typeof event?.clientY==='number'&&event.clientY>0?event.clientY-bounds.top:bounds.height*.46;
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      for(let i=0;i<12;i++){
+        const spark=document.createElement('i');spark.className='memory-construction-pop';
+        const angle=i*Math.PI/6,spread=38+seeded(clicks*23+i)*65;
+        spark.style.setProperty('--pop-x',x+'px');spark.style.setProperty('--pop-y',y+'px');
+        spark.style.setProperty('--pop-dx',Math.cos(angle)*spread+'px');
+        spark.style.setProperty('--pop-dy',Math.sin(angle)*spread+'px');
+        spark.style.setProperty('--size',4+seeded(clicks*42+i)*6+'px');
+        root.appendChild(spark);spark.addEventListener('animationend',()=>spark.remove(),{once:true});
+      }
+    }
     clearTimeout(timer);
     root.classList.remove('is-peeking');void root.offsetWidth;
     root.classList.add('is-peeking');tell.classList.add('is-visible');
