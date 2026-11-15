@@ -709,6 +709,7 @@
     "Jimmy": "../assets/sanrio/jimmy.gif?v=26313fe526",
     "Sanrio Puroland": "../assets/sanrio/sanrio-puroland.gif?v=7dd4b5d817",
     "Sugarbunnies": "../assets/sanrio/sugarbunnies.gif?v=7b4e62125f"
+      "Kuromi": "../assets/sanrio/kuromi.gif?v=2cb543b1c3",
   };
 
   // Fixed mixed groups, freshly randomized board positions each time.
