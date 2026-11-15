@@ -61,3 +61,6 @@
  .ws-now-playing{font-size:10px}
  .ws-music-details{padding:10px;max-height:55vh}
 }
+
+/* Hosted gift hides all recipient upload controls. */
+.ws-music-dock [hidden]{display:none!important}
