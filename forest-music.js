@@ -220,7 +220,9 @@
     loading = true;
     message = '';
     try {
+      const expectedFile = savedFile;
       if (savedFile.driveId && !objectUrl) await loadDriveAudio();
+      if (userPaused || disabledForWorld || savedFile !== expectedFile) return;
       const promise = audio.play();
       if (promise && typeof promise.then === 'function') await promise;
       message = '';
@@ -469,7 +471,9 @@
   audio.addEventListener('pause', update);
   audio.addEventListener('error', () => {
     if (!savedFile) return;
-    message = REMOTE_URL ? 'The forest soundtrack is not available yet. Please check the music server.' : 'The selected audio could not play; choose an MP3 in settings.';
+    message = savedFile.driveId ? 'The Google Drive song could not play. Reconnect in ⚙ and try again.'
+      : REMOTE_URL ? 'The forest soundtrack is not available yet. Please check the music server.'
+      : 'The selected audio could not play; choose an MP3 in settings.';
     update();
   });
   window.addEventListener('pagehide', () => { rememberPosition(true); audio.pause(); });
@@ -565,6 +569,7 @@
     // Google Drive playback also works if IndexedDB local file storage is blocked.
     db = null;
     ready = true;
+    find('forest-cozy-import').disabled = true;
     let driveChoice = null;
     try { driveChoice = JSON.parse(localStorage.getItem(DRIVE_KEY) || 'null'); } catch {}
     if (driveChoice?.fileId && /^[A-Za-z0-9_-]{15,}$/.test(driveChoice.fileId)) {
