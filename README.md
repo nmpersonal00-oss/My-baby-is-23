@@ -125,3 +125,19 @@ assign its path to the corresponding exact name in `bloodborneGifs` inside
 `memory-matching-data.js`, for example
 `'The Hunter': '../assets/the-hunter.gif'`. Existing Lies of P, Terraria,
 Shadow of the Colossus, and other categories are unchanged.
+
+### Dark Souls and Dark Souls II: name-only content
+
+The Dark Souls category now includes all 50 names from the provided table,
+25 from Dark Souls I and 25 from Dark Souls II. Each of the five rounds
+contains ten unique names: five from each game, mixing people, bosses
+and important things. Groups are randomized once with fixed seeds so their
+membership remains stable for future GIF attachment. The order of the names
+on the board is shuffled whenever a round begins or Shuffle is pressed.
+
+The name text is preserved exactly as given, including longer descriptive
+entries and curly apostrophes. All GIF slots remain empty until chosen.
+To link an animation later, add an exact-name key and path in
+`darkSoulsGifs` in `memory-matching-data.js`, for example:
+`'Solaire of Astora': '../assets/solaire.gif'`.
+The other seven categories and all visuals are unchanged.
