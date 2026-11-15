@@ -150,7 +150,7 @@
     notice = 'Loading ' + song.name + '…';
     show();
     try {
-      const url = await songUrl(song);
+      const url = objectUrls.get(song.id) || await songUrl(song);
       if (token !== generation || world !== realm || !wantsMusic) return;
       if (player.dataset.songId !== song.id) {
         player.pause();
@@ -335,6 +335,9 @@
     } catch { notice = 'Could not remove saved songs.'; show(); }
   });
   window.addEventListener('pagehide',() => player.pause());
+  window.addEventListener('pageshow',event => {
+    if (event.persisted && realm && wantsMusic && player.paused) start();
+  });
   window.addEventListener('beforeunload',clearUrls);
   window.forestMusicDiagnostics = () => ({
     world:realm, trackCount:realm ? lists[realm].length : 0,
