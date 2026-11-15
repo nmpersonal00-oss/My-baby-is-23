@@ -686,18 +686,7 @@
     "Sanrio Character Ranking"
   ];
   // Round 1: custom animated GIF artwork lives in assets/sanrio/round-1.
-  const sanrioGifs = {
-    "Badtz-Maru": '../assets/sanrio/round-1/r01-01-badtz-maru.gif?v=1',
-    "Jimmy": '../assets/sanrio/round-1/r01-02-jimmy.gif?v=1',
-    "Pekkle": '../assets/sanrio/round-1/r01-03-pekkle.gif?v=1',
-    "Kirimichan": '../assets/sanrio/round-1/r01-04-kirimichan.gif?v=1',
-    "My Melody": '../assets/sanrio/round-1/r01-05-my-melody.gif?v=1',
-    "Sanrio Puroland": '../assets/sanrio/round-1/r01-06-sanrio-puroland.gif?v=1',
-    "Pompompurin": '../assets/sanrio/round-1/r01-07-pompompurin.gif?v=1',
-    "Cinnamoroll": '../assets/sanrio/round-1/r01-08-cinnamoroll.gif?v=1',
-    "Pochacco": '../assets/sanrio/round-1/r01-09-pochacco.gif?v=1',
-    "Sugarbunnies": '../assets/sanrio/round-1/r01-10-sugarbunnies.gif?v=1'
-  };
+  const sanrioGifs = {}; // Awaiting faithful, visually verified animation artwork.
 
   // Fixed mixed groups, freshly randomized board positions each time.
   // Rounds 2 and 4 include one workplace boss each; every round includes
