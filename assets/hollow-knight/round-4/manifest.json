@@ -1,7 +1,7 @@
 {
   "category": "Hollow Knight",
   "round": 4,
-  "assetStatus": "Pending binary upload — do not merge until all ten files are present",
+  "assetStatus": "Installed — all ten GIF files committed and Git blob hashes verified",
   "width": 480,
   "height": 210,
   "pairs": [
