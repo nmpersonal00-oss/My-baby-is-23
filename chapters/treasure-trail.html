@@ -1,1 +1,168 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050e16"><title>Mystery Treasure Trail · Rayan's Dark Forest</title><link rel="icon" href="../assets/heart.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css"></head><body><main class="chapter"><section class="chapter-card"><svg class="chapter-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 30h48v23H8zM8 30c0-29 48-29 48 0M16 29c0-20 32-20 32 0"/><path d="M27 29v11h10V29M32 41v8"/><path d="M32 40c-9-5-8-12 0-9 8-3 9 4 0 9Z" fill="#ffb958"/></svg><h1>Mystery Treasure Trail</h1><p>A hidden treasure will be tucked away in the forest soon.</p><a class="chapter-back" href="../index.html">← Back to Rayan's Forest</a></section></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16031e">
+<title>Mystery Treasure Trail · Rayan's Dark Forest</title>
+<link rel="icon" href="../assets/heart.svg" type="image/svg+xml">
+<link rel="preload" as="image" type="image/webp" href="../assets/treasure-trail-door.webp">
+<style>
+:root { color-scheme: dark; --pink:#ff4fb9; --gold:#ffd285; --wine:#43052e; }
+* { box-sizing:border-box; }
+html,body { height:100%; margin:0; background:#11051c; font-family: Georgia,'Times New Roman',serif; }
+body { min-height:100svh; overflow:hidden; }
+button,input { font:inherit; }
+button { -webkit-tap-highlight-color:transparent; }
+.screen { position:fixed; inset:0; overflow:hidden; opacity:0; visibility:hidden; transition: opacity .8s ease, visibility .8s; }
+.screen.on { opacity:1; visibility:visible; }
+.artwork { position:absolute; display:block; width:100%; height:100%; object-fit:cover; }
+.door .artwork { object-position:center; transform:scale(1.025); animation: door-breathe 11s ease-in-out infinite alternate; }
+.door:after { pointer-events:none; content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 51% 53%, transparent 15%, rgba(19,0,38,.03) 55%, rgba(12,0,23,.14)); }
+@keyframes door-breathe { from{transform:scale(1.012)}to{transform:scale(1.053)} }
+
+/* A pulsing target that sits over the user-supplied painted heart lock. */
+.lock { position:absolute; z-index:6; left:50.7%; top:54.8%; width:clamp(125px,18vmin,240px); aspect-ratio:1; transform:translate(-50%,-50%); border:0; cursor:pointer; background:transparent; border-radius:48%; }
+.lock::before, .lock::after { content:""; position:absolute; inset:5%; border-radius:50%; pointer-events:none; }
+.lock::before { border:1.5px solid rgba(255,190,221,.8); box-shadow:0 0 22px 8px rgba(255,46,183,.3), inset 0 0 35px rgba(255,59,183,.2); animation: ring 3s ease-in-out infinite; }
+.lock::after { inset:20%; background:radial-gradient(circle,rgba(255,136,234,.21), transparent 68%); animation:glow 2.4s ease-in-out infinite alternate; }
+.lock:hover::before,.lock:focus-visible::before { border-color:#fff3d7; box-shadow:0 0 25px 10px rgba(255,99,233,.65),0 0 65px rgba(255,180,82,.45); }
+.lock:focus-visible { outline:2px solid #fff6c9; outline-offset:5px; }
+.lock.pressed { animation: heart-tap .8s ease-out both; }
+@keyframes ring { 0%,100%{opacity:.38;transform:scale(.88)}50%{opacity:.92;transform:scale(1.07)} }
+@keyframes glow { from{opacity:.35;transform:scale(.9)}to{opacity:.95;transform:scale(1.1)} }
+@keyframes heart-tap { 40%{filter:brightness(2);transform:translate(-50%,-50%) scale(1.15)} }
+
+/* The letter image is the user-supplied artwork — no external assets. */
+.note { display:grid; place-items:center; background:radial-gradient(circle at 50% 44%,#66275d,#14011f 78%); }
+.note-backdrop { position:absolute; inset:-5%; width:110%; height:110%; object-fit:cover; filter:blur(23px) brightness(.58) saturate(1.35); transform:scale(1.08); }
+.letter { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2; flex:none; width:min(91.39svh, 100vw); aspect-ratio:1199/1312; max-height:100svh; overflow:visible; filter:drop-shadow(0 0 25px rgba(237,56,191,.25)); }
+.letter > img { position:absolute; inset:0; width:100%; height:100%; display:block; object-fit:fill; user-select:none; -webkit-user-drag:none; }
+/* On tall phones, gently zoom for legible text while keeping the center of the artwork in view. */
+@media (max-aspect-ratio: 3/4) { .letter { width:min(160vw,91.39svh); } }
+
+/* Precise overlays aligned to the six illustrated blank slots. */
+.digit { position:absolute; display:grid; place-items:center; top:72.7%; width:5.7%; height:6.35%; z-index:5; border-radius:10%; pointer-events:none; font-family:Georgia,'Times New Roman',serif; font-weight:700; font-size:clamp(20px,4.45vmin,48px); color:#fff0c6; text-shadow:0 0 5px #ff2fbc,0 0 13px #ff007e,0 0 22px #fda85d; }
+.digit:nth-of-type(2){left:30.35%;}.digit:nth-of-type(3){left:36.6%;}.digit:nth-of-type(4){left:42.85%;}.digit:nth-of-type(5){left:49.1%;}.digit:nth-of-type(6){left:55.35%;}.digit:nth-of-type(7){left:61.6%;}
+.letter:focus-within .digit { box-shadow:inset 0 0 14px rgba(255,27,180,.16); }
+.code-input { position:absolute; z-index:7; left:30.1%; top:72.5%; width:37.4%; height:6.7%; opacity:.01; color:transparent; background:transparent; border:0; outline:0; text-align:center; font-size:2rem; caret-color:transparent; border-radius:15px; }
+.unlock { position:absolute; z-index:8; left:31.3%; top:82.25%; width:37.5%; height:7.35%; border:0; padding:0; background:transparent; border-radius:35%; cursor:pointer; }
+.unlock:hover,.unlock:focus-visible { outline:1px solid rgba(255,241,179,.7); box-shadow:0 0 15px 8px rgba(255,16,165,.3),inset 0 0 18px rgba(255,231,174,.23); }
+.unlock:active { transform:scale(.97); }
+
+.back { position:fixed; z-index:15; top:calc(12px + env(safe-area-inset-top)); left:calc(12px + env(safe-area-inset-left)); padding:9px 13px; font:600 13px system-ui,sans-serif; color:#fff0ce; background:rgba(29,1,32,.55); border:1px solid rgba(255,194,102,.67); border-radius:99px; box-shadow:0 0 12px rgba(246,72,182,.2); backdrop-filter:blur(9px); cursor:pointer; }
+.back:hover,.back:focus-visible { background:rgba(105,13,77,.9); outline:1px solid #ffb8c7; }
+.spark-layer { position:absolute; inset:0; z-index:4; pointer-events:none; overflow:hidden; }
+.spark { position:absolute; width:3px; height:3px; border-radius:50%; background:#fff6e1; box-shadow:0 0 8px 2px #ff5ac4,0 0 18px 5px #e027ff; animation:twinkle var(--dur) ease-in-out infinite alternate; opacity:.2; }
+.spark::after { content:""; position:absolute; background:linear-gradient(transparent,rgba(255,232,185,.8),transparent); width:1px; height:15px; left:1px; top:-6px; }
+@keyframes twinkle { from { opacity:.12; transform:translateY(2px) scale(.6) rotate(0deg); } to{ opacity:1; transform:translateY(-8px) scale(1.15) rotate(30deg); } }
+.message { position:fixed; z-index:25; left:50%; bottom:calc(18px + env(safe-area-inset-bottom)); transform:translateX(-50%) translateY(22px); width:min(90vw,440px); opacity:0; pointer-events:none; transition:transform .35s,opacity .35s; background:linear-gradient(145deg,rgba(96,5,64,.96),rgba(45,1,40,.97)); border:1px solid #ffd28b; border-radius:20px; box-shadow:0 0 24px #ff2e93, inset 0 0 12px rgba(255,101,186,.3); color:#ffe7b6; padding:15px 20px; text-align:center; font:italic 18px/1.4 Georgia,'Times New Roman',serif; }
+.message.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.success { position:fixed; z-index:26; inset:0; display:grid; place-items:center; padding:24px; opacity:0; pointer-events:none; background:rgba(23,0,30,.7); backdrop-filter:blur(8px); transition:opacity .65s; }
+.success.show{opacity:1;pointer-events:auto;}
+.success-card { max-width:520px; border:2px solid #ffc16c; border-radius:30px; padding:32px 24px; background:linear-gradient(140deg,rgba(104,7,83,.98),rgba(38,0,45,.98)); box-shadow:0 0 35px #fc3cb5, inset 0 0 29px #d533a3; text-align:center; color:#ffdeaf; }
+.success-card h1{font-size:clamp(28px,6vw,48px);font-style:italic;line-height:1.1;color:#ffe2bf;font-weight:normal;margin:0 0 18px;text-shadow:0 0 16px #ff399f;}
+.success-card p{font:19px/1.5 Georgia,serif; margin:0 0 24px;}
+.success-card button{color:#fff0ca;cursor:pointer;border-radius:30px;border:1px solid #ffd98a;background:linear-gradient(#a52775,#4e0c53);padding:12px 24px;box-shadow:0 0 17px #ee3aab;font-size:16px;}
+.forest-home { position:fixed; z-index:30; right:calc(12px + env(safe-area-inset-right)); top:calc(12px + env(safe-area-inset-top)); font:600 12px/1.3 system-ui,sans-serif; background:rgba(32,0,32,.66); color:#ffecd2; border:1px solid rgba(255,205,132,.72); border-radius:99px; padding:9px 14px; backdrop-filter:blur(8px); text-decoration:none; box-shadow:0 0 14px rgba(248,91,191,.25); }
+.forest-home:hover,.forest-home:focus-visible { background:rgba(105,13,77,.92); outline:1px solid #ffdeaf; }
+@media (max-width:450px){ .forest-home{font-size:11px;padding:8px 10px;} .message{font-size:16px;} .back{font-size:11px;padding:8px 10px;} }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+</style>
+</head>
+<body>
+<main aria-label="Mystery Treasure Trail">
+<section class="screen door on" id="door" aria-label="Enchanted treasure door">
+  <img class="artwork" src="../assets/treasure-trail-door.webp" alt="Lavish purple-and-gold enchanted door beneath a moonlit castle, roses, glowing lanterns and luminous waterfalls" draggable="false">
+  <div class="spark-layer" aria-hidden="true"></div>
+  <button class="lock" id="heart-lock" aria-label="Touch the glowing heart lock to discover the secret" title="Tap the heart-shaped lock"></button>
+</section>
+<section class="screen note" id="note" aria-label="Secret code challenge">
+  <img class="note-backdrop" src="../assets/treasure-trail-code.webp" alt="" aria-hidden="true" draggable="false">
+  <div class="letter" id="letter">
+    <img src="../assets/treasure-trail-code.webp" alt="Uh-oh, my love. This little corner of the forest is hiding a secret, and it looks like you haven't found the magic code just yet. Psst... I heard the Scavenger Hunt might know something. Find the six secret numbers and come back to unlock what I've hidden for you." draggable="false">
+    <div class="spark-layer" aria-hidden="true"></div>
+    <div class="digit" aria-hidden="true"></div><div class="digit" aria-hidden="true"></div><div class="digit" aria-hidden="true"></div><div class="digit" aria-hidden="true"></div><div class="digit" aria-hidden="true"></div><div class="digit" aria-hidden="true"></div>
+    <input id="code" class="code-input" type="text" inputmode="numeric" maxlength="6" pattern="[0-9]*" autocomplete="one-time-code" aria-label="Enter the six-digit code from the Scavenger Hunt" />
+    <button class="unlock" id="unlock" aria-label="Unlock using your six-digit code" title="Unlock"></button>
+  </div>
+  <button class="back" id="back" aria-label="Return to the enchanted door">← Door</button>
+</section>
+<a class="forest-home" href="../index.html" aria-label="Return to Rayan’s Dark Forest">← Forest</a>
+<div class="message" id="message" role="status" aria-live="polite"></div>
+<div class="success" id="success" aria-hidden="true">
+  <div class="success-card" role="dialog" aria-modal="true" aria-label="Code accepted">
+    <h1>You found the magic, my love!</h1>
+    <p>The enchanted door knows your secret code. A little more magic is waiting just beyond — our next chapter is still being made.</p>
+    <button id="reset">Back to the enchanted door</button>
+  </div>
+</div>
+</main>
+<script>
+(()=>{
+  'use strict';
+  const door=document.querySelector('#door');
+  const note=document.querySelector('#note');
+  const heart=document.querySelector('#heart-lock');
+  const input=document.querySelector('#code');
+  const digits=[...document.querySelectorAll('.digit')];
+  const message=document.querySelector('#message');
+  const success=document.querySelector('#success');
+  let entered='';
+  const sparkleCoords=[[6,9],[15,64],[22,24],[31,84],[40,11],[51,15],[66,23],[83,13],[93,64],[76,78],[18,90],[55,93],[87,89],[10,44],[34,43],[71,41],[95,29],[56,65],[46,74],[60,6]];
+  document.querySelectorAll('.spark-layer').forEach((layer, i)=>{
+    sparkleCoords.forEach(([x,y],j)=>{
+      const p=document.createElement('span');p.className='spark';
+      p.style.left=x+'%';p.style.top=y+'%';p.style.setProperty('--dur',(2.3+(j%6)*.8)+'s');
+      p.style.animationDelay=(-(j%7)*.65)+'s';
+      if(i===1&&x>29&&x<72&&y>30&&y<89)return;
+      layer.appendChild(p);
+    });
+  });
+  function updateDigits(){
+    entered=input.value.replace(/\D/g,'').slice(0,6);
+    if(input.value!==entered)input.value=entered;
+    digits.forEach((d,i)=>d.textContent=entered[i]||'');
+    message.classList.remove('show');
+  }
+  function showMessage(text){message.textContent=text;message.classList.add('show');}
+  function showNote(){
+    heart.classList.add('pressed');
+    window.setTimeout(()=>{door.classList.remove('on');note.classList.add('on');heart.classList.remove('pressed');},350);
+  }
+  function reset(){
+    success.classList.remove('show');success.setAttribute('aria-hidden','true');
+    note.classList.remove('on');door.classList.add('on');
+    input.value=''; updateDigits();
+  }
+  heart.addEventListener('click',showNote);
+  document.querySelector('#back').addEventListener('click',reset);
+  document.querySelector('#reset').addEventListener('click',reset);
+  input.addEventListener('input',updateDigits);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')unlock();});
+  document.querySelector('#unlock').addEventListener('click',unlock);
+  digits.forEach(d=>d.addEventListener('click',()=>input.focus()));
+  function unlock(){
+    updateDigits();
+    if(entered.length<6){showMessage('Six tiny numbers are needed to wake this magic.');input.focus();return;}
+    if(entered!=='670304'){
+      showMessage('Almost, my love... Look for the six secret numbers in the Scavenger Hunt.');
+      input.select();return;
+    }
+    success.classList.add('show');success.setAttribute('aria-hidden','false');
+    document.querySelector('#reset').focus();
+  }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')reset();
+    if(note.classList.contains('on') && /^[0-9]$/.test(e.key) && document.activeElement!==input){e.preventDefault();input.focus();input.value=(input.value+e.key).slice(0,6);updateDigits();}
+  });
+  document.querySelector('#letter').addEventListener('click',e=>{
+    // Tapping the illustrated number slots opens the device's numeric keypad.
+    const r=e.currentTarget.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+    if(x>.30 && x<.68 && y>.72 && y<.79) input.focus();
+  });
+})();
+</script>
+</body>
+</html>
