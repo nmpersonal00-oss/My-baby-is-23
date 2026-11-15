@@ -37,7 +37,19 @@
     '<strong id="ws-category"></strong>',
     '<label for="ws-select">Song</label><select id="ws-select"></select>',
     '<label for="ws-volume">Volume</label><input id="ws-volume" type="range" min="0" max="100" value="55">',
-    '<p>Your songs stay on this device in this browser, never in the public GitHub repository.</p>',
+    '<div class="ws-drive-area" id="ws-drive-area">',
+    '<strong>Play songs from Google Drive</strong>',
+    '<p>No album downloads or uploads. Connect your Google account, then drop or paste a folder link.</p>',
+    '<button type="button" id="ws-drive-connect">Connect Google Drive</button>',
+    '<label for="ws-drive-link">Google Drive music folder</label>',
+    '<div class="ws-drive-drop" id="ws-drive-drop">',
+    '<span>Drop a Google Drive folder link here</span>',
+    '<input id="ws-drive-link" type="url" inputmode="url" placeholder="Or paste the folder link" autocomplete="off">',
+    '</div>',
+    '<button type="button" id="ws-drive-add">Use this Drive folder</button>',
+    '<p class="ws-drive-feedback" id="ws-drive-feedback" role="status" aria-live="polite"></p>',
+    '</div>',
+    '<p>Or add local songs. Local files stay in this browser, never in the public GitHub repository.</p>',
     '<button type="button" id="ws-add">Add songs to this world</button>',
     '<button type="button" id="ws-add-folders">Import downloaded album folders</button>',
     '<input id="ws-file-input" type="file" accept="audio/*,.mp3,.m4a,.mp4,.ogg,.wav" multiple hidden>',
@@ -64,10 +76,36 @@
   const volume = node('ws-volume'), sources = node('ws-sources');
   const fileInput = node('ws-file-input'), folderInput = node('ws-folder-input');
   const remove = node('ws-delete');
+  const driveArea = node('ws-drive-area'), driveConnect = node('ws-drive-connect');
+  const driveInput = node('ws-drive-link'), driveDrop = node('ws-drive-drop');
+  const driveAdd = node('ws-drive-add'), driveFeedback = node('ws-drive-feedback');
+  const DRIVE_STORAGE = 'rayans-wordsearch-drive-folders-v1';
   const groups = () => Object.fromEntries(Object.keys(LABELS).map(id => [id,[]]));
+  function readDriveSongs() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(DRIVE_STORAGE) || '{}');
+      const result = groups();
+      for (const world of Object.keys(result)) {
+        result[world] = (Array.isArray(saved[world]) ? saved[world] : [])
+          .filter(s => /^[\\w-]{15,}$/.test(s.driveId || '') && typeof s.name === 'string')
+          .map(s => ({ id:'drive:' + s.driveId, driveId:s.driveId, name:s.name }));
+      }
+      return result;
+    } catch { return groups(); }
+  }
+  let driveSongs = readDriveSongs();
+  function rememberDriveSongs() {
+    try { localStorage.setItem(DRIVE_STORAGE,JSON.stringify(driveSongs)); }
+    catch { driveFeedback.textContent = 'Your browser cannot remember the folder. It will work for this visit.'; }
+  }
   let lists = groups(), db = null, ready = false, realm = null, index = 0;
   let wantsMusic = false, userPaused = false, generation = 0, notice = '';
   const objectUrls = new Map();
+  let activeDriveUrl = null;
+  function revokeDriveUrl() {
+    if (activeDriveUrl) URL.revokeObjectURL(activeDriveUrl);
+    activeDriveUrl = null;
+  }
   try {
     const savedVolume = localStorage.getItem('rayans-wordsearch-music-volume');
     if (savedVolume !== null) {
@@ -111,8 +149,14 @@
   function clearUrls() {
     objectUrls.forEach(url => URL.revokeObjectURL(url));
     objectUrls.clear();
+    revokeDriveUrl();
   }
   async function songUrl(song) {
+    if (song.driveId) {
+      if (!window.forestDrive?.hasAccess()) throw Error('Connect Google Drive in ♫ settings to play this music.');
+      const blob = await window.forestDrive.audioBlob(song.driveId);
+      return URL.createObjectURL(blob);
+    }
     if (objectUrls.has(song.id)) return objectUrls.get(song.id);
     if (!db) throw Error('Music has not been imported');
     const saved = await get('audio',song.id);
@@ -124,14 +168,15 @@
   async function refresh() {
     const oldId = realm ? lists[realm][index]?.id : null;
     lists = groups();
-    for (const row of await get('info')) if (lists[row.realm]) lists[row.realm].push(row);
+    if (db) for (const row of await get('info')) if (lists[row.realm]) lists[row.realm].push(row);
+    for (const world of Object.keys(driveSongs)) lists[world].push(...driveSongs[world]);
     for (const songs of Object.values(lists)) songs.sort((a,b) => a.name.localeCompare(b.name,undefined,{numeric:true,sensitivity:'base'}));
     if (realm) index = Math.max(0,lists[realm].findIndex(s => s.id === oldId));
     show();
     // Preload the first song per category, so category clicks can start sound
     // during the user gesture instead of waiting for an IndexedDB callback.
-    await Promise.all(Object.values(lists).filter(songs => songs.length)
-      .map(songs => songUrl(songs[0]).catch(() => null)));
+    await Promise.all(Object.values(lists).map(songs => songs.find(s => !s.driveId))
+      .filter(Boolean).map(song => songUrl(song).catch(() => null)));
   }
   function show() {
     if (!realm) return;
@@ -166,15 +211,21 @@
     notice = 'Loading ' + song.name + '…';
     show();
     try {
-      const url = song.key ? window.forestMusicUrl(song.key)
-        : objectUrls.get(song.id) || await songUrl(song);
-      if (!url) throw Error('Music hosting URL is not configured');
-      if (token !== generation || world !== realm || !wantsMusic) return;
       if (player.dataset.songId !== song.id) {
+        const url = song.key ? window.forestMusicUrl(song.key)
+          : objectUrls.get(song.id) || await songUrl(song);
+        if (!url) throw Error('Music hosting URL is not configured');
+        if (token !== generation || world !== realm || !wantsMusic) {
+          if (song.driveId) URL.revokeObjectURL(url);
+          return;
+        }
         player.pause();
         player.src = url;
         player.dataset.songId = song.id;
+        const oldDriveUrl = activeDriveUrl;
+        activeDriveUrl = song.driveId ? url : null;
         player.load();
+        if (oldDriveUrl) URL.revokeObjectURL(oldDriveUrl);
       }
       const attempt = player.play();
       if (attempt && typeof attempt.then === 'function') await attempt;
@@ -184,6 +235,7 @@
       if (token !== generation) return;
       notice = err?.name === 'NotAllowedError'
         ? 'Tap Play to enable sound in this browser.'
+        : song.driveId ? (err?.message || 'Could not play this Google Drive song. Check your access.')
         : HOSTED ? 'Music could not load from the sound library. Try Next.'
         : 'This file cannot play here. Choose another song or try MP3.';
     }
@@ -196,6 +248,7 @@
     player.removeAttribute('src');
     delete player.dataset.songId;
     player.load();
+    revokeDriveUrl();
     realm = world;
     player.loop = Boolean(world && lists[world]?.length === 1);
     index = 0;
@@ -335,6 +388,76 @@
     show();
     if (added && realm && !userPaused) { wantsMusic = true; start(); }
   }
+  async function connectGoogleDrive() {
+    const drive = window.forestDrive;
+    if (!drive) throw Error('Google Drive integration could not load. Refresh this page.');
+    await drive.connect();
+    driveConnect.textContent = 'Google Drive connected';
+    driveFeedback.textContent = 'Connected. Drop or paste your music folder link below.';
+  }
+  driveConnect.addEventListener('click',() => {
+    // Begin Google's popup directly from the click event.
+    connectGoogleDrive().then(() => {
+      if (realm && lists[realm].length && wantsMusic) start();
+    }).catch(error => { driveFeedback.textContent = error.message; });
+  });
+
+  async function addDriveFolder() {
+    const drive = window.forestDrive;
+    if (!drive) throw Error('Google Drive integration could not load. Refresh the page.');
+    const folderId = drive.folderId(driveInput.value);
+    if (!folderId) throw Error('Copy a Google Drive folder link, then paste it here.');
+    if (!drive.hasAccess()) await drive.connect();
+    driveFeedback.textContent = 'Reading the music folder from Google Drive…';
+    const {tracks} = await drive.listFolder(folderId);
+    if (!tracks.length) throw Error('No audio files found in this folder or its subfolders.');
+    let added = 0;
+    for (const track of tracks) {
+      const world = recognize(track.path) || realm;
+      if (!world) continue;
+      const songs = driveSongs[world];
+      const entry = { id:'drive:' + track.fileId, driveId:track.fileId, name:track.name };
+      const old = songs.findIndex(s => s.id === entry.id);
+      if (old < 0) { songs.push(entry); added++; }
+      else songs[old] = entry;
+    }
+    if (!added) throw Error('No new songs were found. Try another folder or world.');
+    rememberDriveSongs();
+    await refresh();
+    driveFeedback.textContent = added + ' songs linked from Drive. Nothing was downloaded to this device.';
+    notice = '';
+    show();
+    if (realm && !userPaused) { wantsMusic = true; start(); }
+  }
+  driveAdd.addEventListener('click',() => {
+    driveAdd.disabled = true;
+    addDriveFolder().catch(error => { driveFeedback.textContent = error.message; })
+      .finally(() => { driveAdd.disabled = false; });
+  });
+  driveDrop.addEventListener('dragover',event => { event.preventDefault(); driveDrop.classList.add('is-dragging'); });
+  driveDrop.addEventListener('dragleave',() => driveDrop.classList.remove('is-dragging'));
+  driveDrop.addEventListener('drop',event => {
+    event.preventDefault();
+    driveDrop.classList.remove('is-dragging');
+    const transfer = event.dataTransfer;
+    const text = transfer?.getData('text/uri-list') || transfer?.getData('text/plain') ||
+      transfer?.getData('text/html') || '';
+    const match = text.match(/https?:\\/\\/drive\\.google\\.com\\/[^\\s"'<>]+/i);
+    if (match && window.forestDrive?.folderId(match[0])) {
+      driveInput.value = match[0];
+      // Do not open an OAuth popup outside a direct button click.
+      driveFeedback.textContent = 'Folder link received. Click “Use this Drive folder”.';
+    } else {
+      driveFeedback.textContent = 'Drive did not share a folder link. In Google Drive, choose Copy link and paste it here.';
+    }
+  });
+  if (!window.forestDrive?.configured) {
+    driveFeedback.textContent = 'Google Drive requires one-time setup by the gift creator.';
+    driveConnect.disabled = true;
+  } else if (window.forestDrive.hasAccess()) {
+    driveConnect.textContent = 'Google Drive connected';
+  }
+
   node('ws-add').addEventListener('click',() => fileInput.click());
   node('ws-add-folders').addEventListener('click',() => folderInput.click());
   fileInput.addEventListener('change',() => {
@@ -346,17 +469,19 @@
     importSongs(files,true).catch(() => { notice = 'Import failed. Try fewer files.'; show(); });
   });
   remove.addEventListener('click',async () => {
-    if (!db || !realm || !lists[realm].length) return;
-    if (!confirm('Remove this world’s imported songs from this browser? Nothing is deleted from Google Drive.')) return;
+    if (!realm || !lists[realm].length || HOSTED) return;
+    if (!confirm('Forget this world’s linked Drive songs and imported local songs? Nothing is deleted from Google Drive.')) return;
     try {
-      const ids = lists[realm].map(song => song.id);
-      await new Promise((resolve,reject) => {
+      const ids = lists[realm].filter(song => !song.driveId).map(song => song.id);
+      if (db && ids.length) await new Promise((resolve,reject) => {
         const tx = db.transaction(['audio','info'],'readwrite');
         for (const id of ids) { tx.objectStore('audio').delete(id); tx.objectStore('info').delete(id); }
         tx.oncomplete = resolve;
         tx.onerror = () => reject(tx.error);
         tx.onabort = () => reject(tx.error);
       });
+      driveSongs[realm] = [];
+      rememberDriveSongs();
       ++generation;
       player.pause();
       player.removeAttribute('src');
@@ -388,6 +513,7 @@
     node('ws-add-folders').hidden = true;
     remove.hidden = true;
     sources.hidden = true;
+    driveArea.hidden = true;
     const help = details.querySelector('p');
     if (help) help.textContent = 'These songs are built into the Forest soundtrack library. No uploads needed.';
     const drive = details.querySelectorAll('p');
@@ -403,8 +529,11 @@
     await refresh();
     if (realm && wantsMusic) start();
   }).catch(() => {
-    ready = false;
-    notice = 'Music storage unavailable. Try a normal browser window, not private mode.';
+    // Browser storage is optional for Drive streaming; the song links still work.
+    db = null;
+    ready = true;
+    refresh().catch(() => {});
+    notice = 'Local storage unavailable; Google Drive links can still play.';
     show();
   });
 })();
