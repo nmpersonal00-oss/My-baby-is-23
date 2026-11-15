@@ -1,11 +1,11 @@
 /*
  * Matching Memory content.
  *
- * Lies of P and Terraria each have 50 user-chosen names, spread across
- * 5 rounds of 10 in a repeatable, randomized order. GIFs are blank for now.
+ * Lies of P, Terraria, and Shadow of the Colossus each have 50 user-chosen
+ * names over 5 rounds of 10. GIFs are blank until we add them.
  *
- * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs
- * or terrariaGifs. For example, inside liesOfPGifs:
+ * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs,
+ * terrariaGifs, or colossusGifs. For example, inside liesOfPGifs:
  *   'Pinocchio': '../assets/pinocchio.gif'
  * Each GIF will then match its keyword wherever that keyword appears.
  *
@@ -127,6 +127,76 @@
   ];
   const terrariaGifs = {}; // Add GIFs by exact keyword later.
 
+  // Shadow of the Colossus: five agreed sets of ten unique names.
+  // The group membership is fixed; the board shuffles positions on each play.
+  const colossusRoundNames = [
+    [
+      "Wander",
+      "Valus",
+      "Quadratus",
+      "Gaius",
+      "Forbidden Lands",
+      "Shrine of Worship",
+      "Ancient Sword",
+      "Great Bridge",
+      "Weak-point sigils",
+      "Grip meter"
+    ],
+    [
+      "Emon",
+      "Phaedra",
+      "Avion",
+      "Barba",
+      "Bow and arrows",
+      "Save shrines",
+      "Secret Garden",
+      "Stone idols",
+      "Reflected sunlight",
+      "Sword stab"
+    ],
+    [
+      "Dormin",
+      "Hydrus",
+      "Kuromori",
+      "Basaran",
+      "Colossus fur",
+      "White-tailed lizards",
+      "Fruit trees",
+      "Time Attack",
+      "Whistling Arrow",
+      "Ancient Harpoon"
+    ],
+    [
+      "Agro",
+      "Dirge",
+      "Celosia",
+      "Pelagia",
+      "Sword of the Sun",
+      "Queen’s Sword",
+      "Cloak of Invisibility",
+      "Cloak of Deception",
+      "Mask of Strength",
+      "Mask of Power"
+    ],
+    [
+      "Emon’s soldiers",
+      "Phalanx",
+      "Cenobia",
+      "Argus",
+      "Malus",
+      "Mask of the Shaman",
+      "Cloak of Force",
+      "Flash Arrow",
+      "Fruit Tree Map",
+      "Lizard Detection Stone"
+    ]
+  ];
+  // Later: 'Wander': '../assets/wander.gif'
+  const colossusGifs = {};
+  const colossusRounds = colossusRoundNames.map(names => ({
+    pairs: names.map(name => ({name, gif: colossusGifs[name] || ''}))
+  }));
+
 
   // Deterministic shuffle: the 50 names are genuinely mixed across rounds,
   // but each round keeps its own ten names after a refresh. The actual order
@@ -181,6 +251,8 @@
       ? liesOfPRounds
       : id === 'terraria'
         ? terrariaRounds
-        : Array.from({length:5}, () => ({pairs: []}))
+        : id === 'colossus'
+          ? colossusRounds
+          : Array.from({length:5}, () => ({pairs: []}))
   }));
 })();
