@@ -1,11 +1,13 @@
 /*
  * Matching Memory content.
  *
- * Lies of P, Terraria, Shadow of the Colossus, Bloodborne, and Dark Souls
- * each have 50 user-chosen names over 5 rounds of 10. GIFs stay blank.
+ * Hollow Knight, Hollow Knight: Silksong, Lies of P, Terraria,
+ * Shadow of the Colossus, Bloodborne, and Dark Souls each have 50
+ * owner-supplied names across 5 rounds of 10. GIFs remain blank.
  *
  * To add a GIF later, assign its keyword to a GIF URL in liesOfPGifs,
- * terrariaGifs, colossusGifs, bloodborneGifs, or darkSoulsGifs.
+ * terrariaGifs, colossusGifs, bloodborneGifs, darkSoulsGifs,
+ * hollowKnightGifs, or silksongGifs.
  * For example, inside liesOfPGifs:
  *   'Pinocchio': '../assets/pinocchio.gif'
  * Each GIF will then match its keyword wherever that keyword appears.
@@ -260,6 +262,139 @@
   // To attach a GIF in the future: 'Solaire of Astora': '../assets/solaire.gif'
   const darkSoulsGifs = {};
 
+
+  // Hollow Knight: the 50 exact names and the five previously proposed sets.
+  // These round memberships remain stable for future GIF matching.
+  const hollowKnightRoundNames = [
+    [
+      "The Knight",
+      "Quirrel",
+      "Elderbug",
+      "False Knight",
+      "Soul Master",
+      "Watcher Knights",
+      "Dream Nail",
+      "Geo",
+      "Hallownest",
+      "Dirtmouth"
+    ],
+    [
+      "Cornifer",
+      "Sly",
+      "Zote the Mighty",
+      "Failed Champion",
+      "Soul Tyrant",
+      "Traitor Lord",
+      "Mothwing Cloak",
+      "Essence",
+      "Forgotten Crossroads",
+      "Greenpath"
+    ],
+    [
+      "Tiso",
+      "Nailsmith",
+      "Nailmaster Oro",
+      "Dung Defender",
+      "White Defender",
+      "Uumuu",
+      "Mantis Claw",
+      "Pale Ore",
+      "Fungal Wastes",
+      "City of Tears"
+    ],
+    [
+      "Nailmaster Mato",
+      "Paintmaster Sheo",
+      "Relic Seeker Lemm",
+      "Broken Vessel",
+      "Lost Kin",
+      "Nosk",
+      "Crystal Heart",
+      "SOUL",
+      "Deepnest",
+      "Crystal Peak"
+    ],
+    [
+      "Grubfather",
+      "The Last Stag",
+      "The Hollow Knight",
+      "Pure Vessel",
+      "Troupe Master Grimm",
+      "Nightmare King Grimm",
+      "Monarch Wings",
+      "Isma’s Tear",
+      "The Abyss",
+      "Black Egg Temple"
+    ]
+  ];
+  const hollowKnightGifs = {}; // Add exact-name GIF paths later.
+  const hollowKnightRounds = hollowKnightRoundNames.map(names => ({
+    pairs: names.map(name => ({name, gif: hollowKnightGifs[name] || ''}))
+  }));
+
+  // Silksong: 8 characters, 14 bosses, 14 abilities/equipment and 14 places.
+  // Seeded category shuffles mix the terms while ensuring every round has
+  // characters, bosses, equipment, and places rather than clustering them.
+  const silksongCharacters = [
+    "Sherma",
+    "Garmond",
+    "Green Prince",
+    "Grindle",
+    "Fleamaster Mooshka",
+    "Mister Mushroom",
+    "Lumble the Lucky",
+    "Vaultkeeper Cardinius"
+  ];
+  const silksongBosses = [
+    "Fourth Chorus",
+    "Moorwing",
+    "Skull Tyrant",
+    "Great Conchflies",
+    "Trobbio",
+    "Father of the Flame",
+    "Voltvyrm",
+    "Groal the Great",
+    "Forebrothers Signis & Gron",
+    "Crawfather",
+    "Crust King Khann",
+    "Gurr the Outcast",
+    "Shrine Guardian Seth",
+    "Raging Conchfly"
+  ];
+  const silksongAbilities = [
+    "Needolin",
+    "Silkspear",
+    "Swift Step",
+    "Cling Grip",
+    "Drifter’s Cloak",
+    "Faydown Cloak",
+    "Clawline",
+    "Silk Soar",
+    "Thread Storm",
+    "Cross Stitch",
+    "Sharpdart",
+    "Rune Rage",
+    "Pale Nails",
+    "Needle Strike"
+  ];
+  const silksongPlaces = [
+    "Pharloom",
+    "Bonebottom",
+    "Moss Grotto",
+    "The Marrow",
+    "Deep Docks",
+    "Far Fields",
+    "Greymoor",
+    "Shellwood",
+    "Bellhart",
+    "Blasted Steps",
+    "The Citadel",
+    "Underworks",
+    "Mount Fay",
+    "The Slab"
+  ];
+  const silksongGifs = {}; // e.g. 'Sherma': '../assets/sherma.gif'
+
   // Shadow of the Colossus: five agreed sets of ten unique names.
   // The group membership is fixed; the board shuffles positions on each play.
   const colossusRoundNames = [
@@ -413,6 +548,41 @@
     ], 20261220 + round).map(name => ({name, gif: darkSoulsGifs[name] || ''}))
   }));
 
+
+  // Each round receives a stable mixed set of ten. The game handles a fresh
+  // visible shuffle every time a round is selected or Shuffle is pressed.
+  const mixedSilksong = {
+    characters: shuffledForLevels(silksongCharacters, 20261126),
+    bosses: shuffledForLevels(silksongBosses, 20261127),
+    abilities: shuffledForLevels(silksongAbilities, 20261128),
+    places: shuffledForLevels(silksongPlaces, 20261129)
+  };
+  const silksongPerRound = [
+    [2, 3, 3, 2],
+    [2, 3, 2, 3],
+    [2, 2, 3, 3],
+    [1, 3, 3, 3],
+    [1, 3, 3, 3]
+  ];
+  const silksongPools = [
+    mixedSilksong.characters,
+    mixedSilksong.bosses,
+    mixedSilksong.abilities,
+    mixedSilksong.places
+  ];
+  const silksongOffsets = [0, 0, 0, 0];
+  const silksongRounds = silksongPerRound.map((counts, round) => {
+    const names = counts.flatMap((count, category) => {
+      const start = silksongOffsets[category];
+      silksongOffsets[category] += count;
+      return silksongPools[category].slice(start, start + count);
+    });
+    return {
+      pairs: shuffledForLevels(names, 20261240 + round)
+        .map(name => ({name, gif: silksongGifs[name] || ''}))
+    };
+  });
+
   const categories = [
     ['hollow-knight', 'Hollow Knight', 'Where little lights are never forgotten', 'forest-04.png'],
     ['silksong', 'Hollow Knight: Silksong', 'Silken threads beneath the moon', 'forest-03.png'],
@@ -426,8 +596,12 @@
 
   window.MEMORY_MATCH_DATA = categories.map(([id, title, tagline, artwork]) => ({
     id, title, tagline, artwork,
-    rounds: id === 'lies-of-p'
-      ? liesOfPRounds
+    rounds: id === 'hollow-knight'
+      ? hollowKnightRounds
+      : id === 'silksong'
+        ? silksongRounds
+        : id === 'lies-of-p'
+          ? liesOfPRounds
       : id === 'terraria'
         ? terrariaRounds
         : id === 'colossus'
