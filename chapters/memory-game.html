@@ -12,9 +12,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
   <link rel="preload" href="../assets/memory-gothic-citadel.avif" as="image" type="image/avif">
   <link rel="preload" href="../assets/memory-approved-ai-icons.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="../memory-matching.css?v=15">
+  <link rel="stylesheet" href="../memory-matching.css?v=16">
   <script defer src="../memory-matching-data.js?v=9"></script>
-  <script defer src="../memory-matching.js?v=15"></script>
+  <script defer src="../memory-matching.js?v=16"></script>
 </head>
 <body>
   <!-- ONLY the scene is an image. Titles, categories, rounds, GIFs and names are live elements. -->
@@ -62,12 +62,14 @@
             <nav id="memory-rounds" class="memory-rounds" aria-label="Choose a round"></nav>
           </header>
 
-          <div class="memory-matching-board" id="memory-board">
-            <ol class="memory-match-list memory-gifs" id="memory-gif-list" aria-label="GIF clues"></ol>
-            <div class="memory-center-lane" aria-hidden="true">
+          <p class="memory-board-swipe-note">Swipe sideways between the GIFs and names</p>
+          <div class="memory-board-viewport" id="memory-board-viewport" tabindex="0" aria-label="Matching board; scroll sideways on small screens to see all pictures and names">
+            <div class="memory-matching-board" id="memory-board">
+              <ol class="memory-match-list memory-gifs" id="memory-gif-list" aria-label="GIF clues"></ol>
+              <div class="memory-center-lane" aria-hidden="true"></div>
+              <ol class="memory-match-list memory-names" id="memory-name-list" aria-label="Name choices"></ol>
               <svg id="memory-connections" class="memory-connections" aria-hidden="true"></svg>
             </div>
-            <ol class="memory-match-list memory-names" id="memory-name-list" aria-label="Name choices"></ol>
           </div>
 
           <div class="memory-footer-badge">
