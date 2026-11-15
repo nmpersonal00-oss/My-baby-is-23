@@ -183,7 +183,7 @@
     const world=worlds[selectedWorld],pairs=pairsFor(world,selectedRound);
     const left=shuffle(pairs.filter(pair=>Boolean(pair.gif))),right=shuffle(pairs);
     const numberOfGifs=left.length;
-    if(right.length>1&&right.every((pair,i)=>pair.id===left[i].id))right.push(right.shift());
+    if(right.length>1&&right.length===left.length&&right.every((pair,i)=>pair.id===left[i].id))right.push(right.shift());
     game={world,round:selectedRound,pairs,left,right,selected:null,matched:new Set(),locked:false,done:false};
     title.textContent=world.title;
     emblem.textContent=characters[selectedWorld]||'✧';
