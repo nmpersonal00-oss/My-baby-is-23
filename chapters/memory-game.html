@@ -13,19 +13,21 @@
   <link rel="preload" href="../assets/memory-gothic-citadel.avif" as="image" type="image/avif">
   <link rel="preload" href="../assets/memory-approved-ai-icons.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="../memory-matching.css?v=16">
+  <link rel="stylesheet" href="../memory-construction.css?v=1">
   <script defer src="../memory-matching-data.js?v=23"></script>
   <script defer src="../memory-matching.js?v=17"></script>
+  <script defer src="../memory-construction.js?v=1"></script>
   <link rel="stylesheet" href="../forest-music.css?v=4">
   <script defer src="../forest-audio-config.js?v=2"></script>
   <script async src="https://accounts.google.com/gsi/client"></script>
   <script defer src="../forest-drive.js?v=1"></script>
   <script defer src="../forest-music.js?v=4"></script>
 </head>
-<body>
+<body class="memory-under-construction">
   <!-- ONLY the scene is an image. Titles, categories, rounds, artworks and names are live elements. -->
   <div class="memory-scenery" aria-hidden="true"></div>
   <div class="memory-sparkles" id="memory-sparkles" aria-hidden="true"></div>
-  <div class="memory-layout">
+  <div class="memory-layout" inert aria-hidden="true">
     <aside class="memory-rail" aria-label="Forest navigation">
       <a class="memory-crest" href="../index.html" aria-label="Rayan's Dark Forest home">
         <span class="memory-crest-crown" aria-hidden="true">♛</span>
