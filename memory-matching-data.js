@@ -326,7 +326,20 @@
       "Black Egg Temple"
     ]
   ];
-  const hollowKnightGifs = {}; // Add exact-name GIF paths later.
+  // Original action loops, approved for Round 1 only. Each entry is keyed
+  // by its exact answer, so shuffling never changes match correctness.
+  const hollowKnightGifs = {
+    "The Knight": '../assets/hollow-knight/round-1/r01-01-the-knight.gif',
+    "Quirrel": '../assets/hollow-knight/round-1/r01-02-quirrel.gif',
+    "Elderbug": '../assets/hollow-knight/round-1/r01-03-elderbug.gif',
+    "False Knight": '../assets/hollow-knight/round-1/r01-04-false-knight.gif',
+    "Soul Master": '../assets/hollow-knight/round-1/r01-05-soul-master.gif',
+    "Watcher Knights": '../assets/hollow-knight/round-1/r01-06-watcher-knights.gif',
+    "Dream Nail": '../assets/hollow-knight/round-1/r01-07-dream-nail.gif',
+    "Geo": '../assets/hollow-knight/round-1/r01-08-geo.gif',
+    "Hallownest": '../assets/hollow-knight/round-1/r01-09-hallownest.gif',
+    "Dirtmouth": '../assets/hollow-knight/round-1/r01-10-dirtmouth.gif'
+  };
   const hollowKnightRounds = hollowKnightRoundNames.map(names => ({
     pairs: names.map(name => ({name, gif: hollowKnightGifs[name] || ''}))
   }));
