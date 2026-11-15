@@ -1,27 +1,16 @@
-# Use music folders already downloaded to the laptop
+# Add laptop music to the entire Forest (Opera GX, Chrome, Edge)
 
-This is the easiest offline-file option for the Word Search music player. It does **not** send music to GitHub or to a website server. Songs play directly from the folder that was selected on the laptop.
+No Google Drive connection is required. Downloaded music stays on the laptop and is read directly by the browser; the website does not upload audio to GitHub or a server.
 
-## Add a folder
+1. Extract any ZIP archives so the actual album folders contain MP3/music files.
+2. Open **Rayan's Dark Forest** on the laptop, ideally from the homepage.
+3. Drag the **extracted music folder from Windows File Explorer onto any part of the app**, including one of the game pages. A large **Drop your music folder here** overlay should appear.
+4. Or press **♫ Add music folder** at the bottom right of the app, choose the extracted folder and approve read access. **Use standard folder chooser** is always visible as an alternative in Opera GX.
+5. The app shows **Ready! N music files added from the laptop**. Cozy Library (when named that way) becomes the background soundtrack outside Word Search; named album subfolders are automatically assigned to their matching Word Search worlds.
+6. If the song is silent, enter the relevant game or tap the **Play** button in the music controls. Browsers can block audio until the first click.
 
-1. If the music came as a `.zip` file, **extract/unzip it first**.
-2. In Rayan's Dark Forest, enter **Word Search**, then open one of the seven music worlds (for example, Dark Souls).
-3. Tap the tiny **✦** music star and then **♫** to open music settings.
-4. Under **Music already on this laptop**, click **Choose music folder**.
-5. Select the folder containing the actual MP3/music files. Chrome and Edge use a read-only folder picker; other browsers may ask you to click **Open** and confirm folder access. If the first chooser fails, a **Use regular folder chooser** option appears. You can also drag an extracted folder into the dashed area.
-6. The page will show **Ready: N songs from the selected folder**. Press **Play** if the browser did not automatically start music.
+**You can choose the parent folder containing all albums at once.** Recognized folders include Dark Souls I/II, Lies of P, Bloodborne, Star Wars/Mandalorian/Jedi: Survivor, Terraria, Kawaii/Lo-fi, Hollow Knight and Silksong. If an album folder has a different name, open its matching Word Search world and choose only that album folder.
 
-You can select a **parent folder** containing several albums (like Dark Souls I, Lies of P, Terraria, etc.). The app reads subfolders and sends recognizable albums to the right Word Search world. If your folder names are different, open the intended world first, then select just that album folder.
+These files are available while the Forest remains open in the same browser tab. Switching between games through the homepage **keeps the selected music loaded**. Closing/reloading the entire site may require choosing the music folder again. Browser storage is *not* required, which avoids quota failures for the complete soundtrack library.
 
-## How this works
-
-- **No server uploading** and no Google account or Google Drive permission required. The website requests read access only to the selected folder.
-- Selecting a folder provides the app access to those music files **during the current browser visit**; the app plays directly from the chosen files.
-- If you reload the page, close the tab, or return later, you may need to select the folder again.
-- There is an optional **Remember songs in this browser** checkbox, initially unchecked. This copies songs into this browser's site storage so they might still be there next time; it can take a while and can fail for a collection as large as the complete music library. **You do not need it to play the folder now.**
-- The original files remain on the laptop. **Remove saved songs** only removes the app's local references/copies; it will never delete your downloaded music.
-- If the selected folder is a ZIP or contains no supported audio, the page displays an explanation instead of doing nothing.
-- Supported audio file types include MP3, M4A, WAV, OGG, AAC and FLAC. Whether the browser can decode each format depends on the browser; MP3 is the most widely supported.
-- This folder option is for the **Word Search world playlists**. Cozy Library on the home screen still has its separate single-track MP3 chooser.
-
-For the most reliable folder selection, use a current **Chrome or Microsoft Edge** desktop browser and keep the music folder extracted on the laptop.
+If dropping a ZIP does not work, unzip it first. If Opera GX does not allow the standard folder picker or folder drag, try a current Chrome or Edge browser. In-app playback has been tested in simulated browser environments; actual Opera GX behavior on the recipient's laptop still needs confirmation.
