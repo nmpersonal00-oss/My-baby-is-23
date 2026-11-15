@@ -192,6 +192,8 @@
     garden.hidden = valid;
     reader.hidden = !valid;
     document.body.classList.toggle('reading-note', valid);
+    const topbar = document.querySelector('.love-topbar');
+    if (topbar) topbar.inert = valid;
     if (valid) {
       renderNote(slug);
       reader.scrollTop = 0;
