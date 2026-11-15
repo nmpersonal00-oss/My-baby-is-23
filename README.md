@@ -274,3 +274,24 @@ Word Search, and the homepage have not been changed by this update.
 - Switching categories, restarting, or proceeding clears any effects and
   resets the mistake counter. Reduced-motion preferences are respected.
 
+
+
+### Hollow Knight Matching Memory — Round 1 animated GIFs
+
+The first Hollow Knight round now includes 10 distinct animated clue GIFs,
+stored under `assets/hollow-knight/round-1/`. They correspond one-to-one
+to The Knight, Quirrel, Elderbug, False Knight, Soul Master, Watcher Knights,
+Dream Nail, Geo, Hallownest, and Dirtmouth. Each animation has subject-specific
+movement or local effects over a fixed scenic layer, rather than scrolling
+the background. The approved AI-painted visual references were used for
+the characters and setting; there are no screenshot-based UI overlays.
+
+The exact name-to-animation mapping lives in `hollowKnightGifs` in
+`memory-matching-data.js`. The matching game shuffles the image and name
+columns separately, but comparisons use stable IDs, so the order cannot
+change correctness. A line appears only when the selected image and name
+are a correct pair. Finishing all ten matches saves Round 1 completion.
+
+Filled image slots show **the animation without a 'GIF' badge**.
+Rounds 2–5 of Hollow Knight, and all other categories, retain their
+name-only lists and blank GIF columns until their artwork is created.
