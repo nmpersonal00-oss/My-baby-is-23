@@ -8,9 +8,9 @@
   <title>Scavenger Hunt · Rayan's Dark Forest</title>
   <link rel="icon" type="image/svg+xml" href="../assets/heart.svg">
   <link rel="preload" as="image" type="image/webp" href="../assets/scavenger-hunt/scene.webp">
-  <link rel="stylesheet" href="../scavenger-hunt.css">
+  <link rel="stylesheet" href="../scavenger-hunt.css?v=2">
   <script defer src="../scavenger-hunt-data.js"></script>
-  <script defer src="../scavenger-hunt.js"></script>
+  <script defer src="../scavenger-hunt.js?v=2"></script>
 </head>
 <body class="hunt-page">
   <main class="hunt-viewport" aria-label="The enchanted scavenger hunt">
@@ -35,6 +35,14 @@
     </div>
     <div class="hunt-mobile-progress" aria-hidden="true"><span id="hunt-mobile-count">0 / 40</span> FOUND</div>
     <p class="hunt-mobile-tip" id="hunt-mobile-tip">Swipe sideways to explore the room and the treasures below.</p>
+    <div id="hunt-item-preview" class="hunt-item-preview" role="dialog" aria-modal="true" aria-labelledby="hunt-preview-name" hidden>
+      <div class="hunt-preview-card">
+        <button type="button" id="hunt-preview-close" class="hunt-preview-close" aria-label="Close object preview">×</button>
+        <span class="hunt-preview-art" id="hunt-preview-art" aria-hidden="true"></span>
+        <strong class="hunt-preview-name" id="hunt-preview-name"></strong>
+        <p class="hunt-preview-guide" id="hunt-preview-guide">Find this object in the enchanted study.</p>
+      </div>
+    </div>
     <div class="hunt-found-toast" id="hunt-toast" role="status" aria-live="polite"></div>
     <button class="hunt-reset" id="hunt-reset" type="button" title="Start the hunt over">Start over</button>
     <section id="hunt-finale" class="hunt-finale" aria-label="Magical envelope surprise" aria-hidden="true">

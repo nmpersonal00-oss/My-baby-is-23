@@ -12,6 +12,12 @@
   const targets = document.getElementById('hunt-targets');
   const props = document.getElementById('hunt-props');
   const items = document.getElementById('hunt-items');
+  const itemPreview = document.getElementById('hunt-item-preview');
+  const previewName = document.getElementById('hunt-preview-name');
+  const previewArt = document.getElementById('hunt-preview-art');
+  const previewGuide = document.getElementById('hunt-preview-guide');
+  const previewClose = document.getElementById('hunt-preview-close');
+  let previousPreviewFocus = null;
   const dust = document.getElementById('hunt-dust');
   const progress = document.getElementById('hunt-progress');
   const mobileProgress = document.getElementById('hunt-mobile-count');
@@ -72,6 +78,30 @@
     pair.target.disabled = true;
     pair.target.setAttribute('aria-label', `${pair.item.name}, found`);
   }
+  function showItemPreview(item, i) {
+    if (found.has(item.id)) return;
+    previousPreviewFocus = document.activeElement;
+    previewName.textContent = item.name;
+    previewArt.style.setProperty('--icon-x', `${(i % 10) / 9 * 100}%`);
+    previewArt.style.setProperty('--icon-y', `${Math.floor(i / 10) / 3 * 100}%`);
+    previewGuide.textContent = `Find ${item.name.toLowerCase()} somewhere in the enchanted room.`;
+    itemPreview.hidden = false;
+    previewClose.focus();
+  }
+  function hideItemPreview() {
+    if (itemPreview.hidden) return;
+    itemPreview.hidden = true;
+    if (previousPreviewFocus && previousPreviewFocus.isConnected) previousPreviewFocus.focus();
+    previousPreviewFocus = null;
+  }
+  previewClose.addEventListener('click', hideItemPreview);
+  itemPreview.addEventListener('click', event => { if (event.target === itemPreview) hideItemPreview(); });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') hideItemPreview();
+    if (!itemPreview.hidden && event.key === 'Tab') {
+      event.preventDefault(); previewClose.focus();
+    }
+  });
   function makeRing(item) {
     if (reduced.matches) return;
     const ring = document.createElement('span');
@@ -113,9 +143,10 @@
       const inventory = document.createElement('div');
       inventory.className = 'hunt-item';
       inventory.tabIndex = 0;
+      inventory.dataset.name = item.name;
       inventory.dataset.item = item.id;
       inventory.title = item.name;
-      inventory.setAttribute('role', 'img');
+      inventory.setAttribute('role', 'button');
       inventory.setAttribute('aria-label', `${item.name}, not found`);
       const icon = document.createElement('span');
       icon.className = 'hunt-item-icon';
@@ -123,6 +154,12 @@
       icon.style.setProperty('--icon-y', `${Math.floor(i / 10) / 3 * 100}%`);
       icon.setAttribute('aria-hidden', 'true');
       inventory.appendChild(icon);
+      inventory.addEventListener('click', () => showItemPreview(item, i));
+      inventory.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault(); showItemPreview(item, i);
+        }
+      });
       items.appendChild(inventory);
       elementsById.set(item.id, {target, inventory, item});
       if (item.prop) {
@@ -281,6 +318,7 @@
   resetButton.addEventListener('click', () => {
     if (!window.confirm('Start the scavenger hunt over? This resets the 40 found objects in this browser.')) return;
     clearTimers(); clearTimeout(messageTimer);
+    hideItemPreview();
     found = new Set(); save();
     for (const pair of elementsById.values()) {
       pair.target.disabled = false;
