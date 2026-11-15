@@ -30,9 +30,17 @@
   function syncMusic(active) {
     window.forestCozyMusicControl?.setWorldActive(Boolean(active));
   }
+  function stopPreviousWorldAudio() {
+    // When leaving a category, stop its audio BEFORE restoring Cozy.
+    // Otherwise the old song could overlap during a slow page load.
+    try {
+      frame.contentDocument?.querySelector('audio[aria-label="Word Search background music"]')?.pause();
+    } catch {}
+  }
   function showChapter(target, record = true) {
     const url = target instanceof URL ? target : new URL(target, appRoot);
     if (!isChapter(url)) return false;
+    stopPreviousWorldAudio();
     syncMusic(false);
     frame.hidden = false;
     document.body.classList.add('forest-shell-in-chapter');
@@ -42,6 +50,7 @@
     return true;
   }
   function showHome(record = true) {
+    stopPreviousWorldAudio();
     syncMusic(false);
     frame.hidden = true;
     frame.removeAttribute('src');
