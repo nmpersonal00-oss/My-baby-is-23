@@ -1,0 +1,34 @@
+{
+  "round": 4,
+  "version": 2,
+  "status": "PENDING BINARY UPLOAD — DO NOT MERGE THIS DRAFT PR UNTIL GIFS REPLACED",
+  "matches": [
+    {
+      "name": "Relic Seeker Lemm",
+      "file": "r04-03-relic-seeker-lemm.gif",
+      "sha256": "d506c17547478b9791bee4d6024514920acc0f28390eb213adff9b40013153a0",
+      "width": 480,
+      "height": 210,
+      "frames": 6,
+      "bytes": 524810
+    },
+    {
+      "name": "Broken Vessel",
+      "file": "r04-04-broken-vessel.gif",
+      "sha256": "f9193471a9702ec9ff2baf40b1eec34fc8087a218b700c92c554f4609616f600",
+      "width": 480,
+      "height": 210,
+      "frames": 6,
+      "bytes": 411737
+    },
+    {
+      "name": "Lost Kin",
+      "file": "r04-05-lost-kin.gif",
+      "sha256": "7f8329ea1a6a6672fd2ecc7df876b94f7593d30eec83299bde47fe5cdaeb0d26",
+      "width": 480,
+      "height": 210,
+      "frames": 6,
+      "bytes": 445820
+    }
+  ]
+}
