@@ -1,0 +1,77 @@
+{
+  "category": "Hollow Knight",
+  "round": 2,
+  "notes": "Approved action GIFs, unique fixed scenes. Forgotten Crossroads uses revised crossroads artwork. Each GIF is 480x210 pixels.",
+  "matches": [
+    {
+      "index": 1,
+      "name": "Cornifer",
+      "file": "r02-01-cornifer.gif",
+      "sha": "250654d81ff12575289c8779b30025c488742521",
+      "relativePath": "../assets/hollow-knight/round-2/r02-01-cornifer.gif?v=1"
+    },
+    {
+      "index": 2,
+      "name": "Sly",
+      "file": "r02-02-sly.gif",
+      "sha": "8b37c443c61a39871df02ac3397a200919366cea",
+      "relativePath": "../assets/hollow-knight/round-2/r02-02-sly.gif?v=1"
+    },
+    {
+      "index": 3,
+      "name": "Zote the Mighty",
+      "file": "r02-03-zote-the-mighty.gif",
+      "sha": "21d455cf869ce02f545fd3d182b3b664677a4c32",
+      "relativePath": "../assets/hollow-knight/round-2/r02-03-zote-the-mighty.gif?v=1"
+    },
+    {
+      "index": 4,
+      "name": "Failed Champion",
+      "file": "r02-04-failed-champion.gif",
+      "sha": "302a982eb99b23663f09e592522d38c09d7168d8",
+      "relativePath": "../assets/hollow-knight/round-2/r02-04-failed-champion.gif?v=1"
+    },
+    {
+      "index": 5,
+      "name": "Soul Tyrant",
+      "file": "r02-05-soul-tyrant.gif",
+      "sha": "0e48b73d42ab3f9872c63e8cfffed732db6e8446",
+      "relativePath": "../assets/hollow-knight/round-2/r02-05-soul-tyrant.gif?v=1"
+    },
+    {
+      "index": 6,
+      "name": "Traitor Lord",
+      "file": "r02-06-traitor-lord.gif",
+      "sha": "02e5c6818c25501450ba841a9e1bd0a1742cd0fb",
+      "relativePath": "../assets/hollow-knight/round-2/r02-06-traitor-lord.gif?v=1"
+    },
+    {
+      "index": 7,
+      "name": "Mothwing Cloak",
+      "file": "r02-07-mothwing-cloak.gif",
+      "sha": "06fff61bf62dc10fa9ef827c1a5667ff7de6813d",
+      "relativePath": "../assets/hollow-knight/round-2/r02-07-mothwing-cloak.gif?v=1"
+    },
+    {
+      "index": 8,
+      "name": "Essence",
+      "file": "r02-08-essence.gif",
+      "sha": "e7dae6369b24e04596bc269c6c963d858d14b254",
+      "relativePath": "../assets/hollow-knight/round-2/r02-08-essence.gif?v=1"
+    },
+    {
+      "index": 9,
+      "name": "Forgotten Crossroads",
+      "file": "r02-09-forgotten-crossroads.gif",
+      "sha": "6398c9a4094608c65832825aa1eb4e559406cc2d",
+      "relativePath": "../assets/hollow-knight/round-2/r02-09-forgotten-crossroads.gif?v=1"
+    },
+    {
+      "index": 10,
+      "name": "Greenpath",
+      "file": "r02-10-greenpath.gif",
+      "sha": "f8e853e9de644ddc62600e36117e144700cf4ff8",
+      "relativePath": "../assets/hollow-knight/round-2/r02-10-greenpath.gif?v=1"
+    }
+  ]
+}
