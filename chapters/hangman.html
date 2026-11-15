@@ -11,14 +11,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="preload" href="../assets/hangman-approved-forest.avif" as="image" type="image/avif">
-  <link rel="stylesheet" href="../hangman.css?v=2">
+  <link rel="stylesheet" href="../hangman.css?v=3">
   <script defer src="../hangman-phrases.js?v=2"></script>
-  <script defer src="../hangman.js?v=2"></script>
+  <script defer src="../hangman.js?v=3"></script>
 </head>
 <body class="hangman-page">
   <!-- The background is the separately supplied, clean AI forest art.
        All game interface, icons, gallows, and navigation below are REAL DOM/SVG. -->
   <div class="hangman-scene" aria-hidden="true"></div>
+  <div id="hangman-confetti" class="hangman-confetti" aria-hidden="true"></div>
   <div class="hangman-layout">
     <aside class="hangman-sidebar" aria-label="Forest navigation">
       <div class="hangman-sidebar-ornate top" aria-hidden="true"></div>
@@ -48,7 +49,7 @@
       </header>
 
       <div class="hangman-play-grid">
-        <section class="hangman-illustration-frame" aria-label="Enchanted Hangman illustration">
+        <section class="hangman-illustration-frame" id="hangman-illustration-frame" aria-label="Enchanted Hangman illustration">
           <div class="hangman-frame-corner top-left" aria-hidden="true"></div>
           <div class="hangman-frame-corner top-right" aria-hidden="true"></div>
           <div class="hangman-frame-corner bottom-left" aria-hidden="true"></div>
@@ -147,12 +148,18 @@
             <span id="hangman-level-topic" class="hangman-level-topic">Islamic knowledge</span>
           </div>
 
-          <section class="hangman-answer-frame" aria-label="Hidden word or sentence">
+          <section class="hangman-answer-frame" id="hangman-answer-frame" aria-label="Hidden word or sentence">
             <div class="hangman-frame-ornament" aria-hidden="true"></div>
             <div id="hangman-word" class="hangman-word" aria-label="Puzzle letter spaces"></div>
           </section>
+          <section class="hangman-result" id="hangman-result" role="region" aria-label="Level result" aria-live="polite" hidden>
+            <span class="hangman-result-title" id="hangman-result-title"></span>
+            <p class="hangman-result-message" id="hangman-result-message"></p>
+            <button type="button" class="hangman-next-level" id="hangman-next" hidden>MOVE TO NEXT LEVEL</button>
+          </section>
           <div class="hangman-errors" aria-label="Incorrect guesses">
             <span class="hangman-errors-label">Incorrect Guesses</span>
+            <span class="hangman-wrong-count" id="hangman-wrong-count" role="status" aria-live="polite">0 / 5 wrong</span>
             <div id="hangman-wrong-track" class="hangman-wrong-track" role="group" aria-label="Five incorrect guesses allowed"></div>
           </div>
 
@@ -170,7 +177,6 @@
               <span>HINT <span class="hangman-hint-count">(3)</span></span>
             </button>
           </div>
-          <button type="button" class="hangman-next-level" id="hangman-next" hidden>Next Level</button>
           <p class="hangman-status" id="hangman-status" role="status" aria-live="polite">Explore 400 Islamic Hangman puzzles.</p>
         </section>
       </div>
