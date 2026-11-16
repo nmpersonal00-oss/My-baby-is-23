@@ -175,19 +175,20 @@
       <section class="play-layout" aria-label="Interactive word search game" style="--realm-glow:${esc(realm.color)}"><div class="board-frame"><div class="board-scroller" id="board-scroller"><div class="letter-grid" id="letter-grid" role="group" aria-label="${board.size} by ${board.size} word search grid. Tap the first and last letter of each word. You can also drag." style="--cell:24px;grid-template-columns:repeat(${board.size},var(--cell))">${board.letters.map((letter,index)=>`<button type="button" class="letter" data-i="${index}" aria-label="Row ${Math.floor(index/board.size)+1}, column ${index%board.size+1}: ${letter}">${letter}</button>`).join('')}</div></div><div class="board-scroll-controls" aria-label="Scroll the letter grid"><button type="button" class="pan-button" data-pan="-1" aria-label="Scroll left">${chevron}</button><button type="button" class="pan-button" data-pan="1" aria-label="Scroll right" style="transform:rotate(180deg)">${chevron}</button></div><p class="game-feedback" id="game-feedback" role="status" aria-live="polite"></p></div>
       <aside class="word-frame"><div class="word-title"><h2>Words to discover</h2><span class="word-count" id="word-count">${found.size} / 35</span></div><div class="word-progress"><div class="progress-track"><div class="progress-fill" id="word-progress" style="--percent:${found.size/35*100}%"></div></div></div><div class="words-list" id="words-list">${[...chapter.words].sort((a,b)=>a.localeCompare(b)).map(label => `<div class="word-chip ${found.has(abc(label))?'done':''}" data-code="${abc(label)}"><span class="word-dot" aria-hidden="true"></span><span>${esc(label)}</span></div>`).join('')}</div><div class="tool-row"><button type="button" class="gold-button" id="hint-button" ${hintCount>=3||found.size>=35?'disabled':''}>${sparkle} <span id="hint-label">Hint (${3-hintCount} left)</span></button><button type="button" class="ghost-button shuffle-button" id="shuffle-button" title="Mix up this level without losing any found words">Shuffle</button><button type="button" class="ghost-button" id="restart-button">Restart</button></div></aside></section>`;
     const grid = document.getElementById('letter-grid');
-    // Fit every identical 25 × 25 board within the available area.
-    // Width and screen height both constrain the letter size, preventing
-    // horizontal board scrolling or oversized grids on short screens.
+    // Keep every level's letters readable instead of shrinking them to fit
+    // the screen height. Narrow screens can scroll the existing board sideways.
     const gridViewport = document.getElementById('board-scroller');
+    const panControls = document.querySelector('.board-scroll-controls');
     const fitLetterCells = () => {
       if (!grid.isConnected) return;
       const gap = 2;
       const width = Math.max(0,gridViewport.clientWidth-8);
-      const height = Math.max(300,window.innerHeight-240);
       const fitWidth = Math.floor((width-(board.size-1)*gap)/board.size);
-      const fitHeight = Math.floor((height-(board.size-1)*gap)/board.size);
-      const cellSize = Math.max(9,Math.min(28,fitWidth,fitHeight));
+      const minCell = window.innerWidth <= 760 ? 26 : 30;
+      const cellSize = Math.max(minCell,Math.min(36,fitWidth));
       grid.style.setProperty('--cell',cellSize+'px');
+      // Show the existing scroll arrows only when the enlarged grid needs them.
+      panControls.style.display = gridViewport.scrollWidth > gridViewport.clientWidth + 2 ? 'flex' : 'none';
     };
     fitLetterCells();
     if ('ResizeObserver' in window) {
