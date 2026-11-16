@@ -165,21 +165,21 @@ body:not(.atlas-home) .game-feedback{
 }
 
 
-/* Fixed-size chapter puzzles: 25 rows × 25 columns, with letter sizing
-   fitted to the available viewport rather than varying by chapter. */
+/* All 25 × 25 chapter puzzles use legible cells; narrow viewports
+   scroll within the board instead of squeezing the letters smaller. */
 body:not(.atlas-home) .board-scroller{
   max-width:100%;
-  overflow-x:hidden;
-  overflow-y:visible;
+  overflow-x:auto;
+  overflow-y:hidden;
   padding:4px 2px 6px;
 }
 body:not(.atlas-home) .letter-grid{gap:2px}
 body:not(.atlas-home) .letter{
-  font-size:clamp(9px,calc(var(--cell) * .62),16px);
+  font-size:clamp(17px,calc(var(--cell) * .62),22px);
   line-height:1;
 }
-body:not(.atlas-home) .board-scroll-controls{display:none}
+body:not(.atlas-home) .board-scroll-controls{display:flex}
 @media(max-width:720px){
-  body:not(.atlas-home) .board-scroller{overflow-x:hidden;padding:3px 1px 5px}
-  body:not(.atlas-home) .letter{font-size:clamp(9px,calc(var(--cell) * .65),15px)}
+  body:not(.atlas-home) .board-scroller{overflow-x:auto;padding:3px 1px 5px}
+  body:not(.atlas-home) .letter{font-size:clamp(16px,calc(var(--cell) * .62),20px)}
 }
