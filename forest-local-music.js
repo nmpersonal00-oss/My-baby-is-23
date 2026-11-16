@@ -18,6 +18,47 @@
     const music = new Map();
     const listeners = new Set();
     let cozy = null, lastResult = '';
+    // Folder selections used to live only in memory and vanished on refresh.
+    // Persist actual File objects in IndexedDB; never upload personal audio.
+    const libraryDb = new Promise((resolve,reject) => {
+      if (!window.indexedDB) { reject(Error('Persistent music storage unavailable')); return; }
+      const request = indexedDB.open('rayans-forest-local-library-v1',1);
+      request.onupgradeneeded = () => request.result.createObjectStore('tracks',{keyPath:'id'});
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => reject(Error('Music library is open in another tab'));
+    });
+    // Do not create an unhandled rejection in browsers that block storage.
+    libraryDb.catch(() => {});
+    async function persist(rows,removed = []) {
+      try {
+        const db = await libraryDb;
+        await new Promise((resolve,reject) => {
+          const tx = db.transaction('tracks','readwrite');
+          const store = tx.objectStore('tracks');
+          for (const id of removed) store.delete(id);
+          for (const row of rows) store.put(row);
+          tx.oncomplete = resolve;
+          tx.onerror = () => reject(tx.error);
+          tx.onabort = () => reject(tx.error);
+        });
+      } catch (error) {
+        lastResult = 'Music is playing, but this browser could not save the files for refresh. Check available browser storage.';
+        notify();
+      }
+    }
+    const restoring = libraryDb.then(db => new Promise((resolve,reject) => {
+      const req = db.transaction('tracks','readonly').objectStore('tracks').getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    })).then(rows => {
+      for (const row of rows) {
+        if (row.id === 'cozy') { if (!cozy) cozy = row.file; }
+        else if (!music.has(row.id)) music.set(row.id,row);
+      }
+      notify();
+    }).catch(() => {});
+
     const isAudio = file => /\.(mp3|m4a|mp4|ogg|oga|wav|aac|flac|opus)$/i.test(file.name) ||
       /^audio\//i.test(file.type || '');
     function worldFor(path) {
@@ -40,20 +81,24 @@
         notify(); return snapshot();
       }
       let added = 0, unrecognized = 0, cozyFound = false;
+      const toSave = [];
       const taggedWorld = audio.some(row => worldFor(row.path || row.file.name));
       for (const {file,path} of audio) {
         const full = String(path || file.name);
         if (/cozy[\s_.-]*library/i.test(full) || (opts.preferCozy && audio.length === 1)) {
-          cozy = file; cozyFound = true; added++; continue;
+          cozy = file; cozyFound = true; added++; toSave.push({id:'cozy',file}); continue;
         }
         const world = worldFor(full) || (!taggedWorld ? opts.world : null);
         if (!world) { unrecognized++; continue; }
         const id = 'local:' + world + ':' + full + ':' + file.size + ':' + file.lastModified;
-        music.set(id,{id,world,name:file.name,path:full,file});
+        const row = {id,world,name:file.name,path:full,file};
+        music.set(id,row);
+        toSave.push(row);
         added++;
       }
       if (!added && audio.length === 1 && !opts.world && !taggedWorld) {
         cozy = audio[0].file;
+        toSave.push({id:'cozy',file:cozy});
         added = 1; cozyFound = true; unrecognized = 0;
       }
       lastResult = added
@@ -63,6 +108,7 @@
           (unrecognized ? ' ' + unrecognized + ' file(s) had unknown album names; choose their game world to add them.' : '')
         : 'The files were found, but their album names are not recognized. Open the matching Word Search world and try the folder again.';
       notify();
+      if (toSave.length) restoring.then(() => persist(toSave));
       return snapshot();
     }
     async function readDirectory(handle,prefix = '') {
@@ -112,8 +158,13 @@
       getCozy:()=>cozy,getFile:id=>music.get(id)?.file,
       getResult:()=>lastResult,
       subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); },
-      clearWorld(world) { for (const [id,song] of music) if (song.world === world) music.delete(id); notify(); },
-      clearCozy() { cozy = null; notify(); }
+      clearWorld(world) {
+        const removed = [];
+        for (const [id,song] of music) if (song.world === world) { music.delete(id); removed.push(id); }
+        notify();
+        restoring.then(() => persist([],removed));
+      },
+      clearCozy() { cozy = null; notify(); restoring.then(() => persist([],['cozy'])); }
     };
   }
   window.forestLocalMusic = hub;

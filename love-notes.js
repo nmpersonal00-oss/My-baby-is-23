@@ -67,7 +67,9 @@
   function move(time) {
     const dt=previous?Math.min((time-previous)/1000,.034):0;
     previous=time;
-    if(!document.hidden&&!reducedMotion.matches) {
+    // Interactive chase remains playable even when OS reduced-motion is enabled.
+    // Decorative petals and glimmers still respect that accessibility preference.
+    if(!document.hidden) {
       const rangeScale=clamp(board.clientWidth/1180,.75,1.28);
       for(const l of letters) {
         if(lastKeyboard&&document.activeElement===l.el)continue;
@@ -95,10 +97,8 @@
       l.boostUntil=performance.now()+2800;
       l.el.classList.add("is-dashing");
       l.vx*=-1; l.vy*=-1;
-      if(!reducedMotion.matches){
-        l.x=clamp(l.x+Math.sign(l.vx)*18,0,l.maxX);
-        l.y=clamp(l.y+Math.sign(l.vy)*12,0,l.maxY);
-      }
+      l.x=clamp(l.x+Math.sign(l.vx)*18,0,l.maxX);
+      l.y=clamp(l.y+Math.sign(l.vy)*12,0,l.maxY);
       l.el.setAttribute("aria-label",l.name+". Catch again to open.");
       if(announcer)announcer.textContent=l.name+" darted away! Catch it again.";
     });

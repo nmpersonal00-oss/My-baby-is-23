@@ -332,7 +332,9 @@
   function animationFrame(time) {
     const dt = lastTick ? Math.min(.04,(time - lastTick)/1000) : 0;
     lastTick = time;
-    if (stage==='chasing' && !reduced.matches && !document.hidden && !(keyboardControl && document.activeElement === envelope)) {
+    // Keep the interactive flying-envelope chase active regardless of the OS
+    // decorative-motion preference; the ambient animations remain reduced.
+    if (stage==='chasing' && !document.hidden && !(keyboardControl && document.activeElement === envelope)) {
       const b = bounds();
       const factor = clamp(window.innerWidth/1100,.60,1.15);
       x += vx * factor * dt; y += vy * factor * dt;
